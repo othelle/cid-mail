@@ -1,0 +1,22 @@
+#Project files
+.idea
+*.iml
+.classpath
+.project
+
+#settings
+c:*
+
+
+#database
+*.db
+
+#Out
+out
+target
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
