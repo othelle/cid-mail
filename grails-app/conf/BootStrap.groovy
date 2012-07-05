@@ -2,6 +2,7 @@ import grails.util.Environment
 import com.othelle.cig.email.Collection
 import com.othelle.cig.email.Contact
 import sun.security.util.Password
+import grails.validation.ValidationException
 
 
 class BootStrap {
@@ -42,18 +43,26 @@ class BootStrap {
 
         if (Collection.list().size() == 0) {
             println "Create dates"
-            def contact1 = new Contact(firstName: "Dmitry1", lastName: "Klishin1", email: "kdi1979@mail.ru").save()
+            Contact contact1
+            Contact contact2
+            Contact contact3
+
+            contact1 = new Contact(firstName: "Dmitry1", lastName: "Klishin1", email: "kdi1979@mail.ru, gbi100@ab.ru").save()
 
             contact1.addToLocalMail(description: "description1", flagSend: true)
-            def contact2 = new Contact(firstName: "Dmitry2", lastName: "Klishin2", email: "Klishin.dmitry@gmail.com").save()
+            contact2 = new Contact(firstName: "Dmitry2", lastName: "Klishin2", email: "Klishin.dmitry@gmail.com").save()
             contact2.addToLocalMail(description: "description2", flagSend: true)
-            def contact3 = new Contact(firstName: "Dmitry2", lastName: "Klishin2", email: "zgbi100@mail.ru").save()
+            contact3 = new Contact(firstName: "Dmitry2", lastName: "Klishin2", email: "zgbi100@mail.ru").save()
             contact3.addToLocalMail(description: "description3", flagSend: false)
-            //def collections = new Collection(name: "name1", email: "kdi1979@mail.ru", password: "password1", contacts: [contact1, contact2,contact3]).save()
 
-            // def collections1 = new Collection(name: "name11", email: "kdi19@mail.ru", password: pas2.encodeAsBase64()).save()
-            //def contact11 = new Contact(firstName: "Dmitry11", lastName: "Klishin11", email: "kdi11@mail.ru", Collection: collections1).save()
-            //contact11.addToLocalMail(description: "description11", flagSend: true)
+
+           // def collections1 = new Collection(name: "col1", email: "kdi1979@mail.ru", password: "password1", code: "code1").save(failOnError: true)
+            def collections2 = new Collection(name: "col2", email: "sds@mail.ru", password: "password2", code: "code1").save(failOnError: true)
+             //   collections1.addToContacts(contacts: [contact1, contact2])
+                collections2.addToContacts(contacts: contact3)
+
+
+
 
         }
         else {
