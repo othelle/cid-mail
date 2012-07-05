@@ -21,7 +21,7 @@ class MailDigestService {
                         sendMail {
                             to emailParse(contact.email)
                             from grailsApplication.config.grails.mail.username
-                            subject "Service creative-email from: " + localMail.dateCreated
+                            subject "Service creative-email from: " + localMail.contact.email
                             body localMail.description
 
                         }
