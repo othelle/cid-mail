@@ -37,7 +37,7 @@ html * {
 }
 
 body {
-	background: #ffffff;
+	background: #efefef;
 	color: #333333;
 	margin: 0 auto;
 	max-width: 960px;
@@ -48,7 +48,7 @@ body {
 }
 
 #grailsLogo {
-	background-color: #cee292;
+	background-color: #ffffff;
 }
 
 /* replace with .no-boxshadow body if you have modernizr available */
