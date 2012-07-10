@@ -47,8 +47,10 @@ class MailDigestService {
         String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 
         Properties pop3Props = new Properties();
-        pop3Props.setProperty("mail.transport.protocol", "pop3");
+        pop3Props.setProperty("mail.transport.protocol", "pop");
         pop3Props.setProperty("mail.pop3.socketFactory.class", SSL_FACTORY);
+        pop3Props.setProperty("mail.pop3.auth", "true");
+        pop3Props.setProperty("mail.pop3.ssl", "true");
         pop3Props.setProperty("mail.pop3.socketFactory.fallback", "false");
         pop3Props.setProperty("mail.pop3.port", "995");
         pop3Props.setProperty("mail.pop3.socketFactory.port", "995");
@@ -58,16 +60,6 @@ class MailDigestService {
         Session session = Session.getInstance(pop3Props, auth);
         Store store = session.getStore(url);
         store.connect();
-
-
-        System.out.println "session.properties " + session.properties
-        System.out.println "session.providers " + session.providers
-        System.out.println "session.getStore() " + session.getStore()
-        System.out.println "session.getProvider(pop3) " + session.getProvider("pop3")
-        System.out.println "session.getProviders() " + session.getProviders()
-        System.out.println "session.getTransport() " + session.getTransport()
-
-
 
         Folder folder = store.getFolder("INBOX");
         folder.open(Folder.READ_ONLY);
