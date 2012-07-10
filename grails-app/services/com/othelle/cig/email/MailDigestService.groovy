@@ -40,7 +40,7 @@ class MailDigestService {
     def grailsApplication
 
     String[] emailParse(String s) {
-        String[] tokens = s.split(", ");
+        String[] tokens = s.split(", \n\r");
 
         return tokens
     }

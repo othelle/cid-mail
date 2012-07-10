@@ -41,7 +41,7 @@
 			}
 
 			#page-body {
-				margin: 2em 1em 1.25em 18em;
+				margin: 2em 1em 1.25em 0.2em;
 			}
 
 			h2 {
@@ -81,9 +81,10 @@
 		</style>
 	</head>
 	<body>
-		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div id="status" role="complementary">
-			<h1>Application Status</h1>
+			<h1>Отладочная информация</h1>
+            <h5>Эта панель будет убрана в релизе</h5>
+            <br/>
 			<ul>
 				<li>App version: <g:meta name="app.version"/></li>
 				<li>Grails version: <g:meta name="app.grails.version"/></li>
@@ -95,7 +96,8 @@
 				<li>Services: ${grailsApplication.serviceClasses.size()}</li>
 				<li>Tag Libraries: ${grailsApplication.tagLibClasses.size()}</li>
 			</ul>
-			<h1>Installed Plugins</h1>
+            <br/>
+			<h1>Установленные плагины</h1>
 			<ul>
 				<g:each var="plugin" in="${applicationContext.getBean('pluginManager').allPlugins}">
 					<li>${plugin.name} - ${plugin.version}</li>
@@ -103,11 +105,10 @@
 			</ul>
 		</div>
 		<div id="page-body" role="main">
-			<h1>Control panel</h1>
-			<p>Select the controller bellow and manage your application</p>
+			<h1>Контрольная панель</h1>
+			<p>Выберите сущность для редактирования или просмотра ниже</p>
 
 			<div id="controller-list" role="navigation">
-				<h2>Manage Entities:</h2>
 				<ul>
 					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
 						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>

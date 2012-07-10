@@ -11,7 +11,7 @@ class Contact {
     static constraints = {
         firstName(blank: false, size: 5..25)
         lastName(blank: false, size: 5..25)
-        email(blank: false)
+        email(blank: false, size: 1..1024)
         collections()
     }
 

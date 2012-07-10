@@ -5,11 +5,15 @@ class ContactController {
 
 
     def update() {
+        super.update()
         def element = Contact.findById(params.id)
 
         def collections = element.collections
+        def toRemove = new ArrayList<java.util.Collection>(collections)
 
-        for (Object collection : collections) {
+
+
+        for (Object collection : toRemove) {
             element.removeFromCollections(collection)
         }
 
@@ -22,8 +26,6 @@ class ContactController {
         }
 
         element.save()
-
-        redirect(action: 'list')
     }
 
     def delete() {

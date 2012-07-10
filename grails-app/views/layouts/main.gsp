@@ -20,13 +20,13 @@
 </head>
 
 <body>
-<div id="grailsLogo" role="banner"><a href="<g:createLink view="index"/> "><img
+<div id="grailsLogo" role="banner"><a href="/creative-email/ "><img
         src="${resource(dir: 'images', file: 'logo.png')}" alt="Home"/></a>
 </div>
 <g:layoutBody/>
 <div class="footer" role="contentinfo"></div>
 
-<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+<div id="spinner" class="spinner" style="display:none;"></div>
 <g:javascript library="application"/>
 <r:layoutResources/>
 </body>
