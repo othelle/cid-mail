@@ -32,9 +32,12 @@ class ContactController {
         def map = params
         def element = Contact.findById(params.id)
 
-        for (Object collection : element.collections) {
+        def toRemove = new ArrayList<java.util.Collection>(element.collections)
+
+        for (Object collection : toRemove) {
             element.removeFromCollections(collection)
         }
+
 
         element.save()
         element.delete()

@@ -9,14 +9,21 @@ class Contact {
     static hasMany = [localMail: LocalMail, collections: Collection]
 
     static constraints = {
-        firstName(blank: false, size: 5..25)
-        lastName(blank: false, size: 5..25)
+        firstName(blank: false, size: 2..25)
+        lastName(blank: false, size: 2..25)
         email(blank: false, size: 1..1024)
         collections()
     }
 
     @Override
     String toString() {
-        "${firstName} ${lastName} (${email})"
+        def string = "${firstName} ${lastName} (${email})"
+
+        if (string.length() > 40) {
+            return string.substring(0, 39) + "...)"
+        }
+
+        else
+            return string
     }
 }
