@@ -11,29 +11,25 @@ class MailDigestService {
 
     def sen = {
         List<LocalMail> localMails = LocalMail.findAllByFlagSend(true)
+        log.info("Found ${localMails.size()} mails to send")
         for (LocalMail localMail in localMails) {
+            def contact = localMail.contact
+            log.info("Sending ${localMail.id} to ${contact.email}")
+            try {
+                sendMail {
+                    to emailParse(contact.email)
+                    from grailsApplication.config.grails.mail.username
+                    subject "Service creative-email from: " + localMail.contact.email
+                    body localMail.description
 
-            for (Collection col in localMail.contact.collections.toArray()) {
-                List<Contact> contacts = Contact.findAll(Collection: col)
-                for (Contact contact in contacts) {
-
-                    try {
-                        sendMail {
-                            to emailParse(contact.email)
-                            from grailsApplication.config.grails.mail.username
-                            subject "Service creative-email from: " + localMail.contact.email
-                            body localMail.description
-
-                        }
-                        localMail.flagSend = Boolean.FALSE
-
-                        localMail.save(failOnError: true)
-                    }
-                    catch (ValidationException e) {
-
-                        println "error validate " + e.message
-                    }
                 }
+                localMail.flagSend = Boolean.FALSE
+
+                localMail.save(failOnError: true)
+                log.info("Mail has been sant ${localMail}")
+            }
+            catch (ValidationException e) {
+                log.error("Unable to send email", e)
             }
         }
     }
@@ -41,10 +37,7 @@ class MailDigestService {
 
     String[] emailParse(String s) {
         String[] tokens = s.split(", \n\r");
-
         return tokens
     }
-
-    //  def grailsApplication
 }
 

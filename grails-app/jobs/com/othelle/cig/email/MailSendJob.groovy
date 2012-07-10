@@ -1,8 +1,6 @@
 package com.othelle.cig.email
 
 class MailSendJob {
-
-    def d1 = new Date()
     def MailDigestService mailDigestService
     static triggers = {
         // simple repeatInterval: 5000l // execute job once in 5 seconds
@@ -10,14 +8,8 @@ class MailSendJob {
 
     }
 
-
     def execute() {
-        println" woking job"
+        log.info("Executing mail sending job")
         mailDigestService.sen()
-
-
-
-
-
     }
 }
