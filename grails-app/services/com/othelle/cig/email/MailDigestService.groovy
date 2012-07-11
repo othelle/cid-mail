@@ -37,8 +37,8 @@ class MailDigestService {
             }
         }
     }
-    def  checkedEmail = {
-         Authenticator auth = new MyAuthenticator(grailsApplication.config.grails.mail.username, grailsApplication.config.grails.mail.password)
+    def checkedEmail = {
+        Authenticator auth = new MyAuthenticator(grailsApplication.config.grails.mail.username, grailsApplication.config.grails.mail.password)
 
         String POP_AUTH_USER = grailsApplication.config.grails.mail.username
         String POP_AUTH_PWD = grailsApplication.config.grails.mail.password
@@ -70,10 +70,10 @@ class MailDigestService {
         //folder.getMessage()
         for (Message messageCur in message) {
             System.out.println(": "
-                    + messageCur.getFrom()[0]
+                    + messageCur.getFrom()
                     + "\t" + messageCur.getSubject())
             System.out.println(messageCur.getContent())
-          //  CheckMail checkMail=new CheckMail(subject: messageCur.subject, body: messageCur.description, dateSend: messageCur.sentDate)
+            //CheckMail checkMail=new CheckMail(subject: messageCur.subject, body: messageCur.description, dateSend: messageCur.sentDate, flagNew: "true").save()
         }
 
         // Закрыть соединение
@@ -84,6 +84,24 @@ class MailDigestService {
 
     }
     def grailsApplication
+    def shift = {
+        List<CheckMail> checkMails = CheckMail.findAllByFlagNew(true)
+        List<Contact> contacts = Contact.findAll()
+        log.info("Found ${checkMails.size()} mails to send")
+        for (CheckMail checkMail in checkMails) {
+            for (Contact contact in contacts) {
+                try {
+                    LocalMail localMail = new LocalMail(flagSend: "true", description: checkMail.body).save(failOnError: true)
+                    contact.addToLocalMail(localMail).save(failOnError: true)
+                    log.info("Move ${checkMail.id} to ${localMail.id}")
+                }
+                catch (ValidationException e) {
+                    log.error("Unable to move checkMail", e)
+                }
+            }
+        }
+
+    }
 
     String[] emailParse(String s) {
         String[] tokens = s.split(", \n\r");
