@@ -6,6 +6,8 @@ import javax.mail.Store
 import javax.mail.Folder
 import javax.mail.Message
 import javax.mail.URLName
+import java.util.regex.Pattern
+import java.util.regex.Matcher
 
 
 
@@ -69,10 +71,10 @@ class MailDigestService {
         //folder.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
         //folder.getMessage()
         for (Message messageCur in message) {
-            System.out.println(": "
-                    + messageCur.getFrom()
-                    + "\t" + messageCur.getSubject())
-            System.out.println(messageCur.getContent())
+            log.info(": "
+                    + messageCur.from
+                    + "\t" + messageCur.subject)
+            log.info(messageCur.content)
             //CheckMail checkMail=new CheckMail(subject: messageCur.subject, body: messageCur.description, dateSend: messageCur.sentDate, flagNew: "true").save()
         }
 
@@ -89,11 +91,35 @@ class MailDigestService {
         List<Contact> contacts = Contact.findAll()
         log.info("Found ${checkMails.size()} mails to send")
         for (CheckMail checkMail in checkMails) {
+
+         /* Pattern regex=Pattern.compile("\\w+@[a-zA-Z_]+?\\.[a-zA-z]{2,6}")
+            Matcher regexMatcher=regex.matcher(checkMail.subject)
+            while (regexMatcher.find())
+            {
+                contacts=Contact.findAllByEmail(regexMatcher)
+                if (contacts.size()!=0)
+                {
+                    try {
+                        LocalMail localMail = new LocalMail(flagSend: "true", description: checkMail.body).save(failOnError: true)
+                        contacts[0].addToLocalMail(localMail).save(failOnError: true)
+                        log.info("Move ${checkMail.id} to ${localMail.id}")
+                        checkMail.flagNew = Boolean.FALSE
+                        checkMail.save(failOnError: true)
+                    }
+                    catch (ValidationException e) {
+                        log.error("Unable to move checkMail", e)
+                    }
+                }
+            }
+*/
+
             for (Contact contact in contacts) {
                 try {
                     LocalMail localMail = new LocalMail(flagSend: "true", description: checkMail.body).save(failOnError: true)
                     contact.addToLocalMail(localMail).save(failOnError: true)
                     log.info("Move ${checkMail.id} to ${localMail.id}")
+                    checkMail.flagNew = Boolean.FALSE
+                    checkMail.save(failOnError: true)
                 }
                 catch (ValidationException e) {
                     log.error("Unable to move checkMail", e)
