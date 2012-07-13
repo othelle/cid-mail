@@ -7,7 +7,7 @@ package com.othelle.cig.email
  * Time: 11:09
  * To change this template use File | Settings | File Templates.
  */
-class MyAuthenticator extends Authenticator {
+class MyAuthenticator extends javax.mail.Authenticator {
     private String user;
     private String password;
 
@@ -16,9 +16,9 @@ class MyAuthenticator extends Authenticator {
         this.password = password;
     }
 
-    public PasswordAuthentication getPasswordAuthentication() {
+    public javax.mail.PasswordAuthentication getPasswordAuthentication() {
         String user = this.user;
         String password = this.password;
-        return new PasswordAuthentication(user, password);
+        return new javax.mail.PasswordAuthentication(user, password);
     }
 }

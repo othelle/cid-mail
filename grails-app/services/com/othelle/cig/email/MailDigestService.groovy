@@ -1,15 +1,8 @@
 package com.othelle.cig.email
 
 import grails.validation.ValidationException
-import javax.mail.Session
-import javax.mail.Store
-import javax.mail.Folder
-import javax.mail.Message
-import javax.mail.URLName
-import java.util.regex.Pattern
-import java.util.regex.Matcher
 
-
+import javax.mail.*
 
 class MailDigestService {
 
@@ -39,52 +32,67 @@ class MailDigestService {
             }
         }
     }
+
+
     def checkedEmail = {
-        Authenticator auth = new MyAuthenticator(grailsApplication.config.grails.mail.username, grailsApplication.config.grails.mail.password)
 
-        String POP_AUTH_USER = grailsApplication.config.grails.mail.username
-        String POP_AUTH_PWD = grailsApplication.config.grails.mail.password
+        def groups = Collection.list();
 
-        String FOLDER_INDOX = "INBOX"; // имя папки "Входящие"
-        String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+        /**
+         * 16:28:57пока 5 шт сделал:
+         16:29:00asg-test01
+         16:29:10asg-test02
+         asg-test03
+         asg-test04
+         asg-test05
+         16:29:21пароли: Qwerty77
+         16:29:36pop/smtp: mail.nic.ru
+         16:30:05пользователь: asg-test01@asg-ts.ru и т.д.
+         16:30:21авторизация при отправке: аналогично pop3
+         */
 
-        Properties pop3Props = new Properties();
-        pop3Props.setProperty("mail.transport.protocol", "pop");
-        pop3Props.setProperty("mail.pop3.socketFactory.class", SSL_FACTORY);
-        pop3Props.setProperty("mail.pop3.auth", "true");
-        pop3Props.setProperty("mail.pop3.ssl", "true");
-        pop3Props.setProperty("mail.pop3.socketFactory.fallback", "false");
-        pop3Props.setProperty("mail.pop3.port", "995");
-        pop3Props.setProperty("mail.pop3.socketFactory.port", "995");
+        for (Collection collection : groups) {
+            javax.mail.Authenticator auth = new MyAuthenticator(grailsApplication.config.grails.mail.username, grailsApplication.config.grails.mail.password)
 
-        URLName url = new URLName("pop3", "pop.gmail.com", 955, "", POP_AUTH_USER, POP_AUTH_PWD);
+            String POP_AUTH_USER = collection.email
+            String POP_AUTH_PWD = collection.password
 
-        Session session = Session.getInstance(pop3Props, auth);
-        Store store = session.getStore(url);
-        store.connect();
+            Properties pop3Props = new Properties();
+            pop3Props.setProperty("mail.transport.protocol", "pop");
+            pop3Props.setProperty("mail.pop3.auth", "true");
 
-        Folder folder = store.getFolder("INBOX");
-        folder.open(Folder.READ_ONLY);
+            URLName url = new URLName("pop3", "mail.asg-ts.ru", 110, "", POP_AUTH_USER, POP_AUTH_PWD);
 
-        // Получить каталог
-        Message[] message = folder.getMessage()
-        //folder.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
-        //folder.getMessage()
-        for (Message messageCur in message) {
-            log.info(": "
-                    + messageCur.from
-                    + "\t" + messageCur.subject)
-            log.info(messageCur.content)
-            //CheckMail checkMail=new CheckMail(subject: messageCur.subject, body: messageCur.description, dateSend: messageCur.sentDate, flagNew: "true").save()
+            Session session = Session.getInstance(pop3Props, auth);
+            Store store = session.getStore("pop3");
+            try {
+                store.connect();
+
+                Folder folder = store.getFolder("INBOX");
+                folder.open(Folder.READ_ONLY);
+
+                // Получить каталог
+                Message[] message = folder.getMessage()
+                //folder.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
+                //folder.getMessage()
+                for (Message messageCur in message) {
+                    log.info(": "
+                            + messageCur.from
+                            + "\t" + messageCur.subject)
+                    log.info(messageCur.content)
+                    //CheckMail checkMail=new CheckMail(subject: messageCur.subject, body: messageCur.description, dateSend: messageCur.sentDate, flagNew: "true").save()
+                }
+
+                // Закрыть соединение
+
+                folder.close(false);
+                store.close();
+            } catch (Exception e) {
+                log.error("Unable to fetch emails", e)
+            }
         }
-
-        // Закрыть соединение
-
-        folder.close(false);
-        store.close();
-
-
     }
+
     def grailsApplication
     def shift = {
         List<CheckMail> checkMails = CheckMail.findAllByFlagNew(true)
@@ -92,26 +100,26 @@ class MailDigestService {
         log.info("Found ${checkMails.size()} mails to send")
         for (CheckMail checkMail in checkMails) {
 
-         /* Pattern regex=Pattern.compile("\\w+@[a-zA-Z_]+?\\.[a-zA-z]{2,6}")
-            Matcher regexMatcher=regex.matcher(checkMail.subject)
-            while (regexMatcher.find())
-            {
-                contacts=Contact.findAllByEmail(regexMatcher)
-                if (contacts.size()!=0)
-                {
-                    try {
-                        LocalMail localMail = new LocalMail(flagSend: "true", description: checkMail.body).save(failOnError: true)
-                        contacts[0].addToLocalMail(localMail).save(failOnError: true)
-                        log.info("Move ${checkMail.id} to ${localMail.id}")
-                        checkMail.flagNew = Boolean.FALSE
-                        checkMail.save(failOnError: true)
-                    }
-                    catch (ValidationException e) {
-                        log.error("Unable to move checkMail", e)
-                    }
-                }
-            }
-*/
+            /* Pattern regex=Pattern.compile("\\w+@[a-zA-Z_]+?\\.[a-zA-z]{2,6}")
+                        Matcher regexMatcher=regex.matcher(checkMail.subject)
+                        while (regexMatcher.find())
+                        {
+                            contacts=Contact.findAllByEmail(regexMatcher)
+                            if (contacts.size()!=0)
+                            {
+                                try {
+                                    LocalMail localMail = new LocalMail(flagSend: "true", description: checkMail.body).save(failOnError: true)
+                                    contacts[0].addToLocalMail(localMail).save(failOnError: true)
+                                    log.info("Move ${checkMail.id} to ${localMail.id}")
+                                    checkMail.flagNew = Boolean.FALSE
+                                    checkMail.save(failOnError: true)
+                                }
+                                catch (ValidationException e) {
+                                    log.error("Unable to move checkMail", e)
+                                }
+                            }
+                        }
+            */
 
             for (Contact contact in contacts) {
                 try {

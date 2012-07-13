@@ -43,11 +43,11 @@ class BootStrap {
 
         if (Collection.list().size() == 0) {
             println "Creating test objects dates"
-            def col1 = new Collection(name: "asg-test01 ", email: "asg-test01@asg-ts.ru", password: String.format("pass%d", (int) (100 * Math.random())), code: "code1").save(failOnError: true)
-            def col2 = new Collection(name: "asg-test02 ", email: "asg-test02@asg-ts.ru", password: String.format("pass%d", (int) (100 * Math.random())), code: "code2").save(failOnError: true)
-            def col3 = new Collection(name: "asg-test03 ", email: "asg-test03@asg-ts.ru", password: String.format("pass%d", (int) (100 * Math.random())), code: "code3").save(failOnError: true)
-            def col4 = new Collection(name: "asg-test04 ", email: "asg-test04@asg-ts.ru", password: String.format("pass%d", (int) (100 * Math.random())), code: "code4").save(failOnError: true)
-            def col5 = new Collection(name: "asg-test05 ", email: "asg-test05@asg-ts.ru", password: String.format("pass%d", (int) (100 * Math.random())), code: "code5").save(failOnError: true)
+            def col1 = new Collection(name: "asg-test01 ", email: "asg-test01@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code1").save(failOnError: true)
+            def col2 = new Collection(name: "asg-test02 ", email: "asg-test02@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code2").save(failOnError: true)
+            def col3 = new Collection(name: "asg-test03 ", email: "asg-test03@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code3").save(failOnError: true)
+            def col4 = new Collection(name: "asg-test04 ", email: "asg-test04@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code4").save(failOnError: true)
+            def col5 = new Collection(name: "asg-test05 ", email: "asg-test05@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code5").save(failOnError: true)
 
 
 //            createContact("FirstName1", "LastName1", "kdi1991@gmail.com, zgbi100@mail.ru", col1, col3, col5)

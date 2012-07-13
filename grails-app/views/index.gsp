@@ -121,6 +121,7 @@
             <br/>
 
             <h4>История запросов</h4>
+            <li class="controller"><g:link controller="checkMail">Письма полученные</g:link></li>
             <li class="controller"><g:link controller="localMail">Письма для отправки</g:link></li>
         </ul>
     </div>
