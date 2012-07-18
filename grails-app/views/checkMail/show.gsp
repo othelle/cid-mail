@@ -23,6 +23,15 @@
 			</g:if>
 			<ol class="property-list checkMail">
 			
+				<g:if test="${checkMailInstance?.uid}">
+				<li class="fieldcontain">
+					<span id="uid-label" class="property-label"><g:message code="checkMail.uid.label" default="Uid" /></span>
+					
+						<span class="property-value" aria-labelledby="uid-label"><g:fieldValue bean="${checkMailInstance}" field="uid"/></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${checkMailInstance?.subject}">
 				<li class="fieldcontain">
 					<span id="subject-label" class="property-label"><g:message code="checkMail.subject.label" default="Subject" /></span>
@@ -46,6 +55,24 @@
 					<span id="dateSend-label" class="property-label"><g:message code="checkMail.dateSend.label" default="Date Send" /></span>
 					
 						<span class="property-value" aria-labelledby="dateSend-label"><g:formatDate date="${checkMailInstance?.dateSend}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${checkMailInstance?.flagNew}">
+				<li class="fieldcontain">
+					<span id="flagNew-label" class="property-label"><g:message code="checkMail.flagNew.label" default="Flag New" /></span>
+					
+						<span class="property-value" aria-labelledby="flagNew-label"><g:formatBoolean boolean="${checkMailInstance?.flagNew}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${checkMailInstance?.collection}">
+				<li class="fieldcontain">
+					<span id="collection-label" class="property-label"><g:message code="checkMail.collection.label" default="Collection" /></span>
+					
+						<span class="property-value" aria-labelledby="collection-label"><g:link controller="collection" action="show" id="${checkMailInstance?.collection?.id}">${checkMailInstance?.collection?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>

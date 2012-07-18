@@ -3,19 +3,23 @@ package com.othelle.cig.email
 import grails.validation.ValidationException
 
 import javax.mail.*
+import com.sun.mail.pop3.POP3Folder
 
 class MailDigestService {
 
     // boolean transactional = false
     Closure sendMail
+    def grailsApplication
+
     def sen = {
         List<LocalMail> localMails = LocalMail.findAllByFlagSend(true)
         log.info("Found ${localMails.size()} mails to send")
         for (LocalMail localMail in localMails) {
             def contact = localMail.contact
             log.info("Sending ${localMail.id} to ${contact.email}")
+            log.info("emailParse(contact.email) 111111111  "+emailParse(contact.email))
             try {
-                sendMail {
+                  sendMail {
                     to emailParse(contact.email)
                     from grailsApplication.config.grails.mail.username
                     subject "Service creative-email from: " + localMail.contact.email
@@ -62,70 +66,65 @@ class MailDigestService {
             pop3Props.setProperty("mail.pop3.auth", "true");
 
             URLName url = new URLName("pop3", "mail.asg-ts.ru", 110, "", POP_AUTH_USER, POP_AUTH_PWD);
-
             Session session = Session.getInstance(pop3Props, auth);
-            Store store = session.getStore("pop3");
+            Store store = session.getStore(url);
             try {
-                store.connect();
+                if (!store.isConnected()) {
+                    store.connect();
+                    log.info("Connected to store " + POP_AUTH_USER)
 
-                Folder folder = store.getFolder("INBOX");
+                }
+                else {
+                    log.info("Already connected to store")
+                }
+                // Folder folder = store.getFolder("INBOX");
+                POP3Folder folder = (POP3Folder) store.getFolder("INBOX");
                 folder.open(Folder.READ_ONLY);
 
                 // Получить каталог
-                Message[] message = folder.getMessage()
-                //folder.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
-                //folder.getMessage()
+                Message[] message = folder.getMessages()
+
                 for (Message messageCur in message) {
-                    log.info(": "
-                            + messageCur.from
-                            + "\t" + messageCur.subject)
-                    log.info(messageCur.content)
-                    //CheckMail checkMail=new CheckMail(subject: messageCur.subject, body: messageCur.description, dateSend: messageCur.sentDate, flagNew: "true").save()
+                    StringBuilder uid = new StringBuilder(folder.getUID(messageCur).toString())
+                    if (CheckMail.findAllByCollectionAndUid(collection, uid).empty.booleanValue()) {
+                        log.info(": "
+                                + messageCur.from
+                                + "\t" + messageCur.subject)
+                        log.info(messageCur.content)
+                        try {
+                            CheckMail checkMail = new CheckMail(uid: uid, subject: messageCur.subject, body: messageCur.content, dateSend: messageCur.sentDate, flagNew: "true", collection: collection).save(failOnError: true)
+                            log.info("Add checkMail")
+                        }
+                        catch (ValidationException ve) {
+                            log.error("Unable save checkMail ", ve.message)
+                        }
+                    }
+                    else {
+                        log.info("Message already exists.")
+                    }
                 }
-
                 // Закрыть соединение
-
                 folder.close(false);
                 store.close();
-            } catch (Exception e) {
-                log.error("Unable to fetch emails", e)
+            } catch (ValidationException e) {
+                log.error("Unable to send email ", e.printStackTrace())
             }
         }
     }
 
-    def grailsApplication
-    def shift = {
+
+    def move = {
         List<CheckMail> checkMails = CheckMail.findAllByFlagNew(true)
-        List<Contact> contacts = Contact.findAll()
-        log.info("Found ${checkMails.size()} mails to send")
         for (CheckMail checkMail in checkMails) {
+            log.info("checkMail " + checkMail)
+            //TODO неверно
+            List<Contact> contacts = Contact.findAll(Collection: checkMail.collection)
+            log.info("CONTACT.size= " + contacts.size())
 
-            /* Pattern regex=Pattern.compile("\\w+@[a-zA-Z_]+?\\.[a-zA-z]{2,6}")
-                        Matcher regexMatcher=regex.matcher(checkMail.subject)
-                        while (regexMatcher.find())
-                        {
-                            contacts=Contact.findAllByEmail(regexMatcher)
-                            if (contacts.size()!=0)
-                            {
-                                try {
-                                    LocalMail localMail = new LocalMail(flagSend: "true", description: checkMail.body).save(failOnError: true)
-                                    contacts[0].addToLocalMail(localMail).save(failOnError: true)
-                                    log.info("Move ${checkMail.id} to ${localMail.id}")
-                                    checkMail.flagNew = Boolean.FALSE
-                                    checkMail.save(failOnError: true)
-                                }
-                                catch (ValidationException e) {
-                                    log.error("Unable to move checkMail", e)
-                                }
-                            }
-                        }
-            */
-
-            for (Contact contact in contacts) {
+            for (Contact contact : contacts) {
                 try {
-                    LocalMail localMail = new LocalMail(flagSend: "true", description: checkMail.body).save(failOnError: true)
-                    contact.addToLocalMail(localMail).save(failOnError: true)
-                    log.info("Move ${checkMail.id} to ${localMail.id}")
+                    LocalMail localMail = new LocalMail(flagSend: "true", description: checkMail.body, contact: contact).save(failOnError: true)
+                    log.info("Move ${checkMail} to ${localMail}")
                     checkMail.flagNew = Boolean.FALSE
                     checkMail.save(failOnError: true)
                 }
@@ -134,12 +133,13 @@ class MailDigestService {
                 }
             }
         }
-
     }
 
     String[] emailParse(String s) {
-        String[] tokens = s.split(", \n\r");
+        String[] tokens = s.split(", ");
         return tokens
     }
+
 }
+
 

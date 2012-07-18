@@ -1,46 +1,103 @@
 package com.othelle.cig.email
 
+import org.springframework.dao.DataIntegrityViolationException
+
 class ContactController {
-    static scaffold = true
 
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def update() {
-        super.update()
-        def element = Contact.findById(params.id)
+    def index() {
+        redirect(action: "list", params: params)
+    }
 
-        def collections = element.collections
-        def toRemove = new ArrayList<java.util.Collection>(collections)
+    def list() {
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [contactInstanceList: Contact.list(params), contactInstanceTotal: Contact.count()]
+    }
 
+    def create() {
+        [contactInstance: new Contact(params)]
+    }
 
-
-        for (Object collection : toRemove) {
-            element.removeFromCollections(collection)
+    def save() {
+        def contactInstance = new Contact(params)
+        if (!contactInstance.save(flush: true)) {
+            render(view: "create", model: [contactInstance: contactInstance])
+            return
         }
 
-        def ids = params.collections
+		flash.message = message(code: 'default.created.message', args: [message(code: 'contact.label', default: 'Contact'), contactInstance.id])
+        redirect(action: "show", id: contactInstance.id)
+    }
 
-        if (ids) {
-            for (String collectionId : Arrays.asList(ids)) {
-                element.addToCollections(Collection.findById(Integer.parseInt(collectionId)))
+    def show() {
+        def contactInstance = Contact.get(params.id)
+        if (!contactInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'contact.label', default: 'Contact'), params.id])
+            redirect(action: "list")
+            return
+        }
+
+        [contactInstance: contactInstance]
+    }
+
+    def edit() {
+        def contactInstance = Contact.get(params.id)
+        if (!contactInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'contact.label', default: 'Contact'), params.id])
+            redirect(action: "list")
+            return
+        }
+
+        [contactInstance: contactInstance]
+    }
+
+    def update() {
+        def contactInstance = Contact.get(params.id)
+        if (!contactInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'contact.label', default: 'Contact'), params.id])
+            redirect(action: "list")
+            return
+        }
+
+        if (params.version) {
+            def version = params.version.toLong()
+            if (contactInstance.version > version) {
+                contactInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                          [message(code: 'contact.label', default: 'Contact')] as Object[],
+                          "Another user has updated this Contact while you were editing")
+                render(view: "edit", model: [contactInstance: contactInstance])
+                return
             }
         }
 
-        element.save()
+        contactInstance.properties = params
+
+        if (!contactInstance.save(flush: true)) {
+            render(view: "edit", model: [contactInstance: contactInstance])
+            return
+        }
+
+		flash.message = message(code: 'default.updated.message', args: [message(code: 'contact.label', default: 'Contact'), contactInstance.id])
+        redirect(action: "show", id: contactInstance.id)
     }
 
     def delete() {
-        def map = params
-        def element = Contact.findById(params.id)
-
-        def toRemove = new ArrayList<java.util.Collection>(element.collections)
-
-        for (Object collection : toRemove) {
-            element.removeFromCollections(collection)
+        def contactInstance = Contact.get(params.id)
+        if (!contactInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'contact.label', default: 'Contact'), params.id])
+            redirect(action: "list")
+            return
         }
 
-
-        element.save()
-        element.delete()
-        redirect(action: 'list')
+        try {
+            contactInstance.delete(flush: true)
+			flash.message = message(code: 'default.deleted.message', args: [message(code: 'contact.label', default: 'Contact'), params.id])
+            redirect(action: "list")
+        }
+        catch (DataIntegrityViolationException e) {
+			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'contact.label', default: 'Contact'), params.id])
+            redirect(action: "show", id: params.id)
+        }
     }
 }
