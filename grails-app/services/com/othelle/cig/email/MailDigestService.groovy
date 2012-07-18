@@ -117,11 +117,12 @@ class MailDigestService {
         List<CheckMail> checkMails = CheckMail.findAllByFlagNew(true)
         for (CheckMail checkMail in checkMails) {
             log.info("checkMail " + checkMail)
-            //TODO неверно
+            for(Contact contact: checkMail.collection.contacts){
+            /*//TODO неверно
             List<Contact> contacts = Contact.findAll(Collection: checkMail.collection)
-            log.info("CONTACT.size= " + contacts.size())
+            log.info("CONTACT.size= " + contacts.size())*/
 
-            for (Contact contact : contacts) {
+            //for (Contact contact : contacts) {
                 try {
                     LocalMail localMail = new LocalMail(flagSend: "true", description: checkMail.body, contact: contact).save(failOnError: true)
                     log.info("Move ${checkMail} to ${localMail}")
