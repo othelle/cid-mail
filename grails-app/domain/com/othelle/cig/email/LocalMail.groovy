@@ -1,10 +1,13 @@
 package com.othelle.cig.email
 
 class LocalMail {
+    String subject
     String description
-    Date dateCreated
     Boolean flagSend
     Contact contact
+    Date dateCreated
+    Date dateSent
+
 
     static belongsTo = [Contact]
 
@@ -13,6 +16,7 @@ class LocalMail {
         dateCreated(nullable: true)
         flagSend(nullable: true)
         contact(nullable: true)
+        dateSent(nullable: true)
     }
 
     @Override

@@ -11,35 +11,34 @@ class MailDigestService {
     Closure sendMail
     def grailsApplication
 
-    def sen = {
+    def synchronized sendEmails = {
         List<LocalMail> localMails = LocalMail.findAllByFlagSend(true)
         log.info("Found ${localMails.size()} mails to send")
         for (LocalMail localMail in localMails) {
             def contact = localMail.contact
             log.info("Sending ${localMail.id} to ${contact.email}")
-            log.info("emailParse(contact.email) 111111111  "+emailParse(contact.email))
+            log.info("emailParse(contact.email) 111111111  " + emailParse(contact.email))
             try {
-                  sendMail {
+                sendMail {
                     to emailParse(contact.email)
                     from grailsApplication.config.grails.mail.username
-                    subject "Service creative-email from: " + localMail.contact.email
+                    subject localMail.subject
                     body localMail.description
 
                 }
                 localMail.flagSend = Boolean.FALSE
-
+                localMail.dateSent = new Date();
                 localMail.save(failOnError: true)
                 log.info("Mail has been sant ${localMail}")
             }
-            catch (ValidationException e) {
+            catch (Exception e) {
                 log.error("Unable to send email", e)
             }
         }
     }
 
 
-    def checkedEmail = {
-
+    def synchronized checkNewEmails = {
         def groups = Collection.list();
 
         /**
@@ -56,7 +55,8 @@ class MailDigestService {
          */
 
         for (Collection collection : groups) {
-            javax.mail.Authenticator auth = new MyAuthenticator(grailsApplication.config.grails.mail.username, grailsApplication.config.grails.mail.password)
+            log.info("Checking email for group ${collection}")
+            javax.mail.Authenticator auth = new MyAuthenticator(collection.email, collection.password)
 
             String POP_AUTH_USER = collection.email
             String POP_AUTH_PWD = collection.password
@@ -71,8 +71,7 @@ class MailDigestService {
             try {
                 if (!store.isConnected()) {
                     store.connect();
-                    log.info("Connected to store " + POP_AUTH_USER)
-
+                    log.info("Connected to store " + collection.email)
                 }
                 else {
                     log.info("Already connected to store")
@@ -86,61 +85,59 @@ class MailDigestService {
 
                 for (Message messageCur in message) {
                     StringBuilder uid = new StringBuilder(folder.getUID(messageCur).toString())
-                    if (CheckMail.findAllByCollectionAndUid(collection, uid).empty.booleanValue()) {
-                        log.info(": "
-                                + messageCur.from
-                                + "\t" + messageCur.subject)
+                    if (CheckMail.findAllByCollectionAndUid(collection, uid.toString()).empty.booleanValue()) {
+                        log.info("Got new message: "
+                                + "\nfrom:" + messageCur.from
+                                + "\nsubject:" + messageCur.subject)
                         log.info(messageCur.content)
                         try {
-                            CheckMail checkMail = new CheckMail(uid: uid, subject: messageCur.subject, body: messageCur.content, dateSend: messageCur.sentDate, flagNew: "true", collection: collection).save(failOnError: true)
-                            log.info("Add checkMail")
+                            CheckMail checkMail = new CheckMail(uid: uid, subject: messageCur.subject, body: messageCur.content, dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
+                            log.info("Adding email to the queue: ${checkMail.subject}")
+
+                            //copy emails to local mail folder
+                            copyCheckedEmailsToContacts(checkMail)
+                            checkMail.save()
                         }
-                        catch (ValidationException ve) {
-                            log.error("Unable save checkMail ", ve.message)
+                        catch (Exception ve) {
+                            log.error("Unable save checked mail ${uid} ", ve)
                         }
                     }
                     else {
-                        log.info("Message already exists.")
+                        log.debug("Message already exists.")
                     }
                 }
                 // Закрыть соединение
                 folder.close(false);
                 store.close();
-            } catch (ValidationException e) {
-                log.error("Unable to send email ", e.printStackTrace())
+            } catch (Exception e) {
+                log.error("Unable to send email ", e)
             }
         }
     }
 
 
-    def move = {
-        List<CheckMail> checkMails = CheckMail.findAllByFlagNew(true)
-        for (CheckMail checkMail in checkMails) {
-            log.info("checkMail " + checkMail)
-            for(Contact contact: checkMail.collection.contacts){
-            /*//TODO неверно
-            List<Contact> contacts = Contact.findAll(Collection: checkMail.collection)
-            log.info("CONTACT.size= " + contacts.size())*/
-
-            //for (Contact contact : contacts) {
+    def copyCheckedEmailsToContacts(CheckMail checkedMail) {
+        //not the best way to copy checkmails to localmail
+        if (checkedMail) {
+            log.info("checkMail " + checkedMail)
+            for (Contact contact : checkedMail.collection.contacts) {
                 try {
-                    LocalMail localMail = new LocalMail(flagSend: "true", description: checkMail.body, contact: contact).save(failOnError: true)
-                    log.info("Move ${checkMail} to ${localMail}")
-                    checkMail.flagNew = Boolean.FALSE
-                    checkMail.save(failOnError: true)
+                    LocalMail localMail = new LocalMail(flagSend: true, subject: checkedMail.subject,
+                            description: checkedMail.body, contact: contact).save(failOnError: true)
+                    localMail.save(failOnError: true)
                 }
                 catch (ValidationException e) {
-                    log.error("Unable to move checkMail", e)
+                    log.error("Unable to copyCheckedEmailsToContacts checkMail", e)
                 }
             }
         }
+        checkedMail.flagNew = Boolean.FALSE
     }
 
     String[] emailParse(String s) {
         String[] tokens = s.split(", ");
         return tokens
     }
-
 }
 
 

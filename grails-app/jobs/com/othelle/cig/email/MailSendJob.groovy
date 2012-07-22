@@ -10,6 +10,6 @@ class MailSendJob {
 
     def execute() {
         log.info("Executing mail sending job")
-        mailDigestService.sen()
+        mailDigestService.sendEmails()
     }
 }

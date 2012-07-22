@@ -14,6 +14,6 @@ class MailGetJob {
 
     def execute() {
         log.info("Trying to get emails")
-        mailDigestService.checkedEmail()
+        mailDigestService.checkNewEmails()
     }
 }
