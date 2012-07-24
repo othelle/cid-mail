@@ -14,7 +14,11 @@ import org.apache.log4j.DailyRollingFileAppender
 // if (System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
-
+def logDirectory = '/var/log/cid-mail/'
+//def logDirectory = 'log/'
+def infoLog = 'info.log'
+def errorLog = 'error.log'
+def fatalLog = 'fatal.log'
 
 grails {
     mail {
@@ -27,6 +31,12 @@ grails {
                 "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
                 "mail.smtp.socketFactory.fallback": "false"]
 
+    }
+
+    fileViewer {
+        locations = [logDirectory]
+        linesCount = 300
+        areDoubleDotsAllowedInFilePath = false
     }
 }
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
@@ -88,27 +98,43 @@ environments {
 }
 
 // log4j configuration
-def logDirectory = '/var/log/cid-mail/'
-log4j = {
-    def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
 
+log4j = {
+  //  def logLayoutPattern = new PatternLayout("%d{ISO8601} [%-5p][%-16.16t][%32.32c] - %m%n")
+    def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
     appenders {
         appender new ConsoleAppender(name: "console",
                 threshold: log4jConsoleLogLevel,
                 layout: logLayoutPattern
         )
-        appender new DailyRollingFileAppender(name: "appFile",
-                threshold: log4jAppFileLogLevel,
-                file: logDirectory + "app.log",
+        appender new DailyRollingFileAppender(name: "appFileError",
+                threshold: org.apache.log4j.Level.ERROR,
+                file: logDirectory + errorLog,
                 datePattern: "'.'yyyy-MM-dd",
                 layout: logLayoutPattern
         )
+        appender new DailyRollingFileAppender(name: "appFileInfo",
+                threshold: org.apache.log4j.Level.INFO,
+                file: logDirectory + infoLog,
+                datePattern: "'.'yyyy-MM-dd",
+                layout: logLayoutPattern
+        )
+
+        appender new DailyRollingFileAppender(name: "appFileFatal",
+                threshold: org.apache.log4j.Level.FATAL,
+                file: logDirectory + fatalLog,
+                datePattern: "'.'yyyy-MM-dd",
+                layout: logLayoutPattern
+        )
+
     }
 
     root {
-        info 'stdout', 'appFile'
+        info 'stdout', 'appFileFatal', 'appFileError', 'appFileInfo'
         additivity = true
     }
+
+
 }
 
 
