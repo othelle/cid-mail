@@ -124,6 +124,7 @@
             <li class="controller"><g:link controller="checkMail">Письма полученные</g:link></li>
             <li class="controller"><g:link controller="localMail">Письма для отправки</g:link></li>
 
+            <br/>
             <h4>Логгирование и отчетность</h4>
             <li class="controller"><g:link controller="log">Логи</g:link></li>
             <li class="controller"><g:link controller="report">Отчеты</g:link></li>
