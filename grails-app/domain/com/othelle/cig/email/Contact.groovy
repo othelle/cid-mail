@@ -1,6 +1,6 @@
 package com.othelle.cig.email
 
-class Contact {
+class Contact implements Serializable{
     String firstName
     String lastName
     String email

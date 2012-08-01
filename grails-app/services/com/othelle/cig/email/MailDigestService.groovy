@@ -17,10 +17,9 @@ class MailDigestService {
         for (LocalMail localMail in localMails) {
             def contact = localMail.contact
             log.info("Sending ${localMail.id} to ${contact.email}")
-            log.info("emailParse(contact.email) 111111111  " + emailParse(contact.email))
             try {
                 sendMail {
-                    to emailParse(contact.email)
+                    to Utilities.emailParse(contact.email)
                     from grailsApplication.config.grails.mail.username
                     subject localMail.subject
                     body localMail.description
@@ -132,11 +131,6 @@ class MailDigestService {
             }
         }
         checkedMail.flagNew = Boolean.FALSE
-    }
-
-    String[] emailParse(String s) {
-        String[] tokens = s.split(", ");
-        return tokens
     }
 }
 

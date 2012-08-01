@@ -14,11 +14,15 @@ import org.apache.log4j.DailyRollingFileAppender
 // if (System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
-def logDirectory = '/var/log/cid-mail/'
-//def logDirectory = 'log/'
+//def logDirectory = '/var/log/cid-mail/'
+def logDirectory = 'log/'
+def exportDirectory='export/'
+def importDirectory='import/'
 def infoLog = 'info.log'
 def errorLog = 'error.log'
 def fatalLog = 'fatal.log'
+def exportFileName='export.csv'
+def importFileName='import.csv'
 
 grails {
     mail {
@@ -37,6 +41,12 @@ grails {
         locations = [logDirectory]
         linesCount = 300
         areDoubleDotsAllowedInFilePath = false
+    }
+    exchangeContact{
+        locationsExport=exportDirectory
+        locationsImport=importDirectory
+        exportFile=exportFileName
+        importFile=importFileName
     }
 }
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination

@@ -12,10 +12,10 @@
     <title><g:message code="default.page.title.label" default="File List"/></title>
 </head>
 
-<body >
-<h2 style="padding: 10px;">
+<body>
+<br/><h4>
     <g:message code="default.page.title.label" default="Please click on the links below to view detailed reports:"/>
-</h2>
+</h4><br/><br/>
 <g:if test="${showBackLink}">
     <div class="nav" role="navigation">
         <a class="showReportLink" href="${createLink(action: 'index', params: [filePath: prevLocation])}">
@@ -24,14 +24,12 @@
     </div>
 </g:if>
 <div id="list-checkMail" class="content scaffold-list" role="main">
-    <div id="left-container" style="overflow: auto;">
+    <div id="left-container" style="width:25%; float:left; overflow: auto;">
         <g:render template="/log/fileList" model="[locations: locations]" plugin='fileViewer'/>
     </div>
 
-
-
-    <div id="right-container"  style="padding:10px;">
-      <div><h4>${filePath}</h4> </div>
+    <div id="right-container" style="width:74%; float: right; padding:5px;">
+      <div> <h4>${filePath}</h4> </div>
         <div>   <g:render template="/log/fileDetails" model="[fileContents: fileContents, filePath: filePath]"
                   plugin='fileViewer'/>
         </div>
