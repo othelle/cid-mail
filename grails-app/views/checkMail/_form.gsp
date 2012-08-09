@@ -10,6 +10,14 @@
 	<g:textField name="uid" required="" value="${checkMailInstance?.uid}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: checkMailInstance, field: 'from', 'error')} ">
+	<label for="from">
+		<g:message code="checkMail.from.label" default="From" />
+		
+	</label>
+	<g:textField name="from" value="${checkMailInstance?.from}"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: checkMailInstance, field: 'subject', 'error')} required">
 	<label for="subject">
 		<g:message code="checkMail.subject.label" default="Subject" />

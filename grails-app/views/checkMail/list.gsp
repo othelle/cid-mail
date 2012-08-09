@@ -26,6 +26,8 @@
 					
 						<g:sortableColumn property="uid" title="${message(code: 'checkMail.uid.label', default: 'Uid')}" />
 					
+						<g:sortableColumn property="from" title="${message(code: 'checkMail.from.label', default: 'From')}" />
+					
 						<g:sortableColumn property="subject" title="${message(code: 'checkMail.subject.label', default: 'Subject')}" />
 					
 						<g:sortableColumn property="body" title="${message(code: 'checkMail.body.label', default: 'Body')}" />
@@ -33,8 +35,6 @@
 						<g:sortableColumn property="dateSend" title="${message(code: 'checkMail.dateSend.label', default: 'Date Send')}" />
 					
 						<g:sortableColumn property="flagNew" title="${message(code: 'checkMail.flagNew.label', default: 'Flag New')}" />
-					
-						<th><g:message code="checkMail.collection.label" default="Collection" /></th>
 					
 					</tr>
 				</thead>
@@ -44,6 +44,8 @@
 					
 						<td><g:link action="show" id="${checkMailInstance.id}">${fieldValue(bean: checkMailInstance, field: "uid")}</g:link></td>
 					
+						<td>${fieldValue(bean: checkMailInstance, field: "from")}</td>
+					
 						<td>${fieldValue(bean: checkMailInstance, field: "subject")}</td>
 					
 						<td>${fieldValue(bean: checkMailInstance, field: "body")}</td>
@@ -51,8 +53,6 @@
 						<td><g:formatDate date="${checkMailInstance.dateSend}" /></td>
 					
 						<td><g:formatBoolean boolean="${checkMailInstance.flagNew}" /></td>
-					
-						<td>${fieldValue(bean: checkMailInstance, field: "collection")}</td>
 					
 					</tr>
 				</g:each>

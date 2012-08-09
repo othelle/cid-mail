@@ -32,6 +32,15 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${checkMailInstance?.from}">
+				<li class="fieldcontain">
+					<span id="from-label" class="property-label"><g:message code="checkMail.from.label" default="From" /></span>
+					
+						<span class="property-value" aria-labelledby="from-label"><g:fieldValue bean="${checkMailInstance}" field="from"/></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${checkMailInstance?.subject}">
 				<li class="fieldcontain">
 					<span id="subject-label" class="property-label"><g:message code="checkMail.subject.label" default="Subject" /></span>

@@ -90,7 +90,7 @@ class MailDigestService {
                                 + "\nsubject:" + messageCur.subject)
                         log.info(messageCur.content)
                         try {
-                            CheckMail checkMail = new CheckMail(uid: uid, subject: messageCur.subject, body: messageCur.content, dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
+                            CheckMail checkMail = new CheckMail(uid: uid, from: messageCur.from, subject: messageCur.subject, body: messageCur.content, dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
                             log.info("Adding email to the queue: ${checkMail.subject}")
 
                             //copy emails to local mail folder
