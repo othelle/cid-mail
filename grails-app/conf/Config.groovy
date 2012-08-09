@@ -16,8 +16,8 @@ import org.apache.log4j.DailyRollingFileAppender
 // }
 def logDirectory = '/var/log/cid-mail/'
 //def logDirectory = 'log/'
-def exportDirectory='export/'
-def importDirectory='import/'
+def exportDirectory='.cid/export/'
+def importDirectory='.cid/import/'
 def infoLog = 'info.log'
 def errorLog = 'error.log'
 def fatalLog = 'fatal.log'

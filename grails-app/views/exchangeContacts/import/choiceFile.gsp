@@ -33,12 +33,13 @@
 <div id="list-contact" class="content scaffold-list" role="main">
     <h1><g:message code="default.list.label.import"/></h1>
 
-    <h3><g:message code="default.list.label.import.step1"/></h3>
-</br>
-    <g:form controller="exchangeContacts" method="post" action="import" enctype="multipart/form-data">
-        <input name="file" type="file" value="${fc?.file}"/>
-        <g:submitButton name="next" value='Next'/>
-    </g:form>
+    <div style="padding: 2em">
+        <h3><g:message code="default.list.label.import.step1"/></h3>
+        <g:form controller="exchangeContacts" method="post" action="import" enctype="multipart/form-data">
+            <input name="file" type="file" value="${fc?.file}"/>
+            <g:submitButton name="next" value='Next'/>
+        </g:form>
+    </div>
 </div>
 </body>
 </html>

@@ -2,7 +2,7 @@ package com.othelle.cig.email
 
 class CheckMail {
     String uid
-    String from
+    String emailFrom
     String subject
     String body
     Date dateSend
@@ -13,7 +13,7 @@ class CheckMail {
 
     static constraints = {
         uid(blank: false)
-        from (nullable: true)
+        emailFrom (nullable: true)
         subject(blank: false, maxSize: 100)
         body(blank: false, maxSize: 1000)
         dateSend(nullable: true)

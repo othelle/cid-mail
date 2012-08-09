@@ -1,6 +1,5 @@
 package com.othelle.cig.email
 
-
 class FileDetailsCommand implements Serializable {
     String file
 
@@ -54,12 +53,14 @@ class ExchangeContactsController {
                     return error()
                 }
                 else {
-                    def importFile = grailsApplication.config.grails.exchangeContact.importFile
-                    def importDir = grailsApplication.config.grails.exchangeContact.locationsImport
+                    String importFile = grailsApplication.config.grails.exchangeContact.importFile
+                    File importDir = new File(java.lang.System.getProperty("user.home"), grailsApplication.config.grails.exchangeContact.locationsImport)
 
                     flow.previewDetailsList = new ArrayList<PreviewDetailsCommand>()
                     def f = request.getFile('file')
-                    def fileD = new File(importDir+importFile)
+
+                    importDir.mkdirs()
+                    def fileD = new File(importDir, importFile)
                     f.transferTo(fileD)
                     int j = 0
                     flow.error = "Импорт прошел успешно. "
@@ -141,7 +142,7 @@ class ExchangeContactsController {
                             it.writeLine(line)
                         }
                     }
-                   flow.fileContents = Utilities.getFileContents(flow.file)
+                    flow.fileContents = Utilities.getFileContents(flow.file)
                 }
                 else {
                     flow.error = "Error export."

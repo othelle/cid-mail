@@ -44,7 +44,7 @@
 					
 						<td><g:link action="show" id="${checkMailInstance.id}">${fieldValue(bean: checkMailInstance, field: "uid")}</g:link></td>
 					
-						<td>${fieldValue(bean: checkMailInstance, field: "from")}</td>
+						<td>${fieldValue(bean: checkMailInstance, field: "emailFrom")}</td>
 					
 						<td>${fieldValue(bean: checkMailInstance, field: "subject")}</td>
 					

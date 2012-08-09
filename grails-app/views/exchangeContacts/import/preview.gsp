@@ -29,42 +29,45 @@
 <div id="list-contact" class="content scaffold-list" role="main">
     <h1><g:message code="default.list.label.import"/></h1>
 
-    <h3><g:message code="default.list.label.import.step2"/></h3>
-</br>
-    <g:if test="${flash.message}">
-        <div class="message" role="status">${flash.message}</div>
-    </g:if>
-    <g:form controller="exchangeContacts" method="post" action="import" enctype="multipart/form-data">
-        <table>
-            <thead>
-            <tr>
+    <div style="padding: 2em">
+        <h3><g:message code="default.list.label.import.step2"/></h3>
+        <g:if test="${flash.message}">
+            <div class="message" role="status">${flash.message}</div>
+        </g:if>
 
-                <g:sortableColumn property="firstName"
-                                  title="${message(code: 'contact.firstName.label', default: 'First Name')}"/>
-                <g:sortableColumn property="lastName"
-                                  title="${message(code: 'contact.lastName.label', default: 'Last Name')}"/>
-                <g:sortableColumn property="email" title="${message(code: 'contact.email.label', default: 'Email')}"/>
+        <g:form controller="exchangeContacts" method="post" action="import" enctype="multipart/form-data">
+            <table>
+                <thead>
+                <tr>
 
-            </tr>
-            </thead>
-            <tbody>
-            <g:each in="${previewDetailsList}" var="previewDetails">
-                <tr class="even">
-                    <td>${fieldValue(bean: previewDetails, field: "firstName")}</td>
-                    <td>${fieldValue(bean: previewDetails, field: "lastName")}</td>
-                    <td>${fieldValue(bean: previewDetails, field: "email")}</td>
+                    <g:sortableColumn property="firstName"
+                                      title="${message(code: 'contact.firstName.label', default: 'First Name')}"/>
+                    <g:sortableColumn property="lastName"
+                                      title="${message(code: 'contact.lastName.label', default: 'Last Name')}"/>
+                    <g:sortableColumn property="email"
+                                      title="${message(code: 'contact.email.label', default: 'Email')}"/>
 
                 </tr>
+                </thead>
+                <tbody>
+                <g:each in="${previewDetailsList}" var="previewDetails">
+                    <tr class="even">
+                        <td>${fieldValue(bean: previewDetails, field: "firstName")}</td>
+                        <td>${fieldValue(bean: previewDetails, field: "lastName")}</td>
+                        <td>${fieldValue(bean: previewDetails, field: "email")}</td>
 
-            </g:each>
-            </tbody>
+                    </tr>
 
-        </table>
-        </br>
-        <g:submitButton name="back" value='Back'/>
-        <g:submitButton name="next" value='Next'/>
-        <g:submitButton name="cancel" value='Cancel'/>
-    </g:form>
+                </g:each>
+                </tbody>
+
+            </table>
+            </br>
+            <g:submitButton name="back" value='Back'/>
+            <g:submitButton name="next" value='Next'/>
+            <g:submitButton name="cancel" value='Cancel'/>
+        </g:form>
+    </div>
 </div>
 </body>
 </html>

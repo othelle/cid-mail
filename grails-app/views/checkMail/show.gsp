@@ -32,11 +32,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${checkMailInstance?.from}">
+				<g:if test="${checkMailInstance?.emailFrom}">
 				<li class="fieldcontain">
 					<span id="from-label" class="property-label"><g:message code="checkMail.from.label" default="From" /></span>
 					
-						<span class="property-value" aria-labelledby="from-label"><g:fieldValue bean="${checkMailInstance}" field="from"/></span>
+						<span class="property-value" aria-labelledby="from-label"><g:fieldValue bean="${checkMailInstance}" field="emailFrom"/></span>
 					
 				</li>
 				</g:if>
