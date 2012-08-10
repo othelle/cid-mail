@@ -34,9 +34,9 @@
 			
 				<g:if test="${checkMailInstance?.emailFrom}">
 				<li class="fieldcontain">
-					<span id="from-label" class="property-label"><g:message code="checkMail.from.label" default="From" /></span>
+					<span id="emailFrom-label" class="property-label"><g:message code="checkMail.emailFrom.label" default="Email From" /></span>
 					
-						<span class="property-value" aria-labelledby="from-label"><g:fieldValue bean="${checkMailInstance}" field="emailFrom"/></span>
+						<span class="property-value" aria-labelledby="emailFrom-label"><g:fieldValue bean="${checkMailInstance}" field="emailFrom"/></span>
 					
 				</li>
 				</g:if>

@@ -26,7 +26,7 @@
 					
 						<g:sortableColumn property="uid" title="${message(code: 'checkMail.uid.label', default: 'Uid')}" />
 					
-						<g:sortableColumn property="from" title="${message(code: 'checkMail.from.label', default: 'From')}" />
+						<g:sortableColumn property="emailFrom" title="${message(code: 'checkMail.emailFrom.label', default: 'Email From')}" />
 					
 						<g:sortableColumn property="subject" title="${message(code: 'checkMail.subject.label', default: 'Subject')}" />
 					

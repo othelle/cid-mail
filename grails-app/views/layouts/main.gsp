@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
     <g:layoutHead/>
     <r:layoutResources/>
+    <calendar:resources/>
 </head>
 
 <body>

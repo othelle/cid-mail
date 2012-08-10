@@ -13,6 +13,7 @@ class ReportController {
         def checkMails = CheckMail.withCriteria {
             "${params.queryType}" {
                 between('dateSend', new Date().parse("dd/MM/yyyy", params.dateOne_value), new Date().parse("dd/MM/yyyy", params.dateSecond_value))
+                ilike('emailFrom', "%" + params.emailFrom + "%")
                 collection {
                     ilike('name', "%" + params.groupTo + "%")
                 }

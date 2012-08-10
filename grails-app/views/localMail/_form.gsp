@@ -26,3 +26,19 @@
 	<g:select id="contact" name="contact.id" from="${com.othelle.cig.email.Contact.list()}" optionKey="id" value="${localMailInstance?.contact?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: localMailInstance, field: 'dateSent', 'error')} ">
+	<label for="dateSent">
+		<g:message code="localMail.dateSent.label" default="Date Sent" />
+		
+	</label>
+	<g:datePicker name="dateSent" precision="day"  value="${localMailInstance?.dateSent}" default="none" noSelection="['': '']" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: localMailInstance, field: 'subject', 'error')} ">
+	<label for="subject">
+		<g:message code="localMail.subject.label" default="Subject" />
+		
+	</label>
+	<g:textField name="subject" value="${localMailInstance?.subject}"/>
+</div>
+

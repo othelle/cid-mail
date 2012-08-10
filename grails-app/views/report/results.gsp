@@ -29,14 +29,56 @@
     for items matching <em>${term}</em>.
     Found <strong>${checkMails.size()}</strong> hits.
     </p>
-    <br/>
-    <ul>
-        <g:each var="chekMail" in="${checkMails}">
-            <li>${chekMail.subject} : ${chekMail.body} : ${chekMail.dateSend} : ${chekMail.collection}</li>
-        </g:each>
-    </ul>
+</div>
 
+<div id="list-checkMail" class="content scaffold-list" role="main">
+    <g:if test="${flash.message}">
+        <div class="message" role="status">${flash.message}</div>
+    </g:if>
+    <table>
+        <thead>
+        <tr>
+            <g:sortableColumn property="uid" title="${message(code: 'checkMail.uid.label', default: 'Uid')}"/>
+
+            <g:sortableColumn property="emailFrom"
+                              title="${message(code: 'checkMail.emailFrom.label', default: 'Email From')}"/>
+
+            <g:sortableColumn property="subject"
+                              title="${message(code: 'checkMail.subject.label', default: 'Subject')}"/>
+
+            <g:sortableColumn property="body" title="${message(code: 'checkMail.body.label', default: 'Body')}"/>
+
+            <g:sortableColumn property="dateSend"
+                              title="${message(code: 'checkMail.dateSend.label', default: 'Date Send')}"/>
+
+            <g:sortableColumn property="flagNew"
+                              title="${message(code: 'checkMail.flagNew.label', default: 'Flag New')}"/>
+
+        </tr>
+        </thead>
+        <tbody>
+        <g:each in="${checkMails}" status="i" var="checkMail">
+            <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+
+                <td><g:link controller="checkMail" action="show"
+                            id="${checkMail.id}">${fieldValue(bean: checkMail, field: "uid")}</g:link></td>
+
+                <td>${fieldValue(bean: checkMail, field: "emailFrom")}</td>
+
+                <td>${fieldValue(bean: checkMail, field: "subject")}</td>
+
+                <td>${fieldValue(bean: checkMail, field: "body")}</td>
+
+                <td><g:formatDate date="${checkMail.dateSend}"/></td>
+
+                <td><g:formatBoolean boolean="${checkMail.flagNew}"/></td>
+
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
     <g:link action='search'><g:message code="default.SearchAgain.label" default="Search Again"/></g:link>
 </div>
+
 </body>
 </html>

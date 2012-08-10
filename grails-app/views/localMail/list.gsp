@@ -32,6 +32,10 @@
 					
 						<th><g:message code="localMail.contact.label" default="Contact" /></th>
 					
+						<g:sortableColumn property="dateSent" title="${message(code: 'localMail.dateSent.label', default: 'Date Sent')}" />
+					
+						<g:sortableColumn property="subject" title="${message(code: 'localMail.subject.label', default: 'Subject')}" />
+					
 					</tr>
 				</thead>
 				<tbody>
@@ -45,6 +49,10 @@
 						<td><g:formatBoolean boolean="${localMailInstance.flagSend}" /></td>
 					
 						<td>${fieldValue(bean: localMailInstance, field: "contact")}</td>
+					
+						<td><g:formatDate date="${localMailInstance.dateSent}" /></td>
+					
+						<td>${fieldValue(bean: localMailInstance, field: "subject")}</td>
 					
 					</tr>
 				</g:each>

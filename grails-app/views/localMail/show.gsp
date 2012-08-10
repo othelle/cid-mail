@@ -59,6 +59,24 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${localMailInstance?.dateSent}">
+				<li class="fieldcontain">
+					<span id="dateSent-label" class="property-label"><g:message code="localMail.dateSent.label" default="Date Sent" /></span>
+					
+						<span class="property-value" aria-labelledby="dateSent-label"><g:formatDate date="${localMailInstance?.dateSent}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${localMailInstance?.subject}">
+				<li class="fieldcontain">
+					<span id="subject-label" class="property-label"><g:message code="localMail.subject.label" default="Subject" /></span>
+					
+						<span class="property-value" aria-labelledby="subject-label"><g:fieldValue bean="${localMailInstance}" field="subject"/></span>
+					
+				</li>
+				</g:if>
+			
 			</ol>
 			<g:form>
 				<fieldset class="buttons">

@@ -29,7 +29,7 @@
         <g:form action="results">
             <tr>
                 <td><g:message code="collection.sender.label" default="Sender"/></td>
-                <td><g:textField name="from"/></td>
+                <td><g:textField name="emailFrom"/></td>
             </tr>
             <tr>
                 <td><g:message code="collection.from.label" default="From"/></td>
@@ -47,10 +47,11 @@
                 <br/>
                 <td><g:message code="collection.Date.label" default="Date"/></td>
                 <td>
-                    <g:message code="collection.from.label" default="from"/> <calendar:datePicker name="dateOne"
+                    <g:message code="collection.Date.from.label" default="from"/> <calendar:datePicker name="dateOne"
                                                                                                   defaultValue="${new Date()}"
                                                                                                   dateFormat="%d/%m/%Y"/>
-                    <g:message code="collection.to.label" default="to"/> <calendar:datePicker name="dateSecond"
+                    <br/><br/>
+                    <g:message code="collection.Date.to.label" default="to"/> <calendar:datePicker name="dateSecond"
                                                                                               defaultValue="${new Date()}"
                                                                                               dateFormat="%d/%m/%Y"/>
                 </td>
