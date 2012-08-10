@@ -52,7 +52,7 @@
 			
 				<g:if test="${localMailInstance?.contact}">
 				<li class="fieldcontain">
-					<span id="contact-label" class="property-label"><g:message code="localMail.contact.label" default="Contact" /></span>
+					<span id="contact-label" class="property-label"><g:message code="contact.label" default="Contact" /></span>
 					
 						<span class="property-value" aria-labelledby="contact-label"><g:link controller="contact" action="show" id="${localMailInstance?.contact?.id}">${localMailInstance?.contact?.encodeAsHTML()}</g:link></span>
 					

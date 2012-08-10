@@ -9,7 +9,6 @@ class MailGetJob {
     static triggers = {
         // simple repeatInterval: 5000l // execute job once in 5 seconds
         cron name: 'Mail Getting Job', startDelay: 5000, cronExpression: '0 0/5 * * * ?'
-
     }
 
     def execute() {

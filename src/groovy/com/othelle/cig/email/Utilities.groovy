@@ -1,5 +1,8 @@
 package com.othelle.cig.email
 
+import java.util.regex.Pattern
+import java.util.regex.PatternSyntaxException
+
 /**
  * Created with IntelliJ IDEA.
  * User: Администратор
@@ -11,6 +14,32 @@ class Utilities {
     static String[] emailParse(String s) {
         String[] tokens = s.split(", ")
         return tokens
+    }
+
+    static String emailEval(def s) {
+        def EMAIL_PATTERN = "\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,6}"
+        def p = Pattern.compile(EMAIL_PATTERN)
+        StringBuilder st = new StringBuilder()
+        def i = 0
+        s.each {current ->
+            try {
+                def m = p.matcher(current.toString())
+                while (m.find()) {
+                    if (i == 0) {
+                        st.append(m.group())
+                    }
+
+                    else {
+                        st.append(", " + m.group())
+                    }
+                    i = 1
+                }
+            }
+            catch (PatternSyntaxException ex) {
+                println("Pattern Syntax Exception ", ex)
+            }
+        }
+        return st.toString()
     }
 
     static def getFileContents(File file) {

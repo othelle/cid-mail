@@ -30,7 +30,7 @@
 					
 						<g:sortableColumn property="flagSend" title="${message(code: 'localMail.flagSend.label', default: 'Flag Send')}" />
 					
-						<th><g:message code="localMail.contact.label" default="Contact" /></th>
+						<th><g:message code="contact.label" default="Contact" /></th>
 					
 						<g:sortableColumn property="dateSent" title="${message(code: 'localMail.dateSent.label', default: 'Date Sent')}" />
 					

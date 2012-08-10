@@ -20,7 +20,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: localMailInstance, field: 'contact', 'error')} ">
 	<label for="contact">
-		<g:message code="localMail.contact.label" default="Contact" />
+		<g:message code="contact.label" default="Contact" />
 		
 	</label>
 	<g:select id="contact" name="contact.id" from="${com.othelle.cig.email.Contact.list()}" optionKey="id" value="${localMailInstance?.contact?.id}" class="many-to-one" noSelection="['null': '']"/>
