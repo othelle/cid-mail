@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title><g:message code="default.search.label"/></title>
+    <title>Отчет</title>
 
 </head>
 
@@ -23,42 +23,42 @@
 </br>
 
 <formset>
-    <legend><g:message code="default.search.label"/></legend>
+    <h2 style="padding-left: 15px"><g:message code="Отчет"/></h2>
 
     <table>
         <g:form action="results">
             <tr>
-                <td><g:message code="collection.sender.label" default="Sender"/></td>
+                <td><g:message code="collection.sender.label" default="Отправитель"/></td>
                 <td><g:textField name="emailFrom"/></td>
             </tr>
             <tr>
-                <td><g:message code="collection.from.label" default="From"/></td>
+                <td><g:message code="collection.from.label" default="Получатель"/></td>
                 <td>
-                    <div><g:message code="collection.group.label" default="Group (name)"/></div>
+                    <div><g:message code="collection.group.label" default="Группа (название)"/></div>
 
                     <div><g:textField name="groupTo"/></div>
 
-                    <div><g:message code="collection.Contact.label" default="Contact (name)"/></div>
+                    <div><g:message code="collection.Contact.label" default="Контакт (название)"/></div>
 
                     <div><g:textField name="contactTo"/></div>
                 </td>
             </tr>
             <tr>
                 <br/>
-                <td><g:message code="collection.Date.label" default="Date"/></td>
+                <td><g:message code="collection.Date.label" default="Дата"/></td>
                 <td>
-                    <g:message code="collection.Date.from.label" default="from"/> <calendar:datePicker name="dateOne"
+                    <g:message code="collection.Date.from.label" default="с"/> <calendar:datePicker name="dateOne"
                                                                                                   defaultValue="${new Date()}"
                                                                                                   dateFormat="%d/%m/%Y"/>
                     <br/><br/>
-                    <g:message code="collection.Date.to.label" default="to"/> <calendar:datePicker name="dateSecond"
+                    <g:message code="collection.Date.to.label" default="по"/> <calendar:datePicker name="dateSecond"
                                                                                               defaultValue="${new Date()}"
                                                                                               dateFormat="%d/%m/%Y"/>
                 </td>
             </tr>
             <tr>
-                <td><g:message code="collection.QueryType.label" default="Query Type:"/></td>
-                <td><g:radioGroup name="queryType" labels="['And', 'Or', 'Not']" values="['and', 'or', 'not']"
+                <td><g:message code="collection.QueryType.label" default="Тип запроса"/></td>
+                <td><g:radioGroup name="queryType" labels="['И', 'ИЛИ', 'НЕТ']" values="['and', 'or', 'not']"
                                   value="and">
                     ${it.radio} ${it.label}
                 </g:radioGroup>

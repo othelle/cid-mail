@@ -12,7 +12,7 @@ class LocalMail {
     static belongsTo = [Contact]
 
     static constraints = {
-        description(blank: false, maxSize: 1000)
+        description(maxSize: 1000)
         dateCreated(nullable: true)
         flagSend(nullable: true)
         contact(nullable: true)

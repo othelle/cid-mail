@@ -1,5 +1,7 @@
 package com.othelle.cig.email
 
+import java.util.concurrent.atomic.AtomicBoolean
+
 class MailSendJob {
     def MailDigestService mailDigestService
     static triggers = {
@@ -8,8 +10,19 @@ class MailSendJob {
 
     }
 
+    static AtomicBoolean monitor = new AtomicBoolean(false)
+
     def execute() {
-        log.info("Executing mail sending job")
-        mailDigestService.sendEmails()
+        if (monitor.compareAndSet(false, true)) {
+            try {
+                log.info("Executing mail sending job")
+                mailDigestService.sendEmails()
+            } finally {
+                monitor.set(false)
+            }
+        }
+        else {
+            log.info("Unable to send emails, another job is sending")
+        }
     }
 }

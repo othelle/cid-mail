@@ -15,7 +15,7 @@ class CheckMail {
         uid(blank: false)
         emailFrom (nullable: true)
         subject(blank: false, maxSize: 100)
-        body(blank: false, maxSize: 1000)
+        body(maxSize: 1000)
         dateSend(nullable: true)
         flagNew(nullable: true)
 

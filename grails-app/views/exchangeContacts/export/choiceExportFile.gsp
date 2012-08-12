@@ -31,10 +31,10 @@
 
 <div id="list-contact" class="content scaffold-list" role="main">
     <h1><g:message code="default.list.label.export"/></h1>
-    <h3><g:message code="default.list.label.export.step1"/></h3>
-    </br>
 
-        <g:form controller="exchangeContacts" method="post" action="export" enctype="multipart/form-data">
+    <h3><g:message code="default.list.label.export.step1"/></h3>
+
+    <g:form controller="exchangeContacts" method="post" action="export" enctype="multipart/form-data">
 
         <g:submitButton name="next" value='Next'/>
 
