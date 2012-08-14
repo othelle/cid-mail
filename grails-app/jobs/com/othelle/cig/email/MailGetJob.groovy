@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 class MailGetJob {
     def MailDigestService mailDigestService
     static triggers = {
-        // simple repeatInterval: 5000l // execute job once in 5 seconds
-        cron name: 'Mail Getting Job', startDelay: 5000, cronExpression: '0 0/5 * * * ?'
+        // simple repeatInterval: 5000l // execute job once in 1 min
+        cron name: 'Mail Getting Job', startDelay: 5000, cronExpression: '0 0/1 * * * ?'
     }
 
     static AtomicBoolean monitor = new AtomicBoolean(false)
