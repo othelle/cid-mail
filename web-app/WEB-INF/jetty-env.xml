@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD
+Configure//EN"
+        "http://jetty.mortbay.org/configure.dtd">
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+    <Set name="handler">
+        <New id="Handlers" class="org.mortbay.jetty.handler.HandlerCollection">
+            <Set name="handlers">
+                <Array type="org.mortbay.jetty.Handler">
+                    <Item>
+                        <New id="Contexts" class="org.mortbay.jetty.handler.ContextHandlerCollection"/>
+                    </Item>
+                    <Item>
+                        <New id="DefaultHandler" class="org.mortbay.jetty.handler.DefaultHandler"/>
+                    </Item>
+                    <Item>
+                        <New id="RequestLog" class="org.mortbay.jetty.handler.RequestLogHandler"/>
+                    </Item>
+                </Array>
+            </Set>
+        </New>
+    </Set>
+
+
+    <Ref id="RequestLog">
+        <Set name="requestLog">
+            <New id="RequestLogImpl" class="org.mortbay.jetty.NCSARequestLog">
+                <Arg><SystemProperty name="jetty.logs" default="./logs"/>/yyyy_mm_dd.request.log</Arg>
+                <Set name="retainDays">90</Set>
+                <Set name="append">true</Set>
+                <Set name="extended">false</Set>
+                <Set name="LogTimeZone">GMT</Set>
+            </New>
+        </Set>
+    </Ref>
+</Configure>
