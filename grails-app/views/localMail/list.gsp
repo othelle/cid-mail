@@ -46,7 +46,7 @@
 					
 						<td><g:formatDate date="${localMailInstance.dateCreated}" /></td>
 					
-						<td><g:formatBoolean boolean="${localMailInstance.flagSend}" /></td>
+						<td>${localMailInstance.flagSend ? "В очереди": "Отправлено"}</td>
 					
 						<td>${fieldValue(bean: localMailInstance, field: "contact")}</td>
 					

@@ -19,6 +19,10 @@ class LocalMail {
         dateSent(nullable: true)
     }
 
+    static mapping = {
+        sort flagSend: "desc"
+    }
+
     @Override
     String toString() {
         "${description} ${dateCreated} ${flagSend}"
