@@ -36,6 +36,16 @@
         </g:if>
 
         <g:form controller="exchangeContacts" method="post" action="import" enctype="multipart/form-data">
+
+            <div class="fieldcontain">
+                <label for="collection">
+                    <g:message code="collection.label" default="Collection"/>
+
+                </label>
+                <g:select id="collection" name="collection.id" from="${com.othelle.cig.email.Collection.list()}"
+                          optionKey="id" value="${collection?.id}" class="many-to-one" noSelection="['null': '']"/>
+            </div>
+            <br/>
             <table>
                 <thead>
                 <tr>

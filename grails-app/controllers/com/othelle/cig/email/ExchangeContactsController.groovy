@@ -89,9 +89,20 @@ class ExchangeContactsController {
         }
         preview {
             on("next") {
+                Collection collCurent = null
+                if (params.collection.get("id")!="null") {
+                    collCurent = Collection.findAllById(params.collection.get("id")).first()
+                }
                 flow.previewDetailsList.each {pc ->
                     try {
-                        new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email).save().save(failOnError: true);
+                        if (collCurent == null) {
+                            new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email).save().save(failOnError: true)
+                        }
+                        else {
+                            Contact conCurent = new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email).save().save(failOnError: true)
+                            collCurent.addToContacts(conCurent).save(failOnError: true).save()
+                        }
+
                     }
                     catch (Exception e) {
                         log.error("Error save ", e)

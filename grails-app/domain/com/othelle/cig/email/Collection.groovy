@@ -1,6 +1,6 @@
 package com.othelle.cig.email
 
-class Collection {
+class Collection implements Serializable{
     String name
     String email
     String password
