@@ -21,11 +21,14 @@
 </head>
 
 <body>
-<div id="grailsLogo" role="banner"><a href="/creative-email/ "><img
-        src="${resource(dir: 'images', file: 'logo.jpg')}" alt="Home"/></a>
+<div id="grailsLogo" role="banner" style="height: 200px;"><a href="/creative-email/ "><img
+        src="${resource(dir: 'images', file: 'logo.jpg')}" alt="Home" style="border-radius: 5px 5px 0 0;
+	-webkit-border-radius:5px 5px 0 0;"/></a>
 </div>
 <g:layoutBody/>
-<div class="footer" role="contentinfo"></div>
+<div class="footer" role="contentinfo">
+<div id="copywrite_l">Разработка: "Creative Idea Group" - студия коммерческого креатива.</div> <div id="copywrite_r">Поддержка: <a href="mailto:cig.branding@gmail.com">cig.branding@gmail.com</a></div>
+</div>
 
 <div id="spinner" class="spinner" style="display:none;"></div>
 <g:javascript library="application"/>

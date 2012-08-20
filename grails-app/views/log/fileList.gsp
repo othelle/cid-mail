@@ -13,11 +13,11 @@
 </head>
 
 <body>
-<br/>
 
-<h2 style="padding: 10px">
+<h1>
     <g:message code="default.page.title.label" default="Please click on the links below to view detailed reports:"/>
-</h2>
+</h1>
+<div id="fon">
 <g:if test="${showBackLink}">
     <div class="nav" role="navigation">
         <a class="showReportLink" href="${createLink(action: 'index', params: [filePath: prevLocation])}">
@@ -38,6 +38,7 @@
         </div>
 
     </div>
+</div>
 </div>
 </body>
 </html>

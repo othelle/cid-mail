@@ -40,10 +40,6 @@
         margin: 0 0 0.3em;
     }
 
-    #page-body {
-        margin: 2em 1em 3em 2em;
-    }
-
     h2 {
         margin-top: 1em;
         margin-bottom: 0.3em;
@@ -109,9 +105,6 @@
 
 <div id="page-body" role="main">
     <h1>Контрольная панель</h1>
-
-    <br/>
-
     <div id="controller-list" role="navigation">
         <ul>
             <h4>Списки рассылки</h4>

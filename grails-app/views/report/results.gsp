@@ -14,16 +14,13 @@
 </head>
 
 <body>
-<br/>
 
 <div class="nav" role="navigation">
     <a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a>
 </div>
-</br>
-
 
 <h1><g:message code="default.result.label"/></h1>
-
+<div id="fon">
 <div>
     <p>Searched ${com.othelle.cig.email.CheckMail.count()} records
     for items matching <em>${term}</em>.
@@ -78,6 +75,7 @@
         </tbody>
     </table>
     <g:link action='search'><g:message code="default.SearchAgain.label" default="Search Again"/></g:link>
+</div>
 </div>
 
 </body>

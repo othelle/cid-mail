@@ -11,12 +11,7 @@ h1, h2, h3, h4, h5, h6 {
 /* BASE LAYOUT */
 
 html {
-	background-color: #ddd;
-	background-image: -moz-linear-gradient(center top, #aaa, #ddd);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #aaa), color-stop(1, #ddd));
-	background-image: linear-gradient(top, #aaa, #ddd);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#aaaaaa', EndColorStr = '#dddddd');
-	background-repeat: no-repeat;
+	background: url('../images/fon.jpg') repeat scroll top center;
 	height: 100%;
 	/* change the box model to exclude the padding from the calculation of 100% height (IE8+) */
 	-webkit-box-sizing: border-box;
@@ -37,18 +32,39 @@ html * {
 }
 
 body {
-	background: #efefef;
+	background: transparent none;
 	color: #333333;
 	margin: 0 auto;
 	max-width: 960px;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
-	   -moz-box-shadow: 0 0 0.3em #255b17;
-	-webkit-box-shadow: 0 0 0.3em #255b17;
-	        box-shadow: 0 0 0.3em #255b17;
+	   -moz-box-shadow: 0 0 30px #006cc1;
+	-webkit-box-shadow: 0 0 30px #006cc1;
+	        box-shadow: 0 0 30px #006cc1;
+	-webkit-border-radius:5px;
+	border-radius: 5px;
+    margin-top: 30px;
 }
 
+#page-body {   margin: 0px !important;}
+#page-body h1 {
+ 	color:#FFD000;
+	margin:0;
+	background: #001E35;
+	opacity: 0.8;
+	-moz-opacity:0.8;
+	filter: alpha(opacity=50);
+	padding: 10px 20px;
+	width: 920px;
+}
+
+#fon {   background-color: #EFEFEF;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;}
+
 #grailsLogo {
-	background-color: #ffffff;
+	background-color: transparent;
 }
 
 /* replace with .no-boxshadow body if you have modernizr available */
@@ -65,7 +81,7 @@ body {
 }
 
 a:link, a:visited, a:hover {
-	color: #48802c;
+	color: #006cc1;
 }
 
 a:hover, a:active {
@@ -73,10 +89,16 @@ a:hover, a:active {
 }
 
 h1 {
-	color: #48802c;
+	color: #FFD000;
 	font-weight: normal;
 	font-size: 1.25em;
-	margin: 0.8em 0 0.3em 0;
+ background: #001E35;
+	opacity: 0.8;
+	-moz-opacity:0.8;
+	filter: alpha(opacity=50);
+    padding-bottom: 12px;
+    padding-left: 20px;
+    padding-top: 12px;
 }
 
 h3 {
@@ -96,35 +118,53 @@ img {
 
 #grailsLogo a {
 	display: inline-block;
-	margin: 1em;
+	border-radius: 5px 5px 0 0;
+	-webkit-border-radius:5px 5px 0 0;
 }
 
 .content {
+
 }
 
 .content h1 {
+	color:#FFD000;
 	border-bottom: 1px solid #CCCCCC;
-	margin: 0.8em 1em 0.3em;
-	padding: 0 0.25em;
+	margin:0;
+	background: #001E35;
+	opacity: 0.8;
+	-moz-opacity:0.8;
+	filter: alpha(opacity=50);
+	padding: 10px 20px;
+	width: 920px;
 }
 
 .scaffold-list h1 {
 	border: none;
 }
 
-.footer {
-	background: #cee292;
-	color: #000;
+.footer {background: #001E35;
+	opacity: 0.8;
+	-moz-opacity:0.8;
+	filter: alpha(opacity=50);
+	
+	-webkit-border-radius:0px 0px 5px 5px;
+	border-radius: 0px 0px 5px 5px;
+	color: #aee6ff;
 	clear: both;
 	font-size: 0.8em;
-	margin-top: 1.5em;
-	padding: 1em;
+	padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 12px;
 	min-height: 1em;
 }
 
 .footer a {
-	color: #255b17;
+	color: #aee6ff;
 }
+
+#copywrite_l {float:left; text-align: left; }
+#copywrite_r {float:right; text-align: right; }
 
 .spinner {
 	background: url(../images/spinner.gif) 50% 50% no-repeat transparent;
@@ -208,14 +248,21 @@ img {
 }
 
 /* CREATE/EDIT FORMS AND SHOW PAGES */
+#controller-list {background-color: #EFEFEF;      padding: 20px;}
 
 fieldset,
 .property-list {
-	margin: 0.6em 1.25em 0 1.25em;
-	padding: 0.3em 1.8em 1.25em;
 	position: relative;
 	zoom: 1;
 	border: none;
+background-color: #EFEFEF;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+padding-top: 10px;
+padding-bottom: 20px;
 }
 
 .property-list .fieldcontain {
@@ -288,7 +335,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .required-indicator {
-	color: #48802C;
+	color: #006cc1;
 	display: inline-block;
 	font-weight: bold;
 	margin-left: 0.3em;
@@ -407,7 +454,6 @@ table {
 	border-top: 1px solid #DFDFDF;
 	border-collapse: collapse;
 	width: 100%;
-	margin-bottom: 1em;
 }
 
 tr {
@@ -481,7 +527,7 @@ th.desc a {
 }
 
 th:hover, tr:hover {
-	background: #E1F2B6;
+	background: #E0F7FD;
 }
 
 /* PAGINATION */
@@ -533,7 +579,7 @@ th:hover, tr:hover {
 	   -moz-box-shadow: 0 0 3px 1px #aaaaaa;
 	-webkit-box-shadow: 0 0 3px 1px #aaaaaa;
 	        box-shadow: 0 0 3px 1px #aaaaaa;
-	margin: 0.1em 0 0 0;
+	margin: 0;
 	border: none;
 }
 

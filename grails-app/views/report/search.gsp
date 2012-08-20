@@ -15,16 +15,13 @@
 </head>
 
 <body>
-<br/>
 
 <div class="nav" role="navigation">
-    <a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a>
-</div>
-</br>
+    <a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></div>
 
 <formset>
-    <h2 style="padding-left: 15px"><g:message code="Отчет"/></h2>
-
+    <h1 ><g:message code="Отчет"/></h1>
+<div id="fon">
     <table>
         <g:form action="results">
             <tr>
@@ -73,8 +70,9 @@
             </tr>
         </g:form>
     </table>
-
+</div>
 </formset>
+
 
 </body>
 </html>

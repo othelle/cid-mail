@@ -29,7 +29,11 @@
 <div id="list-contact" class="content scaffold-list" role="main">
     <h1><g:message code="default.list.label.import"/></h1>
 
-    <div style="padding: 2em">
+    <div style="padding: 2em;     background-color: #EFEFEF;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;">
         <h3><g:message code="default.list.label.import.step2"/></h3>
         <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
