@@ -22,7 +22,7 @@
 
 <body>
 <div id="grailsLogo" role="banner"><a href="/creative-email/ "><img
-        src="${resource(dir: 'images', file: 'logo.png')}" alt="Home"/></a>
+        src="${resource(dir: 'images', file: 'logo.jpg')}" alt="Home"/></a>
 </div>
 <g:layoutBody/>
 <div class="footer" role="contentinfo"></div>
