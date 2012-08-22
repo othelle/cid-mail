@@ -4,6 +4,7 @@ class Contact implements Serializable{
     String firstName
     String lastName
     String email
+    String organization
 
     static belongsTo = Collection
     static hasMany = [localMail: LocalMail, collections: Collection]
@@ -12,6 +13,7 @@ class Contact implements Serializable{
         firstName(blank: false, size: 2..25)
         lastName(blank: false, size: 2..25)
         email(blank: false, size: 1..1024)
+        organization(nullable: true, size: 2..25)
         collections()
     }
 

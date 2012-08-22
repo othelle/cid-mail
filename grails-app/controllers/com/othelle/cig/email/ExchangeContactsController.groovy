@@ -11,10 +11,10 @@ class PreviewDetailsCommand implements Serializable {
     String firstName
     String lastName
     String email
+    String organization
 
     Boolean isBlank() {
         firstName.size() == 0 || lastName.size() == 0 || email.size() == 0
-
     }
 
     static constraints = {
@@ -71,6 +71,7 @@ class ExchangeContactsController {
                             def previewDetailsCommand = new PreviewDetailsCommand()
                             previewDetailsCommand.firstName = tokens[1]
                             previewDetailsCommand.lastName = tokens[3]
+                            previewDetailsCommand.organization = tokens[5]
                             if (tokens[85].size() != 0) tok2 = ", " + tokens[85]
                             if (tokens[88].size() != 0) tok3 = ", " + tokens[88]
                             previewDetailsCommand.email = tokens[82] + tok2 + tok3
@@ -96,7 +97,7 @@ class ExchangeContactsController {
                 flow.previewDetailsList.each {pc ->
                     try {
                         if (collCurent == null) {
-                            new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email).save().save(failOnError: true)
+                            new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email, organization: pc.organization).save().save(failOnError: true)
                         }
                         else {
                             Contact conCurent = new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email).save().save(failOnError: true)
@@ -137,7 +138,7 @@ class ExchangeContactsController {
                     it.writeLine('"","' + contact.firstName + '","","' + contact.lastName + '","","","","",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"Обычная",,"0.0.00","0.0.00",,"')
                     def emails = Utilities.emailParse(contact.email)
                     def tok1, tok2, tok3
-                    def line = '",,"И.О.Ф.",,"",,,,"Не определен",,,,,"Обычная",,,,,"",,,,,,,"",,,"Ложь",'
+                    def line = ",${contact.firstName},${contact.lastName},,,${contact.organization},,,\"Не определен\",,,,,\"Обычная\",,,,,\"\",,,,,,,\"\",,,\"Ложь\","
                     switch (emails.size()) {
                         case 0: line = line + ',,,,,,,,,""'
                             break

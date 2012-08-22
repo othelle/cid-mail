@@ -34,6 +34,14 @@
 	<g:select name="collections" from="${com.othelle.cig.email.Collection.list()}" multiple="multiple" optionKey="id" size="5" value="${contactInstance?.collections*.id}" class="many-to-many"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: contactInstance, field: 'lastName', 'error')} required">
+    <label for="lastName">
+        Организация
+    </label>
+    <g:textField name="organization" maxlength="25" required="" value="${contactInstance?.organization}"/>
+</div>
+
+
 <div class="fieldcontain ${hasErrors(bean: contactInstance, field: 'localMail', 'error')} ">
 	<label for="localMail">
 		<g:message code="contact.localMail.label" default="Local Mail" />

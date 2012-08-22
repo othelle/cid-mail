@@ -36,6 +36,8 @@
             <g:sortableColumn property="email" title="${message(code: 'contact.email.label', default: 'Email')}"/>
             <g:sortableColumn property="email"
                               title="${message(code: 'contact.collections.label', default: 'Collection')}"/>
+            <g:sortableColumn property="organization"
+                              title="Организация"/>
         </tr>
         </thead>
         <tbody>
@@ -56,6 +58,9 @@
                     </g:each>
                 </g:if>
                 </td>
+                <td><g:if
+                        test="${contactInstance?.organization}">${fieldValue(bean: contactInstance, field: "email")}</g:if></td>
+
 
             </tr>
         </g:each>

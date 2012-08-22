@@ -50,6 +50,15 @@
 				</li>
 				</g:if>
 
+                <g:if test="${contactInstance?.email}">
+				<li class="fieldcontain">
+					<span id="email-label" class="property-label">Организация</span>
+
+						<span class="property-value" aria-labelledby="email-label"><g:fieldValue bean="${contactInstance}" field="organization"/></span>
+
+				</li>
+				</g:if>
+
 				<g:if test="${contactInstance?.collections}">
 				<li class="fieldcontain">
 					<span id="collections-label" class="property-label"><g:message code="contact.collections.label" default="Collections" /></span>

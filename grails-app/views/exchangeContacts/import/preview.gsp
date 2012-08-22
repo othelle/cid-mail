@@ -61,6 +61,9 @@
                     <g:sortableColumn property="email"
                                       title="${message(code: 'contact.email.label', default: 'Email')}"/>
 
+                    <g:sortableColumn property="email"
+                                      title="Организация"/>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -69,6 +72,7 @@
                         <td>${fieldValue(bean: previewDetails, field: "firstName")}</td>
                         <td>${fieldValue(bean: previewDetails, field: "lastName")}</td>
                         <td>${fieldValue(bean: previewDetails, field: "email")}</td>
+                        <td>${fieldValue(bean: previewDetails, field: "organization")}</td>
 
                     </tr>
 
