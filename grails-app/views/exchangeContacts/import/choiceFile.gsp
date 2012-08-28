@@ -33,11 +33,7 @@
 <div id="list-contact" class="content scaffold-list" role="main">
     <h1><g:message code="default.list.label.import"/></h1>
 
-    <div style="padding: 2em;     background-color: #EFEFEF;
-    padding-bottom: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 20px;">
+    <div class="imp">
         <h3><g:message code="default.list.label.import.step1"/></h3>
         <g:form controller="exchangeContacts" method="post" action="import" enctype="multipart/form-data">
             <input name="file" type="file" value="${fc?.file}"/>
