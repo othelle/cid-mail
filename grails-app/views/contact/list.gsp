@@ -59,7 +59,7 @@
                 </g:if>
                 </td>
                 <td><g:if
-                        test="${contactInstance?.organization}">${fieldValue(bean: contactInstance, field: "email")}</g:if></td>
+                        test="${contactInstance?.organization}">${fieldValue(bean: contactInstance, field: "organization")}</g:if></td>
 
 
             </tr>
