@@ -22,32 +22,36 @@
 
 <body>
 <div id="grailsLogo" role="banner">
-<div id="header">
+    <div id="header">
 
-	<div id="logo">
-	   <a href="http://localhost:8080/creative-email/" class="logo_hov">
-	   <img src="http://asg-ts.ru/wp-content/themes/ASG/images/logo.png" style="margin-top:1px;" alt="строительная компания" name="АСГ Техно-Строй"/>
-	   </a>
-	</div>
+        <div id="logo">
+            <g:link>
+                <img src="http://asg-ts.ru/wp-content/themes/ASG/images/logo.png" style="margin-top:1px;" alt="строительная компания" name="АСГ Техно-Строй"/>
+            </g:link>
+        </div>
 
-	<div class="ab-ds">
-	   <div id="about"><a href="http://localhost:8080/creative-email/" style="text-decoration:none;">АСГ Техно-Строй</a></div>
-	   <div class="description">строительная компания</div>
-	</div>
+        <div class="ab-ds">
+            <div id="about"><a href="http://localhost:8080/creative-email/" style="text-decoration:none;">АСГ Техно-Строй</a></div>
 
-	<div id="tel">
-	   <a href="mailto:info@asg-ts.ru">info@asg-ts.ru</a>
-	   <br />+7(495) 722-20-14</div>	
-	
-	<div class="topname">
-	   <div class="ugol"></div>
-	   <div class="softname">Управление закупками 1.1</div>
-	</div>
-   </div>
+            <div class="description">строительная компания</div>
+        </div>
+
+        <div id="tel">
+            <a href="mailto:info@asg-ts.ru">info@asg-ts.ru</a>
+            <br/>+7(495) 722-20-14</div>
+
+        <div class="topname">
+            <div class="ugol"></div>
+
+            <div class="softname">Управление закупками 1.1</div>
+        </div>
+    </div>
 </div>
 <g:layoutBody/>
 <div class="footer" role="contentinfo">
-<div id="copywrite_l">Разработка: <a href="http://www.CreativeIdeaGroup.ru">"Creative Idea Group" - студия коммерческого креатива.</a></div> <div id="copywrite_r">Поддержка: <a href="mailto:cig.branding@gmail.com">cig.branding@gmail.com</a></div>
+    <div id="copywrite_l">Разработка: <a href="http://www.CreativeIdeaGroup.ru">"Creative Idea Group" - студия коммерческого креатива.</a></div>
+
+    <div id="copywrite_r">Поддержка: <a href="mailto:cig.branding@gmail.com">cig.branding@gmail.com</a></div>
 </div>
 
 <div id="spinner" class="spinner" style="display:none;"></div>
