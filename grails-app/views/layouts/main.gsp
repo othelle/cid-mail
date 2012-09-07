@@ -43,7 +43,7 @@
         <div class="topname">
             <div class="ugol"></div>
 
-            <div class="softname">Управление закупками 1.1</div>
+            <div class="softname">Управление закупками 1.2</div>
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@ import grails.validation.ValidationException
 
 import javax.mail.*
 import com.sun.mail.pop3.POP3Folder
+import javax.mail.internet.MimeBodyPart
 
 class MailDigestService {
 
@@ -88,13 +89,10 @@ class MailDigestService {
                         log.info("Got new message: "
                                 + "\nfrom:" + messageCur.from
                                 + "\nsubject:" + messageCur.subject)
-                        log.info(messageCur.content)
                         try {
-                            log.info("Utilities.emailEval(messageCur.from)="+Utilities.emailEval(messageCur.from))
-                            CheckMail checkMail = new CheckMail(uid: uid, emailFrom: Utilities.emailEval(messageCur.from), subject: messageCur.subject, body: messageCur.content, dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
+                            log.info("Utilities.emailEval(messageCur.from)=" + Utilities.emailEval(messageCur.from))
+                            CheckMail checkMail = new CheckMail(uid: uid, emailFrom: Utilities.emailEval(messageCur.from), subject: messageCur.subject, body: getContent(messageCur), dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
                             log.info("Adding email to the queue: ${checkMail.subject}")
-
-                            //copy emails to local mail folder
                             copyCheckedEmailsToContacts(checkMail)
                             checkMail.save()
                         }
@@ -115,6 +113,40 @@ class MailDigestService {
         }
     }
 
+    public String getContent(Message msg) {
+        def body = ""
+        try {
+            Object content = msg.getContent();
+            if (content instanceof String) {
+                body = (String) content;
+            } else if (content instanceof Multipart) {
+                body = parseMultipart((Multipart) content);
+            }
+        } catch (MessagingException e) {
+            log.error("MessagingException ", e)
+        } catch (IOException e) {
+            log.error("IOException ", e)
+        }
+
+        return body
+    }
+    // Parse the Multipart to find the body
+    public String parseMultipart(Multipart mPart) {
+        def body = ""
+        for (int i = 0; i < mPart.getCount(); i++) {
+            BodyPart bp = mPart.getBodyPart(i);
+            if (bp instanceof MimeBodyPart) {
+                MimeBodyPart mbp = (MimeBodyPart) bp;
+                if (mbp.isMimeType("text/plain")) {
+                    body = (String) mbp.getContent()
+                }
+                else if (mbp.isMimeType("text/html")) {
+                    body = (String) mbp.getContent();
+                }
+            }
+        }
+        return body
+    }
 
     def copyCheckedEmailsToContacts(CheckMail checkedMail) {
         //not the best way to copy checkmails to localmail
