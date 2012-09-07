@@ -89,16 +89,27 @@ class MailDigestService {
                         log.info("Got new message: "
                                 + "\nfrom:" + messageCur.from
                                 + "\nsubject:" + messageCur.subject)
+                        def fromMassager = Utilities.emailEval(messageCur.from)
+                        def subject = messageCur.subject
+                        if (subject.equals(null)) {
+                            log.info("Subject is null.")
+                            subject="Запрос на коммерческое предложение"
+                        }
                         try {
-                            log.info("Utilities.emailEval(messageCur.from)=" + Utilities.emailEval(messageCur.from))
-                            CheckMail checkMail = new CheckMail(uid: uid, emailFrom: Utilities.emailEval(messageCur.from), subject: messageCur.subject, body: getContent(messageCur), dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
+                            log.info("Utilities.emailEval(messageCur.from)=" + fromMassager)
+                            CheckMail checkMail = new CheckMail(uid: uid, emailFrom: fromMassager, subject: subject, body: getContent(messageCur), dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
                             log.info("Adding email to the queue: ${checkMail.subject}")
                             copyCheckedEmailsToContacts(checkMail)
                             checkMail.save()
                         }
-                        catch (Exception ve) {
-                            log.error("Unable save checked mail ${uid} ", ve)
+                        catch (ValidationException ne) {
+                            log.error("Unable save checked mail ${uid} - ValidationException ", ne)
                         }
+                        catch (Exception ve) {
+                            log.error("Unable save checked mail ${uid} - Exception ", ve)
+                        }
+
+
                     }
                     else {
                         log.debug("Message already exists.")
