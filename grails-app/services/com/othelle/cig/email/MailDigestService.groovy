@@ -93,11 +93,11 @@ class MailDigestService {
                         def subject = messageCur.subject
                         if (subject.equals(null)) {
                             log.info("Subject is null.")
-                            subject="Запрос на коммерческое предложение"
+                            subject = "Запрос на коммерческое предложение"
                         }
                         try {
                             log.info("Utilities.emailEval(messageCur.from)=" + fromMassager)
-                            CheckMail checkMail = new CheckMail(uid: uid, emailFrom: fromMassager, subject: subject, body: getContent(messageCur), dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
+                            CheckMail checkMail = new CheckMail(uid: uid, emailFrom: fromMassager, subject: subject, body: getText(messageCur), dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
                             log.info("Adding email to the queue: ${checkMail.subject}")
                             copyCheckedEmailsToContacts(checkMail)
                             checkMail.save()
@@ -123,41 +123,78 @@ class MailDigestService {
             }
         }
     }
+/**
+ * Return the primary text content of the message.
+ */
+    private String getText(Part p) throws MessagingException, IOException {
+        log.info("Type content=" + p.contentType)
+        if (p.isMimeType("text/*")) {
+            def s = (String) p.getContent();
+            return s;
+        }
+        if (p.isMimeType("application/*")) {
+            log.info("application/*")
+            def s = "\n" + p.fileName
+            return s
+        }
+        if (p.isMimeType("image/*")) {
+            log.info("image/*")
+            def s = "\n" + p.fileName
+            return s
+        }
+        if (p.isMimeType("multipart/alternative")) {
+            // prefer html text over plain text
+            Multipart mp = (Multipart) p.getContent();
+            String text = null;
+            for (int i = 0; i < mp.getCount(); i++) {
+                Part bp = mp.getBodyPart(i);
+                if (bp.isMimeType("text/plain")) {
+                    if (text == null)
+                        text = getText(bp);
+                    /* if (text != null)
+                   return text;*/
 
-    public String getContent(Message msg) {
-        def body = ""
-        try {
-            Object content = msg.getContent();
-            if (content instanceof String) {
-                body = (String) content;
-            } else if (content instanceof Multipart) {
-                body = parseMultipart((Multipart) content);
+                    continue;
+                } else if (bp.isMimeType("text/html")) {
+                    String s = html2Text(getText(bp));
+                    if (s != null) {
+                        //   return s;
+                        text = s;
+                    }
+                } else {
+                    log.info "ELSE1"
+                    return getText(bp);
+                }
             }
-        } catch (MessagingException e) {
-            log.error("MessagingException ", e)
-        } catch (IOException e) {
-            log.error("IOException ", e)
+            return text;
+        }
+        else if (p.isMimeType("multipart/*")) {
+            log.info "MULTIPAT/*"
+            String s = "";
+            Multipart mp = (Multipart) p.getContent();
+            log.info("N=" + mp.getCount())
+            for (int i = 0; i < mp.getCount(); i++) {
+                s = s + getText(mp.getBodyPart(i));
+            }
+            if (s != null)
+                return s;
+        }
+        else {
+            log.info("Ignor type=" + p.contentType)
         }
 
-        return body
+        return null;
     }
-    // Parse the Multipart to find the body
-    public String parseMultipart(Multipart mPart) {
-        def body = ""
-        for (int i = 0; i < mPart.getCount(); i++) {
-            BodyPart bp = mPart.getBodyPart(i);
-            if (bp instanceof MimeBodyPart) {
-                MimeBodyPart mbp = (MimeBodyPart) bp;
-                if (mbp.isMimeType("text/plain")) {
-                    body = (String) mbp.getContent()
-                }
-                else if (mbp.isMimeType("text/html")) {
-                    body = (String) mbp.getContent();
-                }
-            }
-        }
-        return body
+
+    public String html2Text(String html) {
+        return html
+                .replaceAll("\\<([bB][rR]|[dD][lL])[ ]*[/]*[ ]*\\>", "\n")
+                .replaceAll("\\</([pP]|[hH]5|[dD][tT]|[dD][dD]|[dD][iI][vV])[ ]*\\>", "\n")
+                .replaceAll("\\<[lL][iI][ ]*[/]*[ ]*\\>", "\n* ")
+                .replaceAll("\\<[dD][dD][ ]*[/]*[ ]*\\>", " - ")
+                .replaceAll("\\<.*?\\>", "");
     }
+
 
     def copyCheckedEmailsToContacts(CheckMail checkedMail) {
         //not the best way to copy checkmails to localmail
