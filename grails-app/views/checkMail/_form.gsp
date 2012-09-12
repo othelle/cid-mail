@@ -26,12 +26,12 @@
 	<g:textField name="subject" maxlength="100" required="" value="${checkMailInstance?.subject}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: checkMailInstance, field: 'body', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: checkMailInstance, field: 'body', 'error')} ">
 	<label for="body">
 		<g:message code="checkMail.body.label" default="Body" />
-		<span class="required-indicator">*</span>
+		
 	</label>
-	<g:textArea name="body" cols="40" rows="5" maxlength="1000" required="" value="${checkMailInstance?.body}"/>
+	<g:textArea name="body" cols="40" rows="5" maxlength="10000" value="${checkMailInstance?.body}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: checkMailInstance, field: 'dateSend', 'error')} ">
@@ -48,6 +48,14 @@
 		
 	</label>
 	<g:checkBox name="flagNew" value="${checkMailInstance?.flagNew}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: checkMailInstance, field: 'attachment', 'error')} ">
+	<label for="attachment">
+		<g:message code="checkMail.attachment.label" default="Attachment" />
+		
+	</label>
+	<g:select name="attachment" from="${com.othelle.cig.email.Attachment.list()}" multiple="multiple" optionKey="id" size="5" value="${checkMailInstance?.attachment*.id}" class="many-to-many"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: checkMailInstance, field: 'collection', 'error')} required">

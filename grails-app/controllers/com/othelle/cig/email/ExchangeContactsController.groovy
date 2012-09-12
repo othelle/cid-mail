@@ -157,7 +157,7 @@ class ExchangeContactsController {
 
         }
         response.setContentType("application/octet-stream")
-        response.setHeader("Content-disposition", "attachment;filename=${file.getName()}")
+        response.setHeader("Content-disposition", "Attachment;filename=${file.getName()}")
         response.outputStream << file.newInputStream()
     }
 

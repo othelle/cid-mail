@@ -16,13 +16,15 @@ import org.apache.log4j.DailyRollingFileAppender
 // }
 def logDirectory = '/var/log/cid-mail/'
 //def logDirectory = 'log/'
-def exportDirectory='.cid/export/'
-def importDirectory='.cid/import/'
+def exportDirectory = '.cid/export/'
+def importDirectory = '.cid/import/'
+def attachmentDirectory='/var/tmp/'
+//def attachmentDirectory = 'attachments/'
 def infoLog = 'info.log'
 def errorLog = 'error.log'
 def fatalLog = 'fatal.log'
-def exportFileName='export.csv'
-def importFileName='import.csv'
+def exportFileName = 'export.csv'
+def importFileName = 'import.csv'
 
 grails {
     mail {
@@ -30,6 +32,7 @@ grails {
         port = 465
         username = "creetive.email@gmail.com"
         password = "yjdsq0511uf"
+
         props = ["mail.smtp.auth": "true",
                 "mail.smtp.socketFactory.port": "465",
                 "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
@@ -42,11 +45,14 @@ grails {
         linesCount = 300
         areDoubleDotsAllowedInFilePath = false
     }
-    exchangeContact{
-        locationsExport=exportDirectory
-        locationsImport=importDirectory
-        exportFile=exportFileName
-        importFile=importFileName
+    exchangeContact {
+        locationsExport = exportDirectory
+        locationsImport = importDirectory
+        exportFile = exportFileName
+        importFile = importFileName
+    }
+    attachment {
+        attachments = attachmentDirectory
     }
 
 }
@@ -111,7 +117,7 @@ environments {
 // log4j configuration
 
 log4j = {
-  //  def logLayoutPattern = new PatternLayout("%d{ISO8601} [%-5p][%-16.16t][%32.32c] - %m%n")
+    //  def logLayoutPattern = new PatternLayout("%d{ISO8601} [%-5p][%-16.16t][%32.32c] - %m%n")
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
     appenders {
         appender new ConsoleAppender(name: "console",

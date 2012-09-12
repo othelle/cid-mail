@@ -52,7 +52,7 @@
 
                 <g:if test="${contactInstance?.email}">
 				<li class="fieldcontain">
-					<span id="email-label" class="property-label">Организация</span>
+					<span id="email-label" class="property-label"><g:message code="contact.organization.label" default="Organization"/></span>
 
 						<span class="property-value" aria-labelledby="email-label"><g:fieldValue bean="${contactInstance}" field="organization"/></span>
 

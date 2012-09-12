@@ -29,7 +29,7 @@ class LogController {
         File file = new File(params.filePath)
         byte[] assetContent = file.readBytes();
         response.setContentLength(assetContent.size())
-        response.setHeader("Content-disposition", "attachment; filename=${file.name}")
+        response.setHeader("Content-disposition", "Attachment; filename=${file.name}")
         String contentType = FileViewerUtils.getMimeContentType(file.name.tokenize(".").last().toString())
         response.setContentType(contentType)
         OutputStream out = response.getOutputStream()

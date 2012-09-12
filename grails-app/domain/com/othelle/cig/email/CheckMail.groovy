@@ -9,13 +9,14 @@ class CheckMail {
     Boolean flagNew
     Collection collection
 
-    static belongsTo = [Collection]
+    static belongsTo = [Collection, Attachment]
+    static hasMany = [attachment: Attachment]
 
     static constraints = {
         uid(blank: false)
-        emailFrom (nullable: true)
+        emailFrom(nullable: true)
         subject(blank: false, maxSize: 100)
-        body(maxSize: 3000)
+        body(maxSize: 5000)
         dateSend(nullable: true)
         flagNew(nullable: true)
 
@@ -25,5 +26,6 @@ class CheckMail {
     String toString() {
         "${collection} ${uid} ${subject} ${body} ${dateSend} ${flagNew}"
     }
+
 }
 

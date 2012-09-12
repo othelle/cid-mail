@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'checkMail.label', default: 'CheckMail')}"/>
-    <title><g:message code="checkMail.list.label"/></title>
+    <title><g:message code="default.list.label" args="[entityName]"/></title>
 </head>
 
 <body>
@@ -14,12 +14,13 @@
 <div class="nav" role="navigation">
     <ul>
         <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-        <li><g:link class="create" action="create"><g:message code="localMail.new.label"/></g:link></li>
+        <li><g:link class="create" action="create"><g:message code="default.new.label"
+                                                              args="[entityName]"/></g:link></li>
     </ul>
 </div>
 
 <div id="list-checkMail" class="content scaffold-list" role="main">
-    <h1><g:message code="checkMail.list.label"/></h1>
+    <h1><g:message code="default.list.label" args="[entityName]"/></h1>
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
@@ -56,7 +57,20 @@
 
                 <td>${fieldValue(bean: checkMailInstance, field: "subject")}</td>
 
-                <td>${fieldValue(bean: checkMailInstance, field: "body")}</td>
+                <td>${fieldValue(bean: checkMailInstance, field: "body")}
+
+                    <g:if test="${checkMailInstance?.attachment}">
+                        <li class="fieldcontain">
+                            <span id="attachment-label" class="property-label"><g:message
+                                    code="checkMail.attachment.label" default="Attachment"/></span>
+
+                            <g:each in="${checkMailInstance.attachment}" var="a">
+                                <span class="property-value" aria-labelledby="attachment-label">${a?.encodeAsHTML()}</span>
+                            </g:each>
+
+                        </li>
+                    </g:if>
+                </td>
 
                 <td><g:formatDate date="${checkMailInstance.dateSend}"/></td>
 

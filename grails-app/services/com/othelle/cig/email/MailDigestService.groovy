@@ -1,10 +1,10 @@
 package com.othelle.cig.email
 
+import com.sun.mail.pop3.POP3Folder
 import grails.validation.ValidationException
 
 import javax.mail.*
-import com.sun.mail.pop3.POP3Folder
-import javax.mail.internet.MimeBodyPart
+import javax.activation.MimetypesFileTypeMap
 
 class MailDigestService {
 
@@ -20,15 +20,22 @@ class MailDigestService {
             log.info("Sending ${localMail.id} to ${contact.email}")
             try {
                 sendMail {
+                    multipart true
                     to Utilities.emailParse(contact.email)
                     from grailsApplication.config.grails.mail.username
                     subject localMail.subject
                     body localMail.description
+                    localMail.attachment.each {cur ->
+                        // def fileAttachment = new File(grailsApplication.config.grails.attachment.attachments + "kat_k.gif")
+                        // attachBytes  grailsApplication.config.grails.attachment.attachments + "kat_k.gif", "image/gif", fileAttachment.readBytes()
+                        attachBytes cur.name, new MimetypesFileTypeMap().getContentType(cur.name), cur.fileByte
+                    }
 
                 }
                 localMail.flagSend = Boolean.FALSE
                 localMail.dateSent = new Date();
                 localMail.save(failOnError: true)
+                //, flush:true
                 log.info("Mail has been sant ${localMail}")
             }
             catch (Exception e) {
@@ -97,7 +104,50 @@ class MailDigestService {
                         }
                         try {
                             log.info("Utilities.emailEval(messageCur.from)=" + fromMassager)
-                            CheckMail checkMail = new CheckMail(uid: uid, emailFrom: fromMassager, subject: subject, body: getText(messageCur), dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
+                            //"\nattachment:${fileNameC}:${fileName}"
+                            CheckMail checkMail
+                            def messageCurTex = getText(messageCur)
+                            def LINK_PARENT = "(attachment::)[a-zA-Z0-9+_.-]+(::)[a-zA-Z0-9+_.-]+(::endattachment)"
+                            def LINK_PARENT1 = "(attachment::)[a-zA-Z0-9+_.-]+(::)"
+                            def LINK_PARENT2 = "(::)[a-zA-Z0-9+_.-]+(::endattachment)"
+                            def STARTPATTERN = "attachment::"
+                            def MIDLPATTERN = "::"
+                            def ENDPATTERN = "::endattachment"
+                            def attachmentStr = Utilities.fileLinksEval(messageCurTex, LINK_PARENT, LINK_PARENT1, LINK_PARENT2, STARTPATTERN, MIDLPATTERN, ENDPATTERN)
+                            def messageCurTexRep = messageCurTex.replaceAll(LINK_PARENT, "")
+                            if (messageCurTexRep == "") {
+                                log.info("Body is null.")
+                                messageCurTexRep = "Запрос на коммерческое предложение"
+                            }
+                            if (attachmentStr != [:]) {
+                                log.info("Mail has attachments")
+                                checkMail = new CheckMail(uid: uid, emailFrom: fromMassager, subject: subject, body: messageCurTexRep, dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
+                                log.info("attachmentStr=" + attachmentStr.size())
+                                attachmentStr.each {cur ->
+
+                                    def dir = new File(grailsApplication.config.grails.attachment.attachments)
+                                    if (!dir.exists()) {
+                                        log.info("CREATING DIRECTORY ${grailsApplication.config.grails.attachment.attachments}: ")
+                                    }
+                                    else {
+                                        def file = new File(grailsApplication.config.grails.attachment.attachments + cur.key)
+                                        if (file.exists()) {
+                                            checkMail.addToAttachment(new Attachment(fileByte: file.bytes, name: cur.value)).save(failOnError: true)
+                                            log.info("Adding attachment: ${cur.value}")
+                                        }
+                                        else {
+                                            log.info "File not exits!"
+                                        }
+                                    }
+
+
+                                }
+                            }
+                            else {
+                                log.info("Mail has not attachments")
+                                checkMail = new CheckMail(uid: uid, emailFrom: fromMassager, subject: subject, body: messageCurTexRep, dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
+                            }
+
                             log.info("Adding email to the queue: ${checkMail.subject}")
                             copyCheckedEmailsToContacts(checkMail)
                             checkMail.save()
@@ -134,12 +184,12 @@ class MailDigestService {
         }
         if (p.isMimeType("application/*")) {
             log.info("application/*")
-            def s = "\n" + p.fileName
+            def s = saveFile(p.fileName, p.inputStream)
             return s
         }
         if (p.isMimeType("image/*")) {
             log.info("image/*")
-            def s = "\n" + p.fileName
+            def s = saveFile(p.fileName, p.inputStream)
             return s
         }
         if (p.isMimeType("multipart/alternative")) {
@@ -169,12 +219,17 @@ class MailDigestService {
             return text;
         }
         else if (p.isMimeType("multipart/*")) {
-            log.info "MULTIPAT/*"
+            log.info "MULTIPAT/*="
             String s = "";
             Multipart mp = (Multipart) p.getContent();
-            log.info("N=" + mp.getCount())
-            for (int i = 0; i < mp.getCount(); i++) {
-                s = s + getText(mp.getBodyPart(i));
+            try {
+                for (int i = 0; i < mp.getCount(); i++) {
+                    log.info("mp.getBodyPart(i)=" + mp.getBodyPart(i).getContentType())
+                    s = s + getText(mp.getBodyPart(i));
+                }
+            }
+            catch (Exception e) {
+                log.info("Exception: " + e.stackTrace +"\n\n\n==================="+e.message+"\n\n\n==================="+e.localizedMessage)
             }
             if (s != null)
                 return s;
@@ -205,6 +260,11 @@ class MailDigestService {
                     LocalMail localMail = new LocalMail(flagSend: true, subject: checkedMail.subject,
                             description: checkedMail.body, contact: contact).save(failOnError: true)
                     localMail.save(failOnError: true)
+                    checkedMail.attachment.each {cur ->
+                        localMail.addToAttachment(cur)
+                        log.info("Add attachment ${cur} to localMail")
+                    }
+                    localMail.save(failOnError: true)
                 }
                 catch (ValidationException e) {
                     log.error("Unable to copyCheckedEmailsToContacts checkMail", e)
@@ -212,6 +272,33 @@ class MailDigestService {
             }
         }
         checkedMail.flagNew = Boolean.FALSE
+    }
+
+    String saveFile(String fileName, InputStream inputStream) {
+        log.info('Saving temp file: ' + fileName)
+        def fileNameC = fileName
+        def file
+        def dir = new File(grailsApplication.config.grails.attachment.attachments)
+        if (!dir.exists()) {
+            log.info("CREATING DIRECTORY ${grailsApplication.config.grails.attachment.attachments}: ")
+        }
+        else {
+            file = new File(grailsApplication.config.grails.attachment.attachments + fileName)
+            if (file.exists()) {
+                for (int i = 0; file.exists(); i++) {
+                    fileNameC = i + '_' + fileName
+                    file = new File(grailsApplication.config.grails.attachment.attachments + fileNameC)
+                }
+            }
+            file.append(inputStream)
+            log.info('File saved: ' + fileName)
+
+        }
+
+        def rezult = "attachment::${fileNameC}::${fileName}::endattachment"
+        //"\n<a href=${fileNameC}>${fileName}</a>"
+        //"\nattachment:${fileNameC}:${fileName}"
+        return rezult
     }
 }
 
