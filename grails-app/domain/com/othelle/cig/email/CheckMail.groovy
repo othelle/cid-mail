@@ -9,7 +9,6 @@ class CheckMail {
     Boolean flagNew
     Collection collection
 
-    static belongsTo = [Collection, Attachment]
     static hasMany = [attachment: Attachment]
 
     static constraints = {

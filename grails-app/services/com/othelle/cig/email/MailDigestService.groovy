@@ -28,7 +28,9 @@ class MailDigestService {
                     localMail.attachment.each {cur ->
                         // def fileAttachment = new File(grailsApplication.config.grails.attachment.attachments + "kat_k.gif")
                         // attachBytes  grailsApplication.config.grails.attachment.attachments + "kat_k.gif", "image/gif", fileAttachment.readBytes()
-                        attachBytes cur.name, new MimetypesFileTypeMap().getContentType(cur.name), cur.fileByte
+                        if (cur.name && new File(cur.path).exists()) {
+                            attachBytes cur.name, new MimetypesFileTypeMap().getContentType(cur.name), new File(cur.path).getBytes()
+                        }
                     }
 
                 }
@@ -123,23 +125,23 @@ class MailDigestService {
                                 log.info("Mail has attachments")
                                 checkMail = new CheckMail(uid: uid, emailFrom: fromMassager, subject: subject, body: messageCurTexRep, dateSend: messageCur.sentDate, flagNew: true, collection: collection).save(failOnError: true)
                                 log.info("attachmentStr=" + attachmentStr.size())
-                                attachmentStr.each {cur ->
 
+                                attachmentStr.entrySet().each {cur ->
                                     def dir = new File(grailsApplication.config.grails.attachment.attachments)
                                     if (!dir.exists()) {
                                         log.info("CREATING DIRECTORY ${grailsApplication.config.grails.attachment.attachments}: ")
-                                    }
-                                    else {
-                                        def file = new File(grailsApplication.config.grails.attachment.attachments + cur.key)
-                                        if (file.exists()) {
-                                            checkMail.addToAttachment(new Attachment(fileByte: file.bytes, name: cur.value)).save(failOnError: true)
-                                            log.info("Adding attachment: ${cur.value}")
-                                        }
-                                        else {
-                                            log.info "File not exits!"
-                                        }
+                                        dir.mkdirs();
                                     }
 
+                                    def file = new File(dir, cur.key.toString())
+                                    if (file.exists()) {
+                                        checkMail.addToAttachment(new Attachment(name: cur.value, path: file.getAbsolutePath()).save())
+                                        checkMail.save()
+                                        log.info("Adding attachment: ${cur.value}")
+                                    }
+                                    else {
+                                        log.info "File not exits!"
+                                    }
 
                                 }
                             }
@@ -229,7 +231,7 @@ class MailDigestService {
                 }
             }
             catch (Exception e) {
-                log.info("Exception: " + e.stackTrace +"\n\n\n==================="+e.message+"\n\n\n==================="+e.localizedMessage)
+                log.info("Exception: " + e.stackTrace + "\n\n\n===================" + e.message + "\n\n\n===================" + e.localizedMessage)
             }
             if (s != null)
                 return s;

@@ -8,8 +8,6 @@ class LocalMail {
     Date dateCreated
     Date dateSent
 
-
-    static belongsTo = [Contact, Attachment]
     static hasMany = [attachment: Attachment]
 
     static constraints = {

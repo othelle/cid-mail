@@ -1,9 +1,15 @@
 package com.othelle.cig.email
 
-class Attachment {
-    def name
-    def fileByte
+/**
+ * User: Vasily Vlasov
+ * Date: 21.09.12
+ */
+class Attachment implements Serializable{
+    String name
+    String path
 
-    static constraints = {
+    @Override
+    String toString() {
+        return name
     }
 }
