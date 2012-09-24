@@ -10,7 +10,7 @@ class MailGetJob {
     def MailDigestService mailDigestService
     static triggers = {
         // simple repeatInterval: 5000l // execute job once in 1 min
-        cron name: 'Mail Getting Job', startDelay: 1000, cronExpression: '0 0/1 * * * ?'
+        cron name: 'Mail Getting Job', startDelay: 5000, cronExpression: '0 0/1 * * * ?'
     }
 
     static AtomicBoolean monitor = new AtomicBoolean(false)

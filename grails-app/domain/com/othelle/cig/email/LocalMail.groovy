@@ -8,10 +8,12 @@ class LocalMail {
     Date dateCreated
     Date dateSent
 
+
+    static belongsTo = [Contact, Attachment]
     static hasMany = [attachment: Attachment]
 
     static constraints = {
-        description(maxSize: 5000)
+        description(maxSize: 10000)
         dateCreated(nullable: true)
         flagSend(nullable: true)
         contact(nullable: true)
@@ -24,6 +26,6 @@ class LocalMail {
 
     @Override
     String toString() {
-        "contact: ${contact} date created: ${dateCreated} send: ${flagSend}"
+        "${description} ${dateCreated} ${flagSend}"
     }
 }

@@ -18,7 +18,7 @@ def logDirectory = '/var/log/cid-mail/'
 //def logDirectory = 'log/'
 def exportDirectory = '.cid/export/'
 def importDirectory = '.cid/import/'
-def attachmentDirectory='/var/tmp/'
+def attachmentDirectory='.cid/attachments/'
 //def attachmentDirectory = 'attachments/'
 def infoLog = 'info.log'
 def errorLog = 'error.log'
@@ -32,7 +32,6 @@ grails {
         port = 465
         username = "creetive.email@gmail.com"
         password = "yjdsq0511uf"
-
         props = ["mail.smtp.auth": "true",
                 "mail.smtp.socketFactory.port": "465",
                 "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",

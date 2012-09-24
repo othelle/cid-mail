@@ -6,7 +6,7 @@ class MailSendJob {
     def MailDigestService mailDigestService
     static triggers = {
         // simple repeatInterval: 5000l // execute job once in 1 seconds
-        cron name: 'Mail Service Job', startDelay: 1000, cronExpression: '0 0/1 * * * ?'
+        cron name: 'Mail Service Job', startDelay: 60000, cronExpression: '0 0/1 * * * ?'
 
     }
 

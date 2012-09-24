@@ -9,13 +9,14 @@ class CheckMail {
     Boolean flagNew
     Collection collection
 
+    static belongsTo = [Collection, Attachment]
     static hasMany = [attachment: Attachment]
 
     static constraints = {
         uid(blank: false)
         emailFrom(nullable: true)
         subject(blank: false, maxSize: 100)
-        body(maxSize: 5000)
+        body(maxSize: 10000)
         dateSend(nullable: true)
         flagNew(nullable: true)
 

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>АСГ Техно-строй</title>
+    <title>Welcome to Grails</title>
     <style type="text/css" media="screen">
     #status {
         background-color: #eee;
@@ -38,6 +38,10 @@
         text-transform: uppercase;
         font-size: 1.1em;
         margin: 0 0 0.3em;
+    }
+
+    #page-body {
+        margin: 2em 1em 3em 2em;
     }
 
     h2 {
@@ -105,8 +109,11 @@
 
 <div id="page-body" role="main">
     <h1>Контрольная панель</h1>
+
+    <br/>
+
     <div id="controller-list" role="navigation">
-        <ul style="width: 582px;">
+        <ul>
             <h4>Списки рассылки</h4>
 
             <li class="controller"><g:link controller="collection">Группы</g:link></li>
@@ -116,47 +123,12 @@
             <h4>История запросов</h4>
             <li class="controller"><g:link controller="checkMail">Письма полученные</g:link></li>
             <li class="controller"><g:link controller="localMail">Письма для отправки</g:link></li>
-
             <br/>
-            <h4>Логгирование и отчетность</h4>
-            <li class="controller"><g:link controller="log">Логи</g:link></li>
-            <li class="controller"><g:link controller="report">Отчеты</g:link></li>
 
-            <br/>
-            <h4>Обмен контактами</h4>
-            <li class="controller"><g:link controller="exchangeContacts" action="import">Импорт</g:link></li>
-            <li class="controller"><g:link controller="exchangeContacts" action="export">Экспорт</g:link></li>
-
+            <h4>Логи</h4>
+            <li class="controller"><g:link controller="log">Лог файлы</g:link></li>
         </ul>
-  
-
-    </div>
-  <div class="homemessage"><b>Уважаемый пользователь!</b>
-
-<p>Данное програмное обеспечение разработано в целях автоматизации производства, в частности документооборота связанного с приемом и отправкой e-mail корреспонденции.</p>
-
-<b>Основные функциональные возможности ПО:</b>
-   <ul>
-	<li>Получение корреспонденции с почтового сервиса e-mail указанного Заказчиком;</li>
-	<li>Пересылка корреспонденции по группам в соответствии с указаниями администратора ПО;</li>
-	<li>Автоматическая пересылка корреспонденции в соответствии с привязкой группы к определенному почтовому адресу;</li>
-	<li>Администрирование базы получателей корреспонденции с возможностью добавлять и удалять данные контактов, объединять контакты в группы;</li>
-	<li>Импорт и Экспорт контактов из и в формат .csv  (Microsoft Outlook®)</li>
-	<li>Ведение логов (довольно подробно: когда, с какого адреса пришло, на какие перенаправляли, и т.п.).</li>
-	<li>Возможность сделать отчет: по интервалу дат, по адресу (откуда пришло письмо), по  группе (какие письма ушли на эту группу), по контакту аналогично;</li>
-   </ul>
-
-<b>Привила пересылки:</b>
-   <ul>
-	<li>Каждый контакт из группы получает отдельное письмо.</li>
-	<li>Каждое письмо не содержит информацию, на какой оно было отправлено изначально.</li>
-	<li>Оправлять всю корреспонденцию с одного адреса;</li>
-	<li>Каждый контакт может входить в произвольное количество групп и иметь произвольное количество e-mail адресов.</li>
-	<li>Если в карточке контакта присутствуют несколько e-mail адресов, то на них отправляется одно общее письмо с перечислением всех адресатов в поле кому.</li>
-   </ul>
-
     </div>
 </div>
 </body>
 </html>
-
