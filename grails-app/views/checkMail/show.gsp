@@ -54,7 +54,7 @@
 				<li class="fieldcontain">
 					<span id="body-label" class="property-label"><g:message code="checkMail.body.label" default="Body" /></span>
 					
-						<span class="property-value" aria-labelledby="body-label"><g:fieldValue bean="${checkMailInstance}" field="body"/></span>
+						<span class="property-value" aria-labelledby="body-label">${fieldValue(bean: checkMailInstance, field: "body").decodeHTML()}</span>
 					
 				</li>
 				</g:if>
@@ -82,7 +82,7 @@
 					<span id="attachment-label" class="property-label"><g:message code="checkMail.attachment.label" default="Attachment" /></span>
 					
 						<g:each in="${checkMailInstance.attachment}" var="a">
-						<span class="property-value" aria-labelledby="attachment-label">${a?.encodeAsHTML()}</span>
+						<span class="property-value" aria-labelledby="attachment-label">${a?.decodeHTML()}</span>
 						</g:each>
 					
 				</li>

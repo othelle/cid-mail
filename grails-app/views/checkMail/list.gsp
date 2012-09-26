@@ -36,7 +36,7 @@
             <g:sortableColumn property="subject"
                               title="${message(code: 'checkMail.subject.label', default: 'Subject')}"/>
 
-            <g:sortableColumn property="body" title="${message(code: 'checkMail.body.label', default: 'Body')}"/>
+            <g:sortableColumn property="body" title="${message(code: 'checkMail.body.label', default: 'Body').decodeHTML()}"/>
 
             <g:sortableColumn property="dateSend"
                               title="${message(code: 'checkMail.dateSend.label', default: 'Date Send')}"/>
@@ -57,7 +57,7 @@
 
                 <td>${fieldValue(bean: checkMailInstance, field: "subject")}</td>
 
-                <td>${fieldValue(bean: checkMailInstance, field: "body")}
+                <td>${fieldValue(bean: checkMailInstance, field: "body").decodeHTML()}
 
                     <g:if test="${checkMailInstance?.attachment}">
                         <li class="fieldcontain">

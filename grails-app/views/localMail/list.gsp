@@ -42,7 +42,21 @@
 				<g:each in="${localMailInstanceList}" status="i" var="localMailInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${localMailInstance.id}">${fieldValue(bean: localMailInstance, field: "description")}</g:link></td>
+						<td><g:link action="show" id="${localMailInstance.id}">${fieldValue(bean: localMailInstance, field: "description").decodeHTML()}</g:link>
+
+                            <g:if test="${localMailInstance?.attachment}">
+                                <li class="fieldcontain">
+                                    <span id="attachment-label" class="property-label"><g:message
+                                            code="checkMail.attachment.label" default="Attachment"/></span>
+
+                                    <g:each in="${localMailInstance.attachment}" var="a">
+                                        <span class="property-value" aria-labelledby="attachment-label">${a?.encodeAsHTML()}</span>
+                                    </g:each>
+
+                                </li>
+                            </g:if>
+
+                        </td>
 					
 						<td><g:formatDate date="${localMailInstance.dateCreated}" /></td>
 					

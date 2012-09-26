@@ -2,6 +2,7 @@ package com.othelle.cig.email
 
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
+import javax.mail.internet.MimeUtility
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,7 +33,22 @@ class Utilities {
 
         return st.toString()
     }
+    static String bodyEval(def s) {
+        def body_PATTERN = "/<body([^>]*)>(.*?)<\\/body\\s*>/si"
+        def p = Pattern.compile(body_PATTERN)
+        StringBuilder st = new StringBuilder()
+        try {
+            def m = p.matcher(s.toString())
+            if (m.find()) {
+                st.append(m.group())
+            }
+        }
+        catch (PatternSyntaxException ex) {
+            println("Pattern Syntax Exception ", ex)
+        }
 
+        return st.toString().replaceAll("<body([^>]*)>","").replaceAll("<\\/body\\s*>","")
+    }
     static def getFileContents(File file) {
         String fileContents
         List<String> contents = file.getText("WINDOWS-1251").readLines()
@@ -79,34 +95,5 @@ class Utilities {
         return map1
     }
 
-    static def getFileName(String nameFile) {
-        println("name file: " + nameFile)
-        def PATTERN = "(=\\?)[a-zA-Z0-9+_.-]+(\\?Q\\?)"
-        def p = Pattern.compile(PATTERN)
-        String st1 = nameFile
-        try {
-            def m = p.matcher(nameFile)
-            if (m.find()) {
-                st1 = nameFile.replaceAll(PATTERN, "").replaceAll("\\?=","")
-                println("st1:" + st1)
-                println("m.group():" + m.group().toString())
-                String st2 = m.group().toString().replaceAll("=\\?", "").replaceAll("\\?Q\\?", "")
-                println("st2:" + st2)
-                println("UTF-8:" + st1.getBytes("UTF-8"))
-                println("ISO-8859-1:" + st1.getBytes("ISO-8859-1"))
-                println("getBytes:" + st1.getBytes())
-                //st1 = st1.getBytes(st2)
-                println("st1:" + st1)
-
-            }
-        }
-        catch (PatternSyntaxException ex) {
-            println("Pattern Syntax Exception ", ex)
-        }
-
-        println("getFileName:" + st1)
-
-        return st1
-
-    }
 }
+

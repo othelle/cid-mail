@@ -13,7 +13,7 @@ class LocalMail {
     static hasMany = [attachment: Attachment]
 
     static constraints = {
-        description(maxSize: 10000)
+        description(maxSize: 50000)
         dateCreated(nullable: true)
         flagSend(nullable: true)
         contact(nullable: true)

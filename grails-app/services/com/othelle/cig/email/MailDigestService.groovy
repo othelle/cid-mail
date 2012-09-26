@@ -3,6 +3,8 @@ package com.othelle.cig.email
 import com.sun.mail.pop3.POP3Folder
 import grails.validation.ValidationException
 
+import javax.activation.MimetypesFileTypeMap
+import javax.mail.internet.MimeUtility
 import javax.mail.*
 
 class MailDigestService {
@@ -19,10 +21,15 @@ class MailDigestService {
             log.info("Sending ${localMail.id} to ${contact.email}")
             try {
                 sendMail {
+                    multipart true
                     to Utilities.emailParse(contact.email)
                     from grailsApplication.config.grails.mail.username
                     subject localMail.subject
-                    body localMail.description
+                    html localMail.description.decodeHTML()
+                    localMail.attachment.each {cur ->
+                        attachBytes cur.name, new MimetypesFileTypeMap().getContentType(cur.name), cur.fileByte
+                    }
+
 
                 }
                 localMail.flagSend = Boolean.FALSE
@@ -99,9 +106,9 @@ class MailDigestService {
                             //"\nattachment:${fileNameC}:${fileName}"
                             CheckMail checkMail
                             def messageCurTex = getText(messageCur)
-                            def LINK_PARENT = "(attachment::)[\\w\\W]+(::)[\\w\\W]+(::endattachment)"
-                            def LINK_PARENT1 = "(attachment::)[\\w\\W]+(::)"
-                            def LINK_PARENT2 = "(::)[\\w\\W]+(::endattachment)"
+                            def LINK_PARENT = "(attachment::)[\\s\\p{L}a-zA-Z0-9+_.-]+(::)[\\s\\p{L}a-zA-Z0-9+_.-]+(::endattachment)"
+                            def LINK_PARENT1 = "(attachment::)[\\s\\p{L}a-zA-Z0-9+_.-]+(::)"
+                            def LINK_PARENT2 = "(::)[\\s\\p{L}a-zA-Z0-9+_.-]+(::endattachment)"
                             def STARTPATTERN = "attachment::"
                             def MIDLPATTERN = "::"
                             def ENDPATTERN = "::endattachment"
@@ -119,6 +126,8 @@ class MailDigestService {
                                     }
                                     else {
                                         def file = new File(grailsApplication.config.grails.attachment.attachments + cur.key)
+                                        log.info("cur.key=" + cur.key + " cur.v=" + cur.value)
+
                                         if (file.exists()) {
                                             checkMail.addToAttachment(new Attachment(fileByte: file.bytes, name: cur.value)).save(failOnError: true)
                                             log.info("Adding attachment: ${cur.value}")
@@ -197,6 +206,8 @@ class MailDigestService {
                     continue;
                 } else if (bp.isMimeType("text/html")) {
                     String s = html2Text(getText(bp));
+                    //Utilities.bodyEval(getText(bp))
+
                     if (s != null) {
                         //   return s;
                         text = s;
@@ -232,8 +243,16 @@ class MailDigestService {
                 .replaceAll("\\</([pP]|[hH]5|[dD][tT]|[dD][dD]|[dD][iI][vV])[ ]*\\>", "\n")
                 .replaceAll("\\<[lL][iI][ ]*[/]*[ ]*\\>", "\n* ")
                 .replaceAll("\\<[dD][dD][ ]*[/]*[ ]*\\>", " - ")
-                .replaceAll("\\<.*?\\>", "")
-                .replaceAll("\\<(!--)[\\w\\W]+(--)\\>", "");
+                .replaceAll("\\<body([^>]*)\\>", "")
+                .replaceAll("\\<\\/body\\>", "")
+                .replaceAll("\\<(head*)\\b[^>]*\\>(.|\\n)*\\<(\\/head*)\\b[^>]*\\>", "")
+                .replaceAll("\\<(META HTTP*)\\b[^>]*\\>", "")
+
+        /*
+        .replaceAll("\\</(body)[a-zA-Z0-9+_.-]+\\>","")
+        .replaceAll("\\<(head)[a-zA-Z0-9+_.-]+\\>\\</(head)\\>","")*/
+        //.replaceAll("\\<.*?\\>", "")
+        //.replaceAll("\\<(!--)[\\w\\W]+(--)\\>", "");
     }
 
 
@@ -244,8 +263,13 @@ class MailDigestService {
             for (Contact contact : checkedMail.collection.contacts) {
                 try {
                     LocalMail localMail = new LocalMail(flagSend: true, subject: checkedMail.subject,
-                            description: checkedMail.body, contact: contact).save(failOnError: true)
+                            description: checkedMail.body, contact: contact, attachment: checkedMail.attachment).save(failOnError: true)
                     localMail.save(failOnError: true)
+                    // checkedMail.attachment.each {cur ->
+                    //    localMail.addToAttachment(cur)
+                    //   log.info("Add attachment ${cur} to localMail")
+                    // }
+                    // localMail.save(failOnError: true)
                 }
                 catch (ValidationException e) {
                     log.error("Unable to copyCheckedEmailsToContacts checkMail", e)
@@ -257,7 +281,8 @@ class MailDigestService {
 
     String saveFile(String fileName, InputStream inputStream) {
         log.info('Saving temp file: ' + fileName)
-        def fileNameC = Utilities.getFileName(fileName.toString())
+        def fileNameLocal = MimeUtility.decodeText(fileName)
+        def fileNameC = fileNameLocal
         def file
         def dir = new File(grailsApplication.config.grails.attachment.attachments)
 
@@ -269,7 +294,7 @@ class MailDigestService {
             file = new File(grailsApplication.config.grails.attachment.attachments + fileNameC)
             if (file.exists()) {
                 for (int i = 0; file.exists(); i++) {
-                    fileNameC = i + '_' + Utilities.getFileName(fileName.toString())
+                    fileNameC = i + '_' + fileNameLocal
                     file = new File(grailsApplication.config.grails.attachment.attachments + fileNameC)
                 }
             }
@@ -278,7 +303,7 @@ class MailDigestService {
 
         }
 
-        def rezult = "attachment::${fileNameC}::${fileName}::endattachment"
+        def rezult = "attachment::${fileNameC}::${fileNameLocal}::endattachment"
         //"\n<a href=${fileNameC}>${fileName}</a>"
         //"\nattachment:${fileNameC}:${fileName}"
         return rezult
