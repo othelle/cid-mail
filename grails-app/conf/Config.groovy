@@ -28,7 +28,7 @@ def importFileName = 'import.csv'
 
 grails {
     mail {
-        host = "smtp.asg-ts.ru"
+        host = "smtp.nic.ru"
         port = 25
         username = "asg-testsend@asg-ts.ru"
         password = "Qwerty77"
