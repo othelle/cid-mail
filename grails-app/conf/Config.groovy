@@ -28,13 +28,12 @@ def importFileName = 'import.csv'
 
 grails {
     mail {
-        host = "smtp.gmail.com"
-        port = 465
-        username = "creetive.email@gmail.com"
-        password = "yjdsq0511uf"
+        host = "smtp.asg-ts.ru"
+        port = 25
+        username = "asg-testsend@asg-ts.ru"
+        password = "Qwerty77"
         props = ["mail.smtp.auth": "true",
-                "mail.smtp.socketFactory.port": "465",
-                "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+                "mail.smtp.socketFactory.port": "25",
                 "mail.smtp.socketFactory.fallback": "false"]
 
     }
