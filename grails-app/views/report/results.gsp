@@ -58,7 +58,7 @@
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
                 <td><g:link controller="checkMail" action="show"
-                            id="${checkMail.id}">${fieldValue(bean: checkMail, field: "uid")}</g:link></td>
+                            id="${checkMail.id}">${fieldValue(bean: checkMail, field: "subject")}</g:link></td>
 
                 <td>${fieldValue(bean: checkMail, field: "emailFrom")}</td>
 
