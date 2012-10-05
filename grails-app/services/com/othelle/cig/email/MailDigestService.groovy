@@ -174,23 +174,32 @@ class MailDigestService {
  * Return the primary text content of the message.
  */
     private String getText(Part p) throws MessagingException, IOException {
+
         log.info("Type content=" + p.contentType)
+        log.info("disposition content=" + p.disposition)
+         if (p.disposition=="attachment") {
+            log.info("text Content-Disposition: attachment;/*")
+
+            def s = saveFile(p.fileName, p.inputStream)
+            return s
+        }
         if (p.isMimeType("text/*")) {
             def s = (String) p.getContent();
             return s;
         }
-        if (p.isMimeType("application/*")) {
-            log.info("application/*")
+
+        /*if (p.isMimeType("application*//*")) {
+            log.info("application*//*")
 
             def s = saveFile(p.fileName, p.inputStream)
             return s
         }
-        if (p.isMimeType("image/*")) {
-            log.info("image/*")
+        if (p.isMimeType("image*//*")) {
+            log.info("image*//*")
 
             def s = saveFile(p.fileName, p.inputStream)
             return s
-        }
+        }*/
         if (p.isMimeType("multipart/alternative")) {
             // prefer html text over plain text
             Multipart mp = (Multipart) p.getContent();
