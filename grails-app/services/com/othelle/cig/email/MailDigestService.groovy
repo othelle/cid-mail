@@ -123,6 +123,7 @@ class MailDigestService {
                                     def dir = new File(grailsApplication.config.grails.attachment.attachments)
                                     if (!dir.exists()) {
                                         log.info("CREATING DIRECTORY ${grailsApplication.config.grails.attachment.attachments}: ")
+                                        dir.mkdirs()
                                     }
                                     else {
                                         def file = new File(grailsApplication.config.grails.attachment.attachments + cur.key)
@@ -297,7 +298,7 @@ class MailDigestService {
 
         if (!dir.exists()) {
             log.info("CREATING DIRECTORY ${grailsApplication.config.grails.attachment.attachments}: ")
-            dir.mkdir()
+            dir.mkdirs()
         }
         else {
             file = new File(grailsApplication.config.grails.attachment.attachments + fileNameC)
