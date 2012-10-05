@@ -66,7 +66,7 @@
 					<span id="checkMail-label" class="property-label"><g:message code="checkMail.label" default="Check Mail" /></span>
 					
 						<g:each in="${collectionInstance.checkMail}" var="c">
-						<span class="property-value" aria-labelledby="checkMail-label"><g:link controller="checkMail" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="checkMail-label"><g:link controller="checkMail" action="show" id="${c.id}">${c?.subject}</g:link></span>
 						</g:each>
 					
 				</li>
