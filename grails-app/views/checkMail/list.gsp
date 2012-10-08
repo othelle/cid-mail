@@ -28,15 +28,10 @@
         <thead>
         <tr>
 
-            <g:sortableColumn property="uid" title="${message(code: 'checkMail.uid.label', default: 'Uid')}"/>
-
-            <g:sortableColumn property="emailFrom"
-                              title="${message(code: 'checkMail.emailFrom.label', default: 'Email From')}"/>
-
             <g:sortableColumn property="subject"
                               title="${message(code: 'checkMail.subject.label', default: 'Subject')}"/>
-
-            <g:sortableColumn property="body" title="${message(code: 'checkMail.body.label', default: 'Body').decodeHTML()}"/>
+            <g:sortableColumn property="emailFrom"
+                              title="${message(code: 'checkMail.emailFrom.label', default: 'Email From')}"/>
 
             <g:sortableColumn property="dateSend"
                               title="${message(code: 'checkMail.dateSend.label', default: 'Date Send')}"/>
@@ -51,30 +46,12 @@
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
                 <td><g:link action="show"
-                            id="${checkMailInstance.id}">${fieldValue(bean: checkMailInstance, field: "uid")}</g:link></td>
+                            id="${checkMailInstance.id}">${fieldValue(bean: checkMailInstance, field: "subject")}</g:link></td>
 
                 <td>${fieldValue(bean: checkMailInstance, field: "emailFrom")}</td>
-
-                <td>${fieldValue(bean: checkMailInstance, field: "subject")}</td>
-
-                <td>${fieldValue(bean: checkMailInstance, field: "body").decodeHTML()}
-
-                    <g:if test="${checkMailInstance?.attachment}">
-                        <li class="fieldcontain">
-                            <span id="attachment-label" class="property-label"><g:message
-                                    code="checkMail.attachment.label" default="Attachment"/></span>
-
-                            <g:each in="${checkMailInstance.attachment}" var="a">
-                                <span class="property-value" aria-labelledby="attachment-label">${a?.encodeAsHTML()}</span>
-                            </g:each>
-
-                        </li>
-                    </g:if>
-                </td>
-
                 <td><g:formatDate date="${checkMailInstance.dateSend}"/></td>
 
-                <td><g:formatBoolean boolean="${checkMailInstance.flagNew}"/></td>
+                <td>${checkMailInstance.flagNew ? "В очереди" : "Обработано"}</td>
 
             </tr>
         </g:each>

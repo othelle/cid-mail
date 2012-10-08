@@ -28,14 +28,14 @@
         <tr>
             <g:sortableColumn property="organization"
                               title="${message(code: 'contact.organization.label', default: 'Organization')}"/>
+            <g:sortableColumn property="firstName"
+                              title="${message(code: 'contact.firstName.label', default: 'First Name')}"/>
             <g:sortableColumn property="lastName"
                               title="${message(code: 'contact.lastName.label', default: 'Last Name')}"/>
 
             <g:sortableColumn property="email" title="${message(code: 'contact.email.label', default: 'Email')}"/>
             <g:sortableColumn property="email"
                               title="${message(code: 'contact.collections.label', default: 'Collection')}"/>
-            <g:sortableColumn property="firstName"
-                              title="${message(code: 'contact.firstName.label', default: 'First Name')}"/>
         </tr>
         </thead>
         <tbody>
@@ -44,6 +44,8 @@
 
                 <td><g:if test="${contactInstance?.organization}"><g:link action="show"
                                                                           id="${contactInstance.id}">${fieldValue(bean: contactInstance, field: "organization")}</g:link></g:if></td>
+                <td><g:if test="${contactInstance?.firstName}">
+                    ${fieldValue(bean: contactInstance, field: "firstName")}</g:if></td>
                 <td><g:if
                         test="${contactInstance?.lastName}">${fieldValue(bean: contactInstance, field: "lastName")}</g:if></td>
                 <td><g:if
@@ -55,8 +57,7 @@
                     </g:each>
                 </g:if>
                 </td>
-                <td><g:if test="${contactInstance?.firstName}">
-                    ${fieldValue(bean: contactInstance, field: "firstName")}</g:if></td>
+
             </tr>
         </g:each>
         </tbody>
