@@ -38,7 +38,7 @@
         <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
         </g:if>
-
+        <div class="even">${error}</div>
         <g:form controller="exchangeContacts" method="post" action="import" enctype="multipart/form-data">
 
             <div class="fieldcontain">
@@ -53,7 +53,6 @@
             <table>
                 <thead>
                 <tr>
-
                     <g:sortableColumn property="firstName"
                                       title="${message(code: 'contact.firstName.label', default: 'First Name')}"/>
                     <g:sortableColumn property="lastName"
@@ -73,7 +72,6 @@
                         <td>${fieldValue(bean: previewDetails, field: "lastName")}</td>
                         <td>${fieldValue(bean: previewDetails, field: "email")}</td>
                         <td>${fieldValue(bean: previewDetails, field: "organization")}</td>
-
                     </tr>
 
                 </g:each>

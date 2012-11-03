@@ -14,7 +14,7 @@ class PreviewDetailsCommand implements Serializable {
     String organization
 
     Boolean isBlank() {
-        firstName.size() == 0 || lastName.size() == 0 || email.size() == 0
+        firstName.size() < 2 || lastName.size() < 2 || email.size() == 0
     }
 
     static constraints = {
@@ -72,15 +72,29 @@ class ExchangeContactsController {
                             previewDetailsCommand.firstName = tokens[1]
                             previewDetailsCommand.lastName = tokens[3]
                             previewDetailsCommand.organization = tokens[5]
-                            if (tokens[85].size() != 0) tok2 = ", " + tokens[85]
-                            if (tokens[88].size() != 0) tok3 = ", " + tokens[88]
+                            try {
+                                if (tokens[85].size() != 0) tok2 = ", " + tokens[85]
+                                else tok2 = ""
+                            }
+                            catch (ArrayIndexOutOfBoundsException e) {
+                                tok2 = ""
+                                //  log.error(e.message)
+                            }
+                            try {
+                                if (tokens[88].size() != 0) tok3 = ", " + tokens[88]
+                                else tok3 = ""
+                            }
+                            catch (ArrayIndexOutOfBoundsException e) {
+                                tok3 = ""
+                                // log.error(e.message)
+                            }
                             previewDetailsCommand.email = tokens[82] + tok2 + tok3
                             if (!previewDetailsCommand.isBlank()) {
                                 flow.previewDetailsList.add(previewDetailsCommand)
                             }
                             else {
-                                log.error("Импорт прошел с ошибками. ")
-                                flow.error = "Импорт прошел с ошибками. Одно из полей пусто."
+                                log.error("Не все контакты прошли проверку. Поля Имя, Фамилия, Почта должны быть заполнены. ")
+                                flow.error = "Следующие контакты будут загружены. Не все контакты прошли проверку. Поля Имя, Фамилия, Почта должны быть заполнены."
                             }
                         }
                         j++
@@ -91,28 +105,37 @@ class ExchangeContactsController {
         preview {
             on("next") {
                 Collection collCurent = null
-                if (params.collection.get("id")!="null") {
+                if (params.collection.get("id") != "null") {
                     collCurent = Collection.findAllById(params.collection.get("id")).first()
                 }
+                def ii = 0
                 flow.previewDetailsList.each {pc ->
                     try {
-                        if (collCurent == null) {
-                            new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email, organization: pc.organization).save().save(failOnError: true)
+                        def conCurent
+                        def contactsCur = Contact.findAllByFirstNameAndLastNameAndEmail(pc.firstName, pc.lastName, pc.email)
+                        if (contactsCur.size() == 0) {
+                            conCurent = new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email).save(failOnError: true)
+                            ii++
                         }
                         else {
-                            Contact conCurent = new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email).save().save(failOnError: true)
-                            collCurent.addToContacts(conCurent).save(failOnError: true).save()
+                            conCurent = contactsCur.first()
                         }
+                        if (collCurent != null) {
+                            collCurent.addToContacts(conCurent).save(failOnError: true)
+                        }
+
 
                     }
                     catch (Exception e) {
                         log.error("Error save ", e)
-                        flash.message = "Error save: " + e.message
-                        flow.error = "Error save: " + e.message
+                        flash.message = "Некоторые поля пусты. Не все контакты добавлены."
+                        flow.error = e.message
                         return error()
                     }
 
                 }
+                flash.message = " Добаленно ${ii} контактов"
+                flow.error = " Добаленно ${ii} контактов"
             }.to("importComplete")
             on("back").to("choiceFile")
             on("cancel").to("finish")
