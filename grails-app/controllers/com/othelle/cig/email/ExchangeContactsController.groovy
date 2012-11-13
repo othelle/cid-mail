@@ -93,7 +93,7 @@ class ExchangeContactsController {
                                 flow.previewDetailsList.add(previewDetailsCommand)
                             }
                             else {
-                                log.error("Не все контакты прошли проверку. Поля Имя, Фамилия, Почта должны быть заполнены. ")
+                                log.error("Не все контакты прошли проверку.")
                                 flow.error = "Следующие контакты будут загружены. Не все контакты прошли проверку. Поля Имя, Фамилия, Почта должны быть заполнены."
                             }
                         }
@@ -114,7 +114,7 @@ class ExchangeContactsController {
                         def conCurent
                         def contactsCur = Contact.findAllByFirstNameAndLastNameAndEmail(pc.firstName, pc.lastName, pc.email)
                         if (contactsCur.size() == 0) {
-                            conCurent = new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email).save(failOnError: true)
+                            conCurent = new Contact(firstName: pc.firstName, lastName: pc.lastName, email: pc.email, organization: pc.organization).save(failOnError: true)
                             ii++
                         }
                         else {
