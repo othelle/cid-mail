@@ -49,7 +49,8 @@
                 <td><g:if
                         test="${contactInstance?.lastName}">${fieldValue(bean: contactInstance, field: "lastName")}</g:if></td>
                 <td><g:if
-                        test="${contactInstance?.email}">${fieldValue(bean: contactInstance, field: "email")}</g:if></td>
+                        test="${contactInstance?.email}"><g:link action="show"
+                                                                 id="${contactInstance.id}">${fieldValue(bean: contactInstance, field: "email")}</g:link></g:if></td>
                 <td><g:if test="${contactInstance?.collections}">
                     <g:each in="${contactInstance.collections}" var="c">
                         <g:link controller="collection" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link>
