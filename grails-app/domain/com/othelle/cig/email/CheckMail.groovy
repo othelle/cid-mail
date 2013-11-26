@@ -9,7 +9,8 @@ class CheckMail {
     Boolean flagNew
     Collection collection
 
-    static belongsTo = [Collection, Attachment]
+	static searchable = true
+	static belongsTo = [Collection, Attachment]
     static hasMany = [attachment: Attachment]
 
     static constraints = {
@@ -21,7 +22,11 @@ class CheckMail {
         flagNew(nullable: true)
 
     }
-
+	
+	static mapping = {
+		sort uid: "asc"
+	}
+	
     @Override
     String toString() {
         "${collection} ${uid} ${subject} ${body} ${dateSend} ${flagNew}"

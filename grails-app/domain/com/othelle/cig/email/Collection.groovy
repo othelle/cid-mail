@@ -5,8 +5,10 @@ class Collection implements Serializable{
     String email
     String password
     String code
-
-    static hasMany = [contacts: Contact, checkMail: CheckMail]
+	
+	static searchable = true
+    
+	static hasMany = [contacts: Contact, checkMail: CheckMail]
 
     static constraints = {
         name(blank: false, size: 3..25, unique: true)
@@ -14,7 +16,11 @@ class Collection implements Serializable{
         password(blank: false)
         contacts()
     }
-
+	
+	static mapping = {
+		sort name: "asc"
+	}
+	
     @Override
     String toString() {
         "${name} : ${email}"

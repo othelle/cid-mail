@@ -6,6 +6,7 @@ class Contact implements Serializable{
     String email
     String organization
 
+	static searchable = true
     static belongsTo = Collection
     static hasMany = [localMail: LocalMail, collections: Collection]
 
@@ -16,6 +17,10 @@ class Contact implements Serializable{
         organization(nullable: true, size: 2..25)
         collections()
     }
+	
+	static mapping = {
+		sort organization: "asc"
+	}
 
     @Override
     String toString() {

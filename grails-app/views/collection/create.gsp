@@ -12,6 +12,7 @@
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:link class="list" action="list"><g:message code="collection.list.label" /></g:link></li>
+				<li><g:link class="create" controller="contact" action="create"><g:message code="contact.new.label" /></g:link></li>
 			</ul>
 		</div>
 		<div id="create-collection" class="content scaffold-create" role="main">
