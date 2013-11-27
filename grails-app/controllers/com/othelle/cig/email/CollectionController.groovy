@@ -55,4 +55,25 @@ class CollectionController {
             log.error(e)
         }
     }
+	def search= {
+		def query = params.q
+		
+		if (!query) {
+			//flash.message = message(code: 'search.emply.message', default: 'Not found contact');
+			//log.debug("Not found collection");
+			return
+		}
+
+		try {
+			def searchResult = Collection.search(query, params)
+			if (!searchResult.total) {
+				flash.message = message(code: 'search.not.found.message', default: 'Not found contact');
+				//log.error("Not found contact");
+				return
+			}
+			return [searchResult: searchResult]
+		} catch (Exception e) {
+			return [searchError: true]
+		}
+	}
 }

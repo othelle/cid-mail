@@ -1,72 +1,104 @@
-<%@ page import="com.othelle.cig.email.Contact" %>
+<%@ page import="com.othelle.cig.email.Contact"%>
 <!doctype html>
 <html>
 <head>
-    <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'contact.label', default: 'Contact')}"/>
-    <title><g:message code="default.list.label" args="[entityName]"/></title>
+<meta name="layout" content="main">
+<g:set var="entityName"
+	value="${message(code: 'contact.label', default: 'Contact')}" />
+<title><g:message code="default.list.label" args="[entityName]" /></title>
 </head>
 
 <body>
-<a href="#list-contact" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
-                                                              default="Skip to content&hellip;"/></a>
+	<a href="#list-contact" class="skip" tabindex="-1"><g:message
+			code="default.link.skip.label" default="Skip to content&hellip;" /></a>
 
-<div class="nav" role="navigation">
-    <ul>
-        <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-        <li><g:link class="create" action="create"><g:message code="contact.new.label"/></g:link></li>
-    </ul>
-</div>
+	<div class="nav" role="navigation">
+		<ul>
+			<li><a class="home" href="${createLink(uri: '/')}"><g:message
+						code="default.home.label" /></a></li>
+			<li><g:link class="create" action="create">
+					<g:message code="contact.new.label" />
+				</g:link></li>
+			
+				<div class="search">
+					<g:form class="search" controller="contact" action='search'>
+						<g:textField name="q" value="${params.q}" />
+						<g:select name="max" from="${[1, 5, 10, 50]}"
+							value="${params.max ?: 10}" />
+						<g:submitButton name="search"
+							value="${message(code:'search.label', default: 'Search')}" />
 
-<div id="list-contact" class="content scaffold-list" role="main">
-    <h1><g:message code="contact.list.label"/></h1>
-    <g:if test="${flash.message}">
-        <div class="message" role="status">${flash.message}</div>
-    </g:if>
-    <table>
-        <thead>
-        <tr>
-            <g:sortableColumn property="organization"
-                              title="${message(code: 'contact.organization.label', default: 'Organization')}"/>
-            <g:sortableColumn property="firstName"
-                              title="${message(code: 'contact.firstName.label', default: 'First Name')}"/>
-            <g:sortableColumn property="lastName"
-                              title="${message(code: 'contact.lastName.label', default: 'Last Name')}"/>
+						<g:link class="search" controller="contact" action="search">
+							<g:message code="search.label" />
+						</g:link>
+					</g:form>
+				</div>
+			
+		</ul>
+	</div>
 
-            <g:sortableColumn property="email" title="${message(code: 'contact.email.label', default: 'Email')}"/>
-            <g:sortableColumn property="email"
-                              title="${message(code: 'contact.collections.label', default: 'Collection')}"/>
-        </tr>
-        </thead>
-        <tbody>
-        <g:each in="${contactInstanceList}" status="i" var="contactInstance">
-            <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+	<div id="list-contact" class="content scaffold-list" role="main">
+		<h1>
+			<g:message code="contact.list.label" />
+		</h1>
+		<g:if test="${flash.message}">
+			<div class="message" role="status">
+				${flash.message}
+			</div>
+		</g:if>
+		<table>
+			<thead>
+				<tr>
+					<g:sortableColumn property="organization"
+						title="${message(code: 'contact.organization.label', default: 'Organization')}" />
+					<g:sortableColumn property="firstName"
+						title="${message(code: 'contact.firstName.label', default: 'First Name')}" />
+					<g:sortableColumn property="lastName"
+						title="${message(code: 'contact.lastName.label', default: 'Last Name')}" />
 
-                <td><g:if test="${contactInstance?.organization}"><g:link action="show"
-                                                                          id="${contactInstance.id}">${fieldValue(bean: contactInstance, field: "organization")}</g:link></g:if></td>
-                <td><g:if test="${contactInstance?.firstName}">
-                    ${fieldValue(bean: contactInstance, field: "firstName")}</g:if></td>
-                <td><g:if
-                        test="${contactInstance?.lastName}">${fieldValue(bean: contactInstance, field: "lastName")}</g:if></td>
-                <td><g:if
-                        test="${contactInstance?.email}"><g:link action="show"
-                                                                 id="${contactInstance.id}">${fieldValue(bean: contactInstance, field: "email")}</g:link></g:if></td>
-                <td><g:if test="${contactInstance?.collections}">
-                    <g:each in="${contactInstance.collections}" var="c">
-                        <g:link controller="collection" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link>
-                        <br/>
-                    </g:each>
-                </g:if>
-                </td>
+					<g:sortableColumn property="email"
+						title="${message(code: 'contact.email.label', default: 'Email')}" />
+					<g:sortableColumn property="email"
+						title="${message(code: 'contact.collections.label', default: 'Collection')}" />
+				</tr>
+			</thead>
+			<tbody>
+				<g:each in="${contactInstanceList}" status="i" var="contactInstance">
+					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-            </tr>
-        </g:each>
-        </tbody>
-    </table>
+						<td><g:if test="${contactInstance?.organization}">
+								<g:link action="show" id="${contactInstance.id}">
+									${fieldValue(bean: contactInstance, field: "organization")}
+								</g:link>
+							</g:if></td>
+						<td><g:if test="${contactInstance?.firstName}">
+								${fieldValue(bean: contactInstance, field: "firstName")}
+							</g:if></td>
+						<td><g:if test="${contactInstance?.lastName}">
+								${fieldValue(bean: contactInstance, field: "lastName")}
+							</g:if></td>
+						<td><g:if test="${contactInstance?.email}">
+								<g:link action="show" id="${contactInstance.id}">
+									${fieldValue(bean: contactInstance, field: "email")}
+								</g:link>
+							</g:if></td>
+						<td><g:if test="${contactInstance?.collections}">
+								<g:each in="${contactInstance.collections}" var="c">
+									<g:link controller="collection" action="show" id="${c.id}">
+										${c?.encodeAsHTML()}
+									</g:link>
+									<br />
+								</g:each>
+							</g:if></td>
 
-    <div class="pagination">
-        <g:paginate total="${contactInstanceTotal}"/>
-    </div>
-</div>
+					</tr>
+				</g:each>
+			</tbody>
+		</table>
+
+		<div class="pagination">
+			<g:paginate total="${contactInstanceTotal}" />
+		</div>
+	</div>
 </body>
 </html>

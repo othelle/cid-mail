@@ -100,4 +100,27 @@ class LocalMailController {
             redirect(action: "show", id: params.id)
         }
     }
+	def search={
+		def query = params.q
+	//	log.error(" query: "+query);
+
+		if (!query) {
+			//flash.message = message(code: 'search.emply.message', default: 'Not found contact');
+			//log.error("Not found contact");
+			return
+		}
+
+		try {
+			def searchResult = LocalMail.search(query, params)
+			if (!searchResult.total) {
+				flash.message = message(code: 'search.not.found.message', default: 'Not found contact');
+			//	log.error("Not found contact");
+				return
+			}
+			
+			return [searchResult: searchResult]
+		} catch (Exception e) {
+			return [searchError: true]
+		}
+	}
 }
