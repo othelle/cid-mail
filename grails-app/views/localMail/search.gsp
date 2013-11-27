@@ -19,6 +19,15 @@
 			<li><g:link controller="localMail">
 					<g:message code="localMail.label" />
 				</g:link></li>
+			<div class="search">
+				<g:form class="search" controller="localMail" action='search'>
+					<g:textField name="q" value="${params.q}" />
+					<g:select name="max" from="${[1, 5, 10, 50]}"
+						value="${params.max ?: 10}" />
+
+					<g:submitButton name="searchButton" class="searchButton"
+						value="${message(code: 'search.label', default: 'Search')}" />
+				</g:form>
 		</ul>
 	</div>
 
@@ -43,68 +52,50 @@
 				<table>
 					<thead>
 						<tr>
-							<g:sortableColumn property="organization"
-								title="${message(code: 'localMail.organization.label', default: 'Organization')}" />
-							<g:sortableColumn property="firstName"
-								title="${message(code: 'localMail.firstName.label', default: 'First Name')}" />
-							<g:sortableColumn property="lastName"
-								title="${message(code: 'localMail.lastName.label', default: 'Last Name')}" />
-
-							<g:sortableColumn property="email"
-								title="${message(code: 'localMail.email.label', default: 'Email')}" />
-							<g:sortableColumn property="email"
-								title="${message(code: 'localMail.collections.label', default: 'Collection')}" />
+							<g:sortableColumn property="subject"
+								title="${message(code: 'localMail.subject.label', default: 'Subject')}" />
+							<g:sortableColumn property="contact"
+								title="${message(code: 'localMail.contact.label', default: 'Contact')}" />
+							<g:sortableColumn property="dateCreated"
+								title="${message(code: 'localMail.dateCreated.label', default: 'Date Created')}" />
+							<g:sortableColumn property="dateSent"
+								title="${message(code: 'localMail.dateSent.label', default: 'Date Sent')}" />
+							<g:sortableColumn property="flagSend"
+								title="${message(code: 'localMail.flagSend.label', default: 'Flag Send')}" />
 						</tr>
 					</thead>
-					<table>
-						<thead>
-							<tr>
+					<tbody>
+						<g:each in="${searchResult.results}" status="i"
+							var="localMailInstance">
+							<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+								<td><g:link action="show" id="${localMailInstance.id}">
+										${fieldValue(bean: localMailInstance, field: "subject")}
+									</g:link> %{-- <g:if test="${localMailInstance?.attachment}">
+										<li class="fieldcontain"><span id="attachment-label"
+											class="property-label"><g:message
+													code="checkMail.attachment.label" default="Attachment" /></span>
 
-								<g:sortableColumn property="subject"
-									title="${message(code: 'localMail.subject.label', default: 'Subject')}" />
-								<g:sortableColumn property="contact"
-									title="${message(code: 'localMail.contact.label', default: 'Contact')}" />
-								<g:sortableColumn property="dateCreated"
-									title="${message(code: 'localMail.dateCreated.label', default: 'Date Created')}" />
-								<g:sortableColumn property="dateSent"
-									title="${message(code: 'localMail.dateSent.label', default: 'Date Sent')}" />
-								<g:sortableColumn property="flagSend"
-									title="${message(code: 'localMail.flagSend.label', default: 'Flag Send')}" />
+											<g:each in="${localMailInstance.attachment}" var="a">
+												<span class="property-value"
+													aria-labelledby="attachment-label"> ${a?.encodeAsHTML()}
+												</span>
+											</g:each></li>
+									</g:if>--}%</td>
+								<td>
+									${fieldValue(bean: localMailInstance, field: "contact")}
+								</td>
+								<td><g:formatDate date="${localMailInstance.dateCreated}" /></td>
+								<td><g:formatDate date="${localMailInstance.dateSent}" /></td>
+								<td>
+									${localMailInstance.flagSend ? "В очереди" : "Отправлено"}
+								</td>
 							</tr>
-						</thead>
-						<tbody>
-							<g:each in="${searchResult.results}" status="i"
-								var="localMailInstance">
-								<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-									<td><g:link action="show" id="${localMailInstance.id}">
-											${fieldValue(bean: localMailInstance, field: "subject")}
-										</g:link> %{-- <g:if test="${localMailInstance?.attachment}">
-											<li class="fieldcontain"><span id="attachment-label"
-												class="property-label"><g:message
-														code="checkMail.attachment.label" default="Attachment" /></span>
-
-												<g:each in="${localMailInstance.attachment}" var="a">
-													<span class="property-value"
-														aria-labelledby="attachment-label">
-														${a?.encodeAsHTML()}
-													</span>
-												</g:each></li>
-										</g:if>--}%</td>
-									<td>
-										${fieldValue(bean: localMailInstance, field: "contact")}
-									</td>
-									<td><g:formatDate date="${localMailInstance.dateCreated}" /></td>
-									<td><g:formatDate date="${localMailInstance.dateSent}" /></td>
-									<td>
-										${localMailInstance.flagSend ? "В очереди" : "Отправлено"}
-									</td>
-								</tr>
-							</g:each>
-						</tbody>
-					</table>
-					<div class="pagination">
-						<g:paginate total="${searchResult.total}" />
-					</div>
+						</g:each>
+					</tbody>
+				</table>
+				<div class="pagination">
+					<g:paginate total="${searchResult.total}" />
+				</div>
 			</g:if>
 		</g:if>
 
