@@ -19,6 +19,16 @@
 			<li><g:link controller="collection">
 					<g:message code="collection.list.label" />
 				</g:link></li>
+			<div class="search">
+				<g:form class="search" controller="collection" action='search'>
+					<g:textField name="q" value="${params.q}" />
+					<g:select name="max" from="${[1, 5, 10, 50]}"
+						value="${params.max ?: 10}" />
+
+					<g:submitButton name="searchButton" class="searchButton"
+						value="${message(code: 'search.label', default: 'Search')}" />
+				</g:form>
+			</div>
 		</ul>
 	</div>
 
@@ -40,50 +50,50 @@
 		<hr />
 		<g:if test="${searchResult?.results}">
 			<g:if test="${searchResult?.total && searchResult.total>0}">
-					<table>
-			<thead>
-				<tr>
+				<table>
+					<thead>
+						<tr>
 
-					<g:sortableColumn property="name"
-						title="${message(code: 'collection.name.label', default: 'Name')}" />
+							<g:sortableColumn property="name"
+								title="${message(code: 'collection.name.label', default: 'Name')}" />
 
-					<g:sortableColumn property="email"
-						title="${message(code: 'collection.email.label', default: 'Email')}" />
+							<g:sortableColumn property="email"
+								title="${message(code: 'collection.email.label', default: 'Email')}" />
 
-					<g:sortableColumn property="password"
-						title="${message(code: 'collection.password.label', default: 'Password')}" />
+							<g:sortableColumn property="password"
+								title="${message(code: 'collection.password.label', default: 'Password')}" />
 
-					<g:sortableColumn property="code"
-						title="${message(code: 'collection.code.label', default: 'Code')}" />
+							<g:sortableColumn property="code"
+								title="${message(code: 'collection.code.label', default: 'Code')}" />
 
-				</tr>
-			</thead>
-			<tbody>
-			<g:each in="${searchResult.results}" status="i" var="result">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+						</tr>
+					</thead>
+					<tbody>
+						<g:each in="${searchResult.results}" status="i" var="result">
+							<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-						<td><g:link action="show" id="${result.id}">
-								${fieldValue(bean: result, field: "name")}
-							</g:link></td>
+								<td><g:link action="show" id="${result.id}">
+										${fieldValue(bean: result, field: "name")}
+									</g:link></td>
 
-						<td>
-							${fieldValue(bean: result, field: "email")}
-						</td>
+								<td>
+									${fieldValue(bean: result, field: "email")}
+								</td>
 
-						<td>
-							${fieldValue(bean: result, field: "password")}
-						</td>
+								<td>
+									${fieldValue(bean: result, field: "password")}
+								</td>
 
-						<td>
-							${fieldValue(bean: result, field: "code")}
-						</td>
+								<td>
+									${fieldValue(bean: result, field: "code")}
+								</td>
 
-					</tr>
-				</g:each>
-			</tbody>
-		</table>
-			<div class="pagination">
-					<g:paginate total="${searchResult.total}" />
+							</tr>
+						</g:each>
+					</tbody>
+				</table>
+				<div class="pagination">
+					<g:paginate params="[q:params.q]" total="${searchResult.total}" />
 				</div>
 			</g:if>
 		</g:if>

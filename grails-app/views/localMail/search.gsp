@@ -28,6 +28,7 @@
 					<g:submitButton name="searchButton" class="searchButton"
 						value="${message(code: 'search.label', default: 'Search')}" />
 				</g:form>
+			</div>
 		</ul>
 	</div>
 
@@ -94,7 +95,7 @@
 					</tbody>
 				</table>
 				<div class="pagination">
-					<g:paginate total="${searchResult.total}" />
+					<g:paginate params="[q:params.q]" total="${searchResult.total}" />
 				</div>
 			</g:if>
 		</g:if>

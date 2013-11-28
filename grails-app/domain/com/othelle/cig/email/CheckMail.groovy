@@ -24,7 +24,7 @@ class CheckMail {
     }
 	
 	static mapping = {
-		sort uid: "asc"
+		sort flagNew: "desc"
 	}
 	
     @Override

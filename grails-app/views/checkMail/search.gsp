@@ -19,6 +19,16 @@
 			<li><g:link controller="checkMail">
 					<g:message code="checkMail.list.label" />
 				</g:link></li>
+			<div class="search">
+				<g:form class="search" controller="checkMail" action='search'>
+					<g:textField name="q" value="${params.q}" />
+					<g:select name="max" from="${[1, 5, 10, 50]}"
+						value="${params.max ?: 10}" />
+
+					<g:submitButton name="searchButton" class="searchButton"
+						value="${message(code: 'search.label', default: 'Search')}" />
+				</g:form>
+			</div>
 		</ul>
 	</div>
 
@@ -41,46 +51,46 @@
 		<g:if test="${searchResult?.results}">
 			<g:if test="${searchResult?.total && searchResult.total>0}">
 				<table>
-			<thead>
-				<tr>
+					<thead>
+						<tr>
 
-					<g:sortableColumn property="subject"
-						title="${message(code: 'checkMail.subject.label', default: 'Subject')}" />
-					<g:sortableColumn property="emailFrom"
-						title="${message(code: 'checkMail.emailFrom.label', default: 'Email From')}" />
+							<g:sortableColumn property="subject"
+								title="${message(code: 'checkMail.subject.label', default: 'Subject')}" />
+							<g:sortableColumn property="emailFrom"
+								title="${message(code: 'checkMail.emailFrom.label', default: 'Email From')}" />
 
-					<g:sortableColumn property="dateSend"
-						title="${message(code: 'checkMail.dateSend.label', default: 'Date Send')}" />
+							<g:sortableColumn property="dateSend"
+								title="${message(code: 'checkMail.dateSend.label', default: 'Date Send')}" />
 
-					<g:sortableColumn property="flagNew"
-						title="${message(code: 'checkMail.flagNew.label', default: 'Flag New')}" />
+							<g:sortableColumn property="flagNew"
+								title="${message(code: 'checkMail.flagNew.label', default: 'Flag New')}" />
 
-				</tr>
-			</thead>
-			<tbody>
-				<g:each in="${searchResult.results}" status="i"
-					var="checkMailInstance">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+						</tr>
+					</thead>
+					<tbody>
+						<g:each in="${searchResult.results}" status="i"
+							var="checkMailInstance">
+							<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-						<td><g:link action="show" id="${checkMailInstance.id}">
-								${fieldValue(bean: checkMailInstance, field: "subject")}
-							</g:link></td>
+								<td><g:link action="show" id="${checkMailInstance.id}">
+										${fieldValue(bean: checkMailInstance, field: "subject")}
+									</g:link></td>
 
-						<td>
-							${fieldValue(bean: checkMailInstance, field: "emailFrom")}
-						</td>
-						<td><g:formatDate date="${checkMailInstance.dateSend}" /></td>
+								<td>
+									${fieldValue(bean: checkMailInstance, field: "emailFrom")}
+								</td>
+								<td><g:formatDate date="${checkMailInstance.dateSend}" /></td>
 
-						<td>
-							${checkMailInstance.flagNew ? "В очереди" : "Обработано"}
-						</td>
+								<td>
+									${checkMailInstance.flagNew ? "В очереди" : "Обработано"}
+								</td>
 
-					</tr>
-				</g:each>
-			</tbody>
-		</table>
+							</tr>
+						</g:each>
+					</tbody>
+				</table>
 				<div class="pagination">
-					<g:paginate total="${searchResult.total}" />
+					<g:paginate params="[q:params.q]" total="${searchResult.total}" />
 				</div>
 			</g:if>
 		</g:if>

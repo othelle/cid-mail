@@ -19,6 +19,17 @@
 			<li><g:link controller="contact">
 					<g:message code="contact.default.list.label" />
 				</g:link></li>
+			<div class="search">
+				<g:form class="search" controller="contact" action='search'>
+					<g:textField name="q" value="${params.q}" />
+					<g:select name="max" from="${[1, 5, 10, 50]}"
+						value="${params.max ?: 10}" />
+
+					<g:submitButton name="searchButton" class="searchButton"
+						value="${message(code: 'search.label', default: 'Search')}" />
+				</g:form>
+			</div>
+
 		</ul>
 	</div>
 
@@ -89,7 +100,7 @@
 					</tbody>
 				</table>
 				<div class="pagination">
-					<g:paginate total="${searchResult.total}" />
+					<g:paginate params="[q:	params.q]" total="${searchResult.total}" />
 				</div>
 			</g:if>
 		</g:if>

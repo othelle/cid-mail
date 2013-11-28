@@ -24,10 +24,8 @@
 					<g:textField name="q" value="${params.q}" />
 					<g:select name="max" from="${[1, 5, 10, 50]}"
 						value="${params.max ?: 10}" />
-					
-						<g:submitButton name="searchButton" class="searchButton"
-							value="${message(code: 'search.label', default: 'Search')}" />
-					
+					<g:submitButton name="searchButton" class="searchButton"
+						value="${message(code: 'search.label', default: 'Search')}" />
 				</g:form>
 			</div>
 		</ul>

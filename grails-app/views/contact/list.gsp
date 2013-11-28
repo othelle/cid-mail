@@ -19,21 +19,17 @@
 			<li><g:link class="create" action="create">
 					<g:message code="contact.new.label" />
 				</g:link></li>
-			
-				<div class="search">
-					<g:form class="search" controller="contact" action='search'>
-						<g:textField name="q" value="${params.q}" />
-						<g:select name="max" from="${[1, 5, 10, 50]}"
-							value="${params.max ?: 10}" />
-						<g:submitButton name="search"
-							value="${message(code:'search.label', default: 'Search')}" />
 
-						<g:link class="search" controller="contact" action="search">
-							<g:message code="search.label" />
-						</g:link>
-					</g:form>
-				</div>
-			
+			<div class="search">
+				<g:form class="search" controller="contact" action='search'>
+					<g:textField name="q" value="${params.q}" />
+					<g:select name="max" from="${[1, 5, 10, 50]}"
+						value="${params.max ?: 10}" />
+					<g:submitButton name="searchButton" class="searchButton"
+						value="${message(code: 'search.label', default: 'Search')}" />
+				</g:form>
+			</div>
+
 		</ul>
 	</div>
 
