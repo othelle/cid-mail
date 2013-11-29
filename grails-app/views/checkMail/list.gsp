@@ -19,12 +19,15 @@
 			<li><g:link class="create" action="create">
 					<g:message code="default.new.label" args="[entityName]" />
 				</g:link></li>
+			<li><g:link class="mail_delete" action="deleteByFlagNew">
+					<g:message code="checkMail.deleteByFlagNew.label" />
+				</g:link></li>
 			<div class="search">
 				<g:form class="search" controller="checkMail" action='search'>
 					<g:textField name="q" value="${params.q}" />
 					<g:select name="max" from="${[1, 5, 10, 50]}"
 						value="${params.max ?: 10}" />
-				<g:submitButton name="searchButton" class="searchButton"
+					<g:submitButton name="searchButton" class="searchButton"
 						value="${message(code: 'search.label', default: 'Search')}" />
 				</g:form>
 			</div>

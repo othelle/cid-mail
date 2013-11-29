@@ -19,6 +19,9 @@
 			<li><g:link controller="checkMail">
 					<g:message code="checkMail.list.label" />
 				</g:link></li>
+			<li><g:link class="mail_delete" action="deleteByFlagNew">
+					<g:message code="checkMail.deleteByFlagNew.label" />
+				</g:link></li>
 			<div class="search">
 				<g:form class="search" controller="checkMail" action='search'>
 					<g:textField name="q" value="${params.q}" />

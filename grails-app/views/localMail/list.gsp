@@ -19,6 +19,9 @@
 			<li><g:link class="create" action="create">
 					<g:message code="localMail.new.label" />
 				</g:link></li>
+				<li><g:link class="mail_delete" action="deleteByFlagSend">
+					<g:message code="localMail.deleteByFlagSend.label" />
+				</g:link></li>
 			<div class="search">
 				<g:form class="search" controller="localMail" action='search'>
 					<g:textField name="q" value="${params.q}" />
