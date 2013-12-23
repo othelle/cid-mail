@@ -128,20 +128,33 @@ class CheckMailController {
 	def deleteByFlagNew() {
 		def flagNew=Boolean.FALSE
 		def checkInstanceList = CheckMail.findAllByFlagNew(flagNew)
-
 		if (!checkInstanceList) {
 			flash.message = message(code: 'checkMail.not.found.message')
 			redirect(action: "list")
 			return
 		}
+		def flag=false
+		def count=0
+		log.info("Find checkMail "+ checkInstanceList.size())
 		for(def checkMailInstance:checkInstanceList){
 			try {
 				checkMailInstance.delete(flush: true)
+				log.info("Deleted check mail "+ checkMailInstance.id)
+				count++
 			}
 			catch (DataIntegrityViolationException e) {
 				flash.message = message(code: 'checkMail.not.deleted.message', args: [checkInstanceList])
+				flag=true
 				redirect(action: "show", id: checkInstanceList.id)
 			}
+		}
+		if (count>0) {
+			log.info("Deledet "+ count+" items")
+		}
+		if (!flag) {
+			log.info("All is well!")
+		} else {
+			log.info("Is not well!")
 		}
 		flash.message = message(code: 'checkMail.deleted.message', args: [checkInstanceList.id])
 		redirect(action: "list")

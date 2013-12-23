@@ -107,14 +107,27 @@ class LocalMailController {
 			redirect(action: "list")
 			return
 		}
+		def flag=false
+		def count=0
+		log.info("Find local mail "+ localMailInstanceList.size())
 		for(def localMailInstance:localMailInstanceList){
 			try {
 				localMailInstance.delete(flush: true)
+				log.info("Deleted local mail "+ localMailInstance.id)
 			}
 			catch (DataIntegrityViolationException e) {
 				flash.message = message(code: 'localMail.not.deleted.message', args: [localMailInstance])
+				flag=true
 				redirect(action: "show", id: localMailInstance.id)
 			}
+		}
+		if (count>0) {
+			log.info("Deledet "+ count+" items")
+		}
+		if (!flag) {
+			log.info("All is well!")
+		} else {
+			log.info("Is not well!")
 		}
 		flash.message = message(code: 'localMail.deleted.message', args: [localMailInstanceList.id])
 		redirect(action: "list")
