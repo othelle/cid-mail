@@ -7,7 +7,7 @@
 		<g:message code="collection.name.label" default="Name" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="name" maxlength="25" required="" value="${collectionInstance?.name}"/>
+	<g:textField name="name" maxlength="50" required="" value="${collectionInstance?.name}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: collectionInstance, field: 'email', 'error')} required">
@@ -49,7 +49,7 @@
 </li>
 </ul>
 
-</div>
+</div><%--
 
 <div class="fieldcontain ${hasErrors(bean: collectionInstance, field: 'code', 'error')} ">
 	<label for="code">
@@ -59,3 +59,4 @@
 	<g:textField name="code" value="${collectionInstance?.code}"/>
 </div>
 
+--%>

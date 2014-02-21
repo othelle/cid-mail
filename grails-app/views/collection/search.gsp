@@ -63,10 +63,10 @@
 							<g:sortableColumn property="password"
 								title="${message(code: 'collection.password.label', default: 'Password')}" />
 
-							<g:sortableColumn property="code"
+							<%--<g:sortableColumn property="code"
 								title="${message(code: 'collection.code.label', default: 'Code')}" />
 
-						</tr>
+						--%></tr>
 					</thead>
 					<tbody>
 						<g:each in="${searchResult.results}" status="i" var="result">
@@ -84,11 +84,11 @@
 									${fieldValue(bean: result, field: "password")}
 								</td>
 
-								<td>
+								<%--<td>
 									${fieldValue(bean: result, field: "code")}
 								</td>
 
-							</tr>
+							--%></tr>
 						</g:each>
 					</tbody>
 				</table>

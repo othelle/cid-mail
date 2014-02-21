@@ -22,6 +22,9 @@
  * This file is created by "grails install-searchable-config", and replaces
  * the previous "SearchableConfiguration.groovy"
  */
+//def searchableIndex="webapps/.cid/searchable-index/"
+def searchableIndex="${userHome}/.grails/projects/${appName}/searchable-index/"
+
 searchable {
 
     /**
@@ -33,7 +36,7 @@ searchable {
      */
     compassConnection = new File(
         //"${userHome}/.grails/projects/${appName}/searchable-index/${grailsEnv}"
-		".cid/searchable-index/${grailsEnv}"
+		searchableIndex +"${grailsEnv}"
     ).absolutePath
 
     /**
@@ -147,7 +150,11 @@ searchable {
 environments {
     development {
         searchable {
-            // development is default; inherits from above
+			// disable bulk index on startup
+            bulkIndexOnStartup = false
+
+            // use faster in-memory index
+            compassConnection = "ram://dev-index"
         }
     }
 
@@ -163,7 +170,11 @@ environments {
 
     production {
         searchable {
-            // add your production settings here
+           // disable bulk index on startup
+            bulkIndexOnStartup = false
+
+            // use faster in-memory index
+            compassConnection = "ram://prod-index"
         }
     }
 }

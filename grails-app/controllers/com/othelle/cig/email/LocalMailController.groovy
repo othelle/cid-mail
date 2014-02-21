@@ -161,9 +161,11 @@ class LocalMailController {
 		}
 	}
 	def search={
+		//log.info("params.q="+params.q)
 		def query = params.q
-		//	log.error(" query: "+query);
-
+		//.trim().replaceAll("  ", " ")
+		//log.info("query="+query)
+		
 		if (!query) {
 			//flash.message = message(code: 'search.emply.message', default: 'Not found contact');
 			//log.error("Not found contact");

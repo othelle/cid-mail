@@ -15,7 +15,7 @@ class CheckMail {
 
     static constraints = {
         uid(blank: false)
-        emailFrom(nullable: true)
+        emailFrom(email: true, nullable: true)
         subject(blank: false, maxSize: 100)
         body(maxSize: 50000)
         dateSend(nullable: true)

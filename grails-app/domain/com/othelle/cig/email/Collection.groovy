@@ -11,7 +11,7 @@ class Collection implements Serializable{
 	static hasMany = [contacts: Contact, checkMail: CheckMail]
 
     static constraints = {
-        name(blank: false, size: 3..25, unique: true)
+        name(blank: false, size: 3..50, unique: true)
         email(blank: false, email: true, unique: true)
         password(blank: false)
         contacts()

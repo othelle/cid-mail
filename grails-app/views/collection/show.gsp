@@ -93,7 +93,7 @@
                     </g:each>
                 </ul>
             </li>
-        </g:if>
+        </g:if><%--
 
         <g:if test="${collectionInstance?.code}">
             <li class="fieldcontain">
@@ -106,7 +106,7 @@
             </li>
         </g:if>
 
-    </ol>
+    --%></ol>
     <g:form>
         <fieldset class="buttons">
             <g:hiddenField name="id" value="${collectionInstance?.id}"/>

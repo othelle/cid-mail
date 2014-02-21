@@ -18,11 +18,11 @@
 						code="default.home.label" /></a></li>
 			<li><g:link class="create" action="create">
 					<g:message code="localMail.new.label" />
-				</g:link></li>
+				</g:link></li><%--
 				<li><g:link class="mail_delete" action="deleteByFlagSend">
 					<g:message code="localMail.deleteByFlagSend.label" />
 				</g:link></li>
-			<div class="search">
+			--%><div class="search">
 				<g:form class="search" controller="localMail" action='search'>
 					<g:textField name="q" value="${params.q}" />
 					<g:select name="max" from="${[1, 5, 10, 50]}"

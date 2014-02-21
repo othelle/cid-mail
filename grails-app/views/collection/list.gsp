@@ -52,13 +52,13 @@
 					<g:sortableColumn property="email"
 						title="${message(code: 'collection.email.label', default: 'Email')}" />
 
-					<g:sortableColumn property="password"
+					<%--<g:sortableColumn property="password"
 						title="${message(code: 'collection.password.label', default: 'Password')}" />
 
-					<g:sortableColumn property="code"
+					--%><%--<g:sortableColumn property="code"
 						title="${message(code: 'collection.code.label', default: 'Code')}" />
 
-				</tr>
+				--%></tr>
 			</thead>
 			<tbody>
 				<g:each in="${collectionInstanceList}" status="i"
@@ -71,17 +71,17 @@
 
 						<td>
 							${fieldValue(bean: collectionInstance, field: "email")}
-						</td>
+						</td><%--
 
 						<td>
 							${fieldValue(bean: collectionInstance, field: "password")}
 						</td>
 
-						<td>
+						--%><%--<td>
 							${fieldValue(bean: collectionInstance, field: "code")}
 						</td>
 
-					</tr>
+					--%></tr>
 				</g:each>
 			</tbody>
 		</table>

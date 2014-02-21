@@ -23,7 +23,8 @@ class MailDigestService {
                 sendMail {
                     multipart true
                     to Utilities.emailParse(contact.email)
-                    from grailsApplication.config.grails.mail.username
+                    from grailsApplication.config.grails.mail.username 
+					//"zapros@asg-ts.ru"
                     subject localMail.subject
                     html localMail.description.decodeHTML()
                     localMail.attachment.each {cur ->
@@ -35,7 +36,7 @@ class MailDigestService {
                 localMail.flagSend = Boolean.FALSE
                 localMail.dateSent = new Date();
                 localMail.save(failOnError: true)
-                log.info("Mail has been sant ${localMail}")
+               // log.info("Mail has been sant ${localMail}")
             }
             catch (Exception e) {
                 log.error("Unable to send email", e)
@@ -71,7 +72,7 @@ class MailDigestService {
             pop3Props.setProperty("mail.transport.protocol", "pop");
             pop3Props.setProperty("mail.pop3.auth", "true");
 
-            URLName url = new URLName("pop3", "mail.asg-ts.ru", 110, "", POP_AUTH_USER, POP_AUTH_PWD);
+            URLName url = new URLName("pop3", "172.17.100.100", 110, "", POP_AUTH_USER, POP_AUTH_PWD);
             Session session = Session.getInstance(pop3Props, auth);
             Store store = session.getStore(url);
             try {
@@ -93,8 +94,7 @@ class MailDigestService {
                     StringBuilder uid = new StringBuilder(folder.getUID(messageCur).toString())
                     if (CheckMail.findAllByCollectionAndUid(collection, uid.toString()).empty.booleanValue()) {
                         log.info("Got new message: "
-                                + "\nfrom:" + messageCur.from
-                                + "\nsubject:" + messageCur.subject)
+                                + "\nfrom:" + messageCur.from)
                         def fromMassager = Utilities.emailEval(messageCur.from)
                         def subject = messageCur.subject
                         if (subject.equals(null)) {
@@ -269,7 +269,7 @@ class MailDigestService {
     def copyCheckedEmailsToContacts(CheckMail checkedMail) {
         //not the best way to copy checkmails to localmail
         if (checkedMail) {
-            log.info("checkMail " + checkedMail)
+            log.info("copyCheckedEmailsToContacts checkMail " + checkedMail.subject)
             for (Contact contact : checkedMail.collection.contacts) {
                 try {
                     LocalMail localMail = new LocalMail(flagSend: true, subject: checkedMail.subject,
