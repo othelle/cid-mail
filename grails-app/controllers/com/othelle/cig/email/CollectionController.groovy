@@ -5,14 +5,15 @@ import org.springframework.dao.DataIntegrityViolationException
 class CollectionController {
 	static scaffold = true
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+	def LogSenderService logSenderService
+	
 	def create() {
 		//params.code=params.password
 		[collectionInstance: new Collection(params)]
 	}
 
 	def save() {
-		//хак для удаление поля code
+		//пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ code
 		params.code=params.password
 		def collectionInstance = new Collection(params)
 		if (!collectionInstance.save(flush: true)) {
@@ -49,7 +50,7 @@ class CollectionController {
 			}
 		}
 
-		//хак для удаление поля code
+		//пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ code
 		params.code=params.password
 		collectionInstance.properties = params
 
@@ -111,6 +112,7 @@ class CollectionController {
 			}
 			return [searchResult: searchResult]
 		} catch (Exception e) {
+		logSenderService.sendLog("(CollectionController) Error search <br />"+e.getLocalizedMessage())
 			return [searchError: true]
 		}
 	}

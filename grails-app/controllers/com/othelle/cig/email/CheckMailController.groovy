@@ -5,7 +5,8 @@ import org.springframework.dao.DataIntegrityViolationException
 class CheckMailController {
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+	def LogSenderService logSenderService
+	
 	def index() {
 		redirect(action: "list", params: params)
 	}
@@ -118,6 +119,7 @@ class CheckMailController {
 			redirect(action: "list")
 		}
 		catch (DataIntegrityViolationException e) {
+			logSenderService.sendLog("(CheckMailController:delete) DataIntegrityViolationException <br />"+e.getLocalizedMessage())
 			flash.message = message(code: 'default.not.deleted.message', args: [
 				message(code: 'checkMail.label', default: 'CheckMail'),
 				params.id
@@ -143,6 +145,7 @@ class CheckMailController {
 				count++
 			}
 			catch (DataIntegrityViolationException e) {
+				logSenderService.sendLog("(CheckMailController:deleteByFlagNew) DataIntegrityViolationException <br />"+e.getLocalizedMessage())
 				flash.message = message(code: 'checkMail.not.deleted.message', args: [checkInstanceList])
 				flag=true
 				redirect(action: "show", id: checkInstanceList.id)

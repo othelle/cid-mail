@@ -3,7 +3,7 @@ package com.othelle.cig.email
 import org.springframework.dao.DataIntegrityViolationException
 
 class AttachmentController {
-
+	def LogSenderService logSenderService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -96,6 +96,7 @@ class AttachmentController {
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
+			logSenderService.sendLog("(AttachmentController:delete) DataIntegrityViolationException <br />"+e.getLocalizedMessage())
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'attachment.label', default: 'Attachment'), params.id])
             redirect(action: "show", id: params.id)
         }

@@ -3,7 +3,7 @@ package com.othelle.cig.email
 import org.springframework.dao.DataIntegrityViolationException
 
 class LocalMailController {
-
+	def LogSenderService logSenderService
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
 	def index() {
@@ -165,7 +165,7 @@ class LocalMailController {
 		def query = params.q
 		//.trim().replaceAll("  ", " ")
 		//log.info("query="+query)
-		
+
 		if (!query) {
 			//flash.message = message(code: 'search.emply.message', default: 'Not found contact');
 			//log.error("Not found contact");
@@ -182,6 +182,7 @@ class LocalMailController {
 
 			return [searchResult: searchResult]
 		} catch (Exception e) {
+			logSenderService.sendLog("(LocalMailController) Error search <br />"+e.getLocalizedMessage())
 			return [searchError: true]
 		}
 	}

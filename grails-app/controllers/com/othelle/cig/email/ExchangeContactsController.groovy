@@ -2,7 +2,7 @@ package com.othelle.cig.email
 
 class FileDetailsCommand implements Serializable {
     String file
-
+	def LogSenderService logSenderService
     static constraints = {
         file(blank: false)
     }

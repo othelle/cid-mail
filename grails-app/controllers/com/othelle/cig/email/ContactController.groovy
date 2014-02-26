@@ -5,7 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException
 class ContactController {
 	static scaffold = true
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+	def LogSenderService logSenderService
 
 	def update() {
 		def contactInstance = Contact.get(params.id)
@@ -63,6 +63,7 @@ class ContactController {
 		//	log.error(" searchResult.totalCont: "+searchResult.total);
 			return [searchResult: searchResult]
 		} catch (Exception e) {
+			logSenderService.sendLog("(ContactController) Error search <br />"+e.getLocalizedMessage())
 			return [searchError: true]
 		}
 	}

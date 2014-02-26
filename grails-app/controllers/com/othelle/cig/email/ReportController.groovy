@@ -1,7 +1,7 @@
 package com.othelle.cig.email
 
 class ReportController {
-
+	
     def index = {
         redirect(action: search)
     }
