@@ -163,10 +163,9 @@ class CheckMailController {
 		redirect(action: "list")
 	}
 	def search={
-		//	log.debug("params.q="+params.q)
-		def query = params.q
-		//.trim().replaceAll("  ", " ")
-	//	log.debug("query="+query)
+		
+		def query = Utilities.getTrim(params.q)
+
 		if (!query) {
 			//flash.message = message(code: 'search.emply.message', default: 'Not found contact');
 			//log.error("Not found contact");

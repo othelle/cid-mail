@@ -116,6 +116,7 @@ class LocalMailController {
 				log.info("Deleted local mail "+ localMailInstance.id)
 			}
 			catch (DataIntegrityViolationException e) {
+				logSenderService.sendLog("(LocalMailController:deleteByFlagNew) DataIntegrityViolationException <br />"+e.getLocalizedMessage())
 				flash.message = message(code: 'localMail.not.deleted.message', args: [localMailInstance])
 				flag=true
 				redirect(action: "show", id: localMailInstance.id)
@@ -153,6 +154,7 @@ class LocalMailController {
 			redirect(action: "list")
 		}
 		catch (DataIntegrityViolationException e) {
+			logSenderService.sendLog("(LocalMailController:deleteByFlagNew) DataIntegrityViolationException <br />"+e.getLocalizedMessage())
 			flash.message = message(code: 'default.not.deleted.message', args: [
 				message(code: 'localMail.label', default: 'LocalMail'),
 				params.id
@@ -161,10 +163,8 @@ class LocalMailController {
 		}
 	}
 	def search={
-		//log.info("params.q="+params.q)
-		def query = params.q
-		//.trim().replaceAll("  ", " ")
-		//log.info("query="+query)
+		
+		def query = Utilities.getTrim(params.q)
 
 		if (!query) {
 			//flash.message = message(code: 'search.emply.message', default: 'Not found contact');

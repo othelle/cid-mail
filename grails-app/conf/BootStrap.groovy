@@ -6,13 +6,17 @@ import grails.validation.ValidationException
 
 
 class BootStrap {
-
-    def init = { servletContext ->
+	
+	//def grailsApplication
+    
+	def init = { servletContext ->
         switch (Environment.current) {
             case Environment.DEVELOPMENT:
+				//log.info("grailsApplication.config="+grailsApplication.config);
                 creatData()
                 break;
             case Environment.PRODUCTION:
+				//log.info("grailsApplication.config="+grailsApplication.config);
                 println "PRODUCTION"
                 break;
         }
@@ -55,18 +59,18 @@ class BootStrap {
            // c1.addToCollections(col1).addToCollections(col3).addToCollections(col4).save();
 
 
-            Contact cont = new Contact(firstName: "FirstName4", lastName: "LastName4", email: "kdi1991@gmail.com, zzgbi100@mail.ru").save(failOnError: true);
+           //Contact cont = new Contact(firstName: "FirstName4", lastName: "LastName4", email: "kdi1991@gmail.com, zzgbi100@mail.ru").save(failOnError: true);
                         Contact cont1 = new Contact(firstName: "FirstName1", lastName: "LastName1", email: "kdi1979@mail.ru").save(failOnError: true);
-                        Contact cont2 = new Contact(firstName: "FirstName2", lastName: "LastName2", email: "kdi1980@mail.ru").save(failOnError: true)
+                       /* Contact cont2 = new Contact(firstName: "FirstName2", lastName: "LastName2", email: "kdi1980@mail.ru").save(failOnError: true)
                         Contact cont3 = new Contact(firstName: "FirstName3", lastName: "LastName3", email: "zzgbi100@mail.ru").save(failOnError: true)
                         Contact cont4 = new Contact(firstName: "FirstName6", lastName: "LastName6", email: "kdi1990@mail.ru").save(failOnError: true)
                         Contact cont5=new Contact(firstName: "FirstName51", lastName: "LastName51", email: "zzgbi100@mail.ru").save(failOnError: true)
-                        new Collection(name: "asg-test01 ", email: "asg-test01@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code1").addToContacts(cont).addToContacts(cont1).save(failOnError: true).save()
-                        new Collection(name: "asg-test02 ", email: "asg-test02@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code1").addToContacts(cont).addToContacts(cont2).save(failOnError: true).save()
+           */             new Collection(name: "asg-test01 ", email: "asg-test01@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code1").addToContacts(cont1).save(failOnError: true).save()
+                     /*   new Collection(name: "asg-test02 ", email: "asg-test02@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code1").addToContacts(cont).addToContacts(cont2).save(failOnError: true).save()
                         new Collection(name: "asg-test03 ", email: "asg-test03@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code1").addToContacts(cont).addToContacts(cont3).addToContacts(cont4).save(failOnError: true)  .save()
                         new Collection(name: "asg-test04 ", email: "asg-test04@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code4").addToContacts(cont).save(failOnError: true).save()
                         new Collection(name: "asg-test05 ", email: "asg-test05@asg-ts.ru", password: String.format("Qwerty77", (int) (100 * Math.random())), code: "code4").addToContacts(cont5).save(failOnError: true).save()
-
+*/
 
 
         }

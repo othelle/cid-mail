@@ -44,9 +44,8 @@ class ContactController {
 		redirect(action: "show", id: contactInstance.id)
 	}
 	def search={
-		def query = params.q
-	//	log.error(" query: "+query);
-
+		def query = Utilities.getTrim(params.q)
+	
 		if (!query) {
 			//flash.message = message(code: 'search.emply.message', default: 'Not found contact');
 		//	log.error("Not found contact");

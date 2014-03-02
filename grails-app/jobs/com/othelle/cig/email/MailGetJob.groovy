@@ -13,6 +13,8 @@ class MailGetJob {
         cron name: 'Mail Getting Job', startDelay: 5000, cronExpression: '0 0/15 * * * ?'//15
     }
 
+	def concurrent=false
+	
     static AtomicBoolean monitor = new AtomicBoolean(false)
 
     def execute() {

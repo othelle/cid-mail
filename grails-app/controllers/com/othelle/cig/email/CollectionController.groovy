@@ -6,7 +6,7 @@ class CollectionController {
 	static scaffold = true
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	def LogSenderService logSenderService
-	
+
 	def create() {
 		//params.code=params.password
 		[collectionInstance: new Collection(params)]
@@ -95,7 +95,8 @@ class CollectionController {
 		}
 	}
 	def search= {
-		def query = params.q
+		def query = Utilities.getTrim(params.q)
+
 
 		if (!query) {
 			//flash.message = message(code: 'search.emply.message', default: 'Not found contact');
@@ -112,7 +113,7 @@ class CollectionController {
 			}
 			return [searchResult: searchResult]
 		} catch (Exception e) {
-		logSenderService.sendLog("(CollectionController) Error search <br />"+e.getLocalizedMessage())
+			logSenderService.sendLog("(CollectionController) Error search <br />"+e.getLocalizedMessage())
 			return [searchError: true]
 		}
 	}

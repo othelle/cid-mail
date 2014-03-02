@@ -76,7 +76,7 @@ class MailDigestService {
 
 			
 			//URLName url = new URLName("pop3", "172.17.100.100", 110, "", POP_AUTH_USER, POP_AUTH_PWD);
-			URLName url = new URLName(config.grails.mail.fromEmail.protocolPop3, config.grails.mail.fromEmail.host, config.grails.mail.fromEmail.port110, "", POP_AUTH_USER, POP_AUTH_PWD);
+			URLName url = new URLName(config.grails.mail.protocolPop3, config.grails.mail.host, config.grails.mail.port110, "", POP_AUTH_USER, POP_AUTH_PWD);
 			Session session = Session.getInstance(pop3Props, auth);
 			Store store = session.getStore(url);
 			try {

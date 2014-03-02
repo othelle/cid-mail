@@ -13,6 +13,8 @@ class MailSendJob {
         cron name: 'Mail Service Job', startDelay: 0, cronExpression: '0 0/10 * * * ?' //10
 
     }
+	
+	def concurrent=false
 
     static AtomicBoolean monitor = new AtomicBoolean(false)
 

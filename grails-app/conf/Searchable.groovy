@@ -22,8 +22,8 @@
  * This file is created by "grails install-searchable-config", and replaces
  * the previous "SearchableConfiguration.groovy"
  */
-//def searchableIndex="webapps/.cid/searchable-index/"
-def searchableIndex="${userHome}/.grails/projects/${appName}/searchable-index/"
+def searchableIndex="webapps/.cid/searchable-index/"
+//def searchableIndex="${userHome}/.grails/projects/${appName}/searchable-index/"
 
 searchable {
 
