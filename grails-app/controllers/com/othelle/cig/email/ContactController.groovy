@@ -44,26 +44,86 @@ class ContactController {
 		redirect(action: "show", id: contactInstance.id)
 	}
 	def search={
+		//log.info("|"+params.q+"|");
 		def query = Utilities.getTrim(params.q)
-	
+		//log.info("|"+query+"|");
 		if (!query) {
 			//flash.message = message(code: 'search.emply.message', default: 'Not found contact');
-		//	log.error("Not found contact");
+			//	log.error("Not found contact");
 			return
 		}
 
 		try {
 			def searchResult = Contact.search(query, params)
+			//log.info("searchResult: "+searchResult);
 			if (!searchResult.total) {
 				flash.message = message(code: 'search.not.found.message', default: 'Not found contact');
-			//	log.error("Not found contact");
+				//	log.error("Not found contact");
 				return
 			}
-		//	log.error(" searchResult.totalCont: "+searchResult.total);
+			//	log.error(" searchResult.totalCont: "+searchResult.total);
 			return [searchResult: searchResult]
 		} catch (Exception e) {
 			logSenderService.sendLog("(ContactController) Error search <br />"+e.getLocalizedMessage())
 			return [searchError: true]
 		}
+	}
+	def reindex={
+		//Contacts	
+		def contacts=Contact.getAll();
+		def sizeCon=contacts.size();
+		log.info("size :"+sizeCon);
+		def i=1;
+		
+		for (contact in contacts) {
+			log.info("contact=  "+contact+ "    "+i);
+			contact.reindex()
+			i++;
+
+		}
+		
+		//Collection
+		def collections=Collection.getAll();
+		def sizeCol=collections.size();
+		log.info("size :"+sizeCol);
+		def ci=1;
+		
+		for (collection in collections) {
+			log.info("Collection=  "+collection.getName()+ "    "+ci);
+			collection.reindex()
+			ci++;
+
+		}
+/*
+	
+		//CheckMail.reindex()
+		def checkMails=CheckMail.getAll();
+		def sizecheckMails=checkMails.size();
+		log.info("size :"+sizecheckMails);
+		def ci2=1;
+		
+		for (checkMail in checkMails) {
+			log.info("checkMails=  "+checkMail.getUid()+ "    "+ci2);
+			checkMail.reindex()
+			ci2++;
+
+		}
+
+		//LocalMail.reindex()
+		def localMails=LocalMail.getAll();
+		def sizelocalMails=localMails.size();
+		log.info("size :"+sizelocalMails);
+		def cii=1;
+		
+		for (localMail in localMails) {
+			log.info("localMail=  "+localMail.getDateCreated()+ "    "+cii);
+			localMail.reindex()
+			cii++;
+
+		}*/
+		flash.message =message(code: 'search.not.found.messagedf', default: 'База проиндексированна');
+		
+		redirect(uri: "/")
+		
 	}
 }

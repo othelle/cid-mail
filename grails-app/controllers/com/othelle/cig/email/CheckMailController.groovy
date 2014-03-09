@@ -127,6 +127,7 @@ class CheckMailController {
 			redirect(action: "show", id: params.id)
 		}
 	}
+	//нарушение целосности
 	def deleteByFlagNew() {
 		def flagNew=Boolean.FALSE
 		def checkInstanceList = CheckMail.findAllByFlagNew(flagNew)

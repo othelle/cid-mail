@@ -6,9 +6,25 @@ import javax.mail.internet.MimeUtility
 
 class Utilities {
 
+	static boolean reIndex(){
+		def bool=false
+		def contacts=Contact.all();
+
+		for (contact in contacts) {
+			contact.reindex()
+		bool=true;
+		}
+
+
+		return bool
+	}
+
 	static String getTrim(String s){
 		def r=s.trim();
 		r=r.replace("  ", " ");
+		r=r.replace("   ", " ");
+		r=r.replace("    ", " ");
+		r="*"+r+"*";
 		return r
 	}
 	static String[] emailParse(String s) {
