@@ -37,7 +37,7 @@ class MailDigestService {
 				localMail.flagSend = Boolean.FALSE
 				localMail.dateSent = new Date();
 				localMail.save(failOnError: true)
-				// log.info("Mail has been sant ${localMail}")
+				log.info("Mail has been sant ${localMail.id} to ${contact.email}")
 			}
 			catch (Exception e) {
 				logSenderService.sendLog("(sendEmails) Unable to send email <br />"+e.getLocalizedMessage())
@@ -74,7 +74,7 @@ class MailDigestService {
 			pop3Props.setProperty("mail.transport.protocol", "pop");
 			pop3Props.setProperty("mail.pop3.auth", "true");
 
-			
+
 			//URLName url = new URLName("pop3", "172.17.100.100", 110, "", POP_AUTH_USER, POP_AUTH_PWD);
 			URLName url = new URLName(config.grails.mail.protocolPop3, config.grails.mail.host, config.grails.mail.port110, "", POP_AUTH_USER, POP_AUTH_PWD);
 			Session session = Session.getInstance(pop3Props, auth);
@@ -156,11 +156,15 @@ class MailDigestService {
 							checkMail.save()
 						}
 						catch (ValidationException ne) {
-							logSenderService.sendLog("(checkNewEmails) Unable save checked mail ${uid} - ValidationException <br />"+ne.getLocalizedMessage())
+							logSenderService.sendLog("(checkNewEmails) Unable save checked mail ${uid} - ValidationException <br />"+ne.getLocalizedMessage()+ " subject: "+subject+" from: "+fromMassager)
 							log.error("(checkNewEmails) Unable save checked mail ${uid} - ValidationException ", ne)
+							if(fromMassager!=null && fromMassager.size()!=0){
+								logSenderService.sendValidationException("(checkNewEmails) Unable save checked mail ${uid} - ValidationException <br />"+ne.getLocalizedMessage(), fromMassager)
+							}
+
 						}
 						catch (Exception ve) {
-							logSenderService.sendLog("(checkNewEmails) Unable save checked mail ${uid} - Exception  <br />"+ve.getLocalizedMessage())
+							logSenderService.sendLog("(checkNewEmails) Unable save checked mail ${uid} - Exception  <br />"+ve.getLocalizedMessage()+ " subject: "+subject+" from: "+fromMassager)
 							log.error("(checkNewEmails) Unable save checked mail ${uid} - Exception ", ve)
 						}
 
