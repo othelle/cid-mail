@@ -14,12 +14,18 @@ import org.apache.log4j.DailyRollingFileAppender
 // if (System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
-//def logDirectory = '/var/log/cid-mail/'
-def logDirectory = 'log/'
-//def exportDirectory = 'webapps/.cid/export/'
-//def importDirectory = 'webapps/.cid/import/'
-//def attachmentDirectory='webapps/.cid/attachments/'
-def attachmentDirectory = 'attachments/'
+
+def logDirectory = '/var/log/cid-mail/'
+def exportDirectory = 'webapps/.cid/export/'
+def importDirectory = 'webapps/.cid/import/'
+def attachmentDirectory='webapps/.cid/attachments/'
+
+/*def logDirectory = 'c:/var/log/cid-mail/'
+def exportDirectory = 'c:/var/cid/export/'
+def importDirectory = 'c:/var/cid/import/'
+def attachmentDirectory='c:/var/cid/attachments/'*/
+
+
 def infoLog = 'info.log'
 def errorLog = 'error.log'
 def fatalLog = 'fatal.log'
@@ -33,9 +39,10 @@ grails {
 		protocolPop3="pop3"
 		host = "172.17.100.100"
 		port = 8025
-		fromEmail=  "ГК АСГ-ТехноСтрой <zapros@asg-ts.ru>"
-		username =  "zapros@asg-ts.local"
-		password = "9HaMyjwTNcmhc"
+		logEmail="cig-log@fmpost.ru"
+		fromEmail=  ""
+		username =  ""
+		password = ""
 		props = ["mail.smtp.auth": "True",
 			"mail.smtp.socketFactory.port": "8025",
 			"mail.smtp.socketFactory.fallback": "false"]
